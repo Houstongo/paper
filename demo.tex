@@ -1,0 +1,111 @@
+%%=============================================================================
+%% demo.tex for Xiamen University Graduate Thesis
+%% modified by Maozhong Fu
+%% Version: 1.0
+%% Last update: 2020/09/30
+%% Based on BIT-thesis at https://github.com/BIT-thesis/LaTeX-template
+%%==============================================================================
+
+% 默认单面打印 oneside 、硕士论文模板 master
+
+\documentclass[twoside, master]{xmu-thesis-grd}
+
+% 用户自定义宏包
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{longtable}
+
+% 模板选项： 硕士论文 master； 博士论文 doctor; 直接使用学校doc文档转换的pdf页面 pdf
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 封面及其他固定内容的页面
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{面向碳纳米管阵列的知识增强智能分析与形貌预测方法研究}
+\entitle{Research on Knowledge-Enhanced Intelligent Analysis and Morphology Prediction Methods for Carbon Nanotube Arrays}
+\author{刘羽}
+\advisor{侯旭 教授}
+\major{人工智能}
+\submitdate{2026年4月}
+\defenddate{2026年5月}
+\grantdate{2026年6月}
+\printdate{2026年4月}
+% \studentnumber{}
+\studentnumber{36920231153219}
+
+% 封面
+\makecover
+
+% 学位论文原创性声明
+\makeoriginalitystatement
+
+% 学位论文著作权使用声明
+\makecopyrightstatement
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 前置部分
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+
+% 中英文摘要
+\input{chapters/abstract}
+
+% 中英文目录
+\tableofcontents
+\entableofcontents
+
+% 缩略词表
+% \makeacronymlist
+
+% 符号表
+% \makesymbollist
+
+% 图索引
+% \makefigurelist
+
+% 表索引
+% \maketablelist
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 正文主体部分
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+
+\input{chapters/chapter1}
+\include{chapters/chapter2}
+\include{chapters/chapter3}
+\include{chapters/chapter4}
+\include{chapters/chapter5}
+\include{chapters/chapter6}
+% \adjustafterskip %调整章节与正文的间距。临时解决方案。总结、参考文献、附录、致谢和发表的论文都会受到影响。
+% 参考文献
+\bibliography{reference/chapter1}
+
+% \begin{refcontext}[sorting = none]
+% \printbibliography
+% \end{refcontext}
+
+% 附录（章节编号重新计算，使用字母进行编号）
+% \appendix
+% \setappendixnumberformat
+% \input{chapters/appendix1}
+% \input{chapters/appendix2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 后置部分
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+
+% 致谢
+% \input{chapters/acknowledgements}
+
+% 发表文章目录
+\input{chapters/publications}
+% \cleardoublepage
+
+% 学位论文答辩委员会名单
+% \makenamelist
+
+\end{document}
