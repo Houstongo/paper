@@ -407,7 +407,7 @@
 
 %% 算法
 \RequirePackage{algorithm}
-\RequirePackage{algorithmic}
+\RequirePackage{algpseudocode}
 \floatname{algorithm}{算法}  
 \renewcommand{\algorithmicrequire}{\textbf{输入:}}  
 \renewcommand{\algorithmicensure}{\textbf{输出:}} 
