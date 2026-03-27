@@ -537,6 +537,7 @@
 
 %% 页眉页脚
 \RequirePackage{fancyhdr}
+\setlength{\headheight}{13pt}
 \pagestyle{fancy}
 \fancyhf{}
 \fancypagestyle{xmu@empty}{ %无页眉页脚

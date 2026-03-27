@@ -1,54 +1,151 @@
-\chapter{形貌特征提取及预测模型研究}
-\enchapter{Research on Morphology Feature Extraction and Prediction Models}
+\chapter{CNT阵列实验数据构建与关键形貌表征}
+\enchapter{Experimental Data Construction and Key Morphology Characterization of CNT Arrays}
 \label{chap:morphology_method}
 
 \section{引言}
 \ensection{Introduction}
 
-准确量化并预测碳纳米管阵列（CNTA）的形貌特征，是实现其制备工艺优化的重要前提。然而，复杂的 SEM 图像纹理与耦合的工艺参数空间给传统分析方法带来了较大挑战。本章结合计算机视觉与机器学习技术，研究形貌指标的自动量化提取与预测方法。
+准确表征碳纳米管阵列（CNTA）的关键形貌，是开展后续工艺分析和结果解释的重要前提。然而，复杂的 SEM 图像纹理、阵列内部的遮挡与缠结，以及局部边界模糊等问题，都会给传统人工判读和常规图像处理带来较大困难。为此，本章围绕实验数据获取、图像分割和形貌量化三个环节展开，首先说明样品制备、SEM 成像与数据集构建过程，再讨论基于 CNTSegNet 的阵列分割方法，以及分割结果基础上的关键形貌表征方法。
 
-本章首先定义研究的数据来源与具体任务；随后提出面向 CNT 阵列图像特征的量化提取方法；在此基础上，构建基于 CVD 工艺参数的形貌预测模型，并讨论知识增强在模型验证与演化规律分析中的作用。
+本章首先介绍实验装置、样品制备、SEM 表征条件和图像数据集构建过程；随后给出基于 CNTSegNet 的阵列分割方法，并在此基础上讨论曲率、取向度和覆盖密度等关键指标的计算过程；最后结合第三章构建的知识组织与检索结果，对形貌量化结果开展知识增强分析。
 
-\section{数据来源与研究任务定义}
-\ensection{Data Sources and Research Task Definition}
+\section{实验装置与数据集构建}
+\ensection{Experimental Setup and Dataset Construction}
 
-\subsection{SEM 图像采样与工艺参数空间}
-\ensubsection{SEM Image Sampling and Process Parameter Space}
+\subsection{样品制备与表征条件}
+\ensubsection{Sample Preparation and Characterization Conditions}
 
-\subsection{研究目标与性能指标设定}
-\ensubsection{Research Objectives and Performance Metrics}
+本研究所使用的碳纳米管阵列样品采用化学气相沉积（CVD）方法制备。样品制备与表征过程中涉及的主要试剂与材料如表~\ref{tab:4_1_reagents_materials}所示，主要仪器与设备如表~\ref{tab:4_2_instruments_equipment}所示。
 
-\section{形貌特征提取方法}
-\ensection{Morphology Feature Extraction Methods}
+\begin{table}[htbp]
+    \centering
+    \caption{实验试剂与材料}
+    \label{tab:4_1_reagents_materials}
+    \renewcommand{\arraystretch}{1.25}
+    \setlength{\tabcolsep}{6pt}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{6.2cm}}
+        \toprule
+        \textbf{试剂/材料} & \textbf{纯度/规格} & \textbf{生产商} \\
+        \midrule
+        甲苯 & A.R. & 国药集团化学试剂有限公司 \\
+        二茂铁 & A.R. & 上海阿拉丁生化科技股份有限公司 \\
+        三聚氰胺 & A.R. & 上海阿拉丁生化科技股份有限公司 \\
+        硅单抛氧化片 & --- & 浙江立晶硅材料有限公司 \\
+        高纯氩气 & 99.999\% & 林德气体（厦门）有限公司 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-\subsection{基于图像纹理分析的配向度量化}
-\ensubsection{Alignment Quantization Based on Image Texture Analysis}
+在样品制备阶段，以硅单抛氧化片作为生长基底，甲苯、二茂铁和三聚氰胺分别作为碳源、催化剂前驱体和含氮辅助组分，并以高纯氩气作为保护与载气。实验过程中采用管式炉构建反应环境，利用蠕动注射泵实现液体前驱体的稳定输运，并结合质量流量计对反应气氛进行调控。为保证后续形貌分析的可追溯性，实验中对样品编号、生长温度、载气流量和生长时间等关键工艺参数进行了统一记录与整理。
 
-\subsection{面密度与平均高度提取算法}
-\ensubsection{Surface Density and Average Height Extraction Algorithms}
+\begin{table}[htbp]
+    \centering
+    \caption{实验仪器与设备}
+    \label{tab:4_2_instruments_equipment}
+    \renewcommand{\arraystretch}{1.25}
+    \setlength{\tabcolsep}{6pt}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{4.6cm}}
+        \toprule
+        \textbf{仪器名称} & \textbf{仪器型号} & \textbf{生产商/品牌} \\
+        \midrule
+        管式炉 & OTF-1200X & 合肥科晶 \\
+        蠕动注射泵 & BT100-2J & Longer Pump \\
+        数码相机 & D750 & Nikon \\
+        电子天平 & BSA124S & Sartorius \\
+        超声清洗器 & KQ218 & 昆山超声仪器有限公司 \\
+        质量流量计 & FMA5514A & OMEGA \\
+        数字源表 & 2400 & KEITHLEY \\
+        红外热成像仪 & SC325 & FLIR \\
+        氙灯光源 & CEL-PF300-T8 & 中教金源 \\
+        全光谱强光光功率计 & CEL-NP2000-2 & 中教金源 \\
+        万能拉力试验机 & AGS-X 100N & SHIMADZU \\
+        接触角测量仪 & OCA100 & Dataphysics \\
+        同步热分析质谱联用仪 & SDT 650+ Discovery & TA Instruments \\
+        紫外可见近红外分光光度计 & UH5700 & HITACHI \\
+        傅里叶变换红外光谱仪 & Vertex 70V & Bruker \\
+        场发射扫描电子显微镜 & GeminiSEM 500 & Zeiss \\
+        X射线光电子能谱仪 & Escalab 250 Xi+ & Thermo Fisher \\
+        原子力显微镜 & Dimension FastScan & Bruker Nano Inc \\
+        开尔文探针显微镜 & Cypher ES & Oxford Instruments \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-\section{基于工艺参数的形貌特征预测模型构建}
-\ensection{Prediction Model Construction Based on Process Parameters}
+样品制备完成后，采用场发射扫描电子显微镜对 CNT 阵列形貌进行表征，并结合傅里叶变换红外光谱、X射线光电子能谱、原子力显微镜和开尔文探针显微镜等设备对样品表面化学状态与微观结构进行辅助分析。为尽量减少成像条件变化对后续分割与表征结果的影响，同一组样品的图像采集尽量保持一致的倍率和观察条件，并同步记录样品编号、采集位置及成像参数，为后续图像筛选、数据集构建和关键形貌计算提供基础。
 
-\subsection{数据预处理与特征工程}
-\ensubsection{Data Preprocessing and Feature Engineering}
+\subsection{图像数据筛选与数据集构建}
+\ensubsection{Image Screening and Dataset Construction}
 
-\subsection{非线性回归预测架构设计}
-\ensubsection{Nonlinear Regression Prediction Architecture Design}
+原始 SEM 图像共获得[原始图像总数]张。考虑到后续分割和形貌计算对图像质量要求较高，首先对原始图像进行人工筛选，剔除失焦、污染较重、边界区域不完整、放大倍数差异过大以及存在明显充电伪影的图像。筛选后保留[保留图像总数]张有效图像，用于后续分割、骨架提取和关键形貌表征分析。对每幅保留图像，均建立图像编号与样品编号、工艺参数记录及成像条件之间的对应关系，以保证后续结果能够回溯到具体实验样品。
 
-\subsection{知识辅助的模型精度分析}
-\ensubsection{Knowledge-assisted Model Accuracy Analysis}
+在数据集构建过程中，进一步从有效图像中选取[标注图像数量]张用于分割标注，并按照[训练集数量]、[验证集数量]和[测试集数量]的规模划分训练集、验证集和测试集。划分时尽量保证不同样品与不同工艺条件在各子集中分布均衡，以减少数据分布偏差对模型训练和测试结果的影响。除分割任务所需图像外，后续形貌量化所用图像及其对应工艺记录也同步整理为结构化数据表，用于支撑第四章后续的关键形貌计算与结果分析。
 
-\section{实验结果与分析}
-\ensection{Experimental Results and Analysis}
+\section{碳纳米管阵列自动化形貌表征方法}
+\ensection{Automated Morphology Characterization of CNT Arrays}
 
-\subsection{形貌特征量化精度验证}
-\ensubsection{Verification of Morphology Feature Quantization Accuracy}
+\subsection{问题定义与总体流程}
+\ensubsection{Problem Definition and Overall Workflow}
 
-\subsection{工艺参数对形貌演化的规律探究}
-\ensubsection{Investigation of Process Parameters on Morphology Evolution}
+碳纳米管阵列的覆盖密度、取向度、直径和弯曲形貌是描述样品结构状态的几个基本指标。其中，覆盖密度和取向度反映阵列整体生长的均匀性与有序程度，直径体现局部尺度特征，而弯曲形貌则更能反映碳纳米管在生长、堆积和相互作用过程中形成的结构差异。与密度、取向等整体性指标相比，弯曲相关特征对形貌变化更为敏感，在区分平直、有序、波曲和卷曲等不同阵列形态时具有更强的表征能力。因此，弯曲特征不仅是阵列形貌分析中的重要内容，也是后续工艺比较和工艺--形貌关系建模中需要重点关注的表征量。
+
+然而，上述形貌指标在复杂 SEM 图像中的稳定获取并不容易。一方面，碳纳米管阵列通常具有细长结构交叠、局部遮挡、边界模糊和灰度不均等特点，人工测量过程耗时较长，且结果容易受到选点方式和操作经验的影响。另一方面，原子力显微镜（AFM）、透射电子显微镜（TEM）等高精度表征手段虽然能够提供更细致的局部结构信息，但测试成本较高，观察范围有限，难以直接用于大量样品的快速比较。尤其对于弯曲特征而言，复杂网络区域中单根碳纳米管往往难以完整分离，其几何路径容易受到交叉结点、骨架断裂和成像噪声的干扰，因此在定义、测量和结果稳定性方面都比密度、取向和直径更为困难。
+
+基于上述问题，本文并不试图在复杂网络区域中精确恢复单根 CNT 的真实曲率，而是面向样品间比较和工艺--形貌关系建模，建立一种样品级自动化形貌表征流程。该流程以 SEM 图像为输入，先通过前景分割获得稳定的 CNT 区域，再基于骨架与几何分析提取覆盖密度、取向度、直径及弯曲相关特征，最后汇总形成样品级形貌特征向量，为后续工艺参数--形貌特征建模和知识增强分析提供输入。整体流程可概括为：SEM 图像 $\rightarrow$ 前景分割 $\rightarrow$ 形貌特征提取 $\rightarrow$ 样品级特征向量。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        node distance=0.55cm,
+        >=Stealth,
+        stage/.style={
+            draw=black,
+            rounded corners=2pt,
+            align=center,
+            minimum height=1.8cm,
+            text width=3.0cm,
+            fill=gray!8,
+            font=\small
+        },
+        arrow/.style={->, thick}
+    ]
+        \node[stage] (sem) {SEM 图像\\原始阵列形貌输入};
+        \node[stage, right=of sem] (seg) {前景分割\\CNTSegNet-SLICE\\稳定 mask};
+        \node[stage, right=of seg] (feat) {形貌特征提取\\密度、取向度、直径\\曲率/波曲度/迂曲度};
+        \node[stage, right=of feat] (vec) {样品级特征向量\\用于工艺--形貌建模\\与知识增强分析};
+
+        \draw[arrow] (sem) -- (seg);
+        \draw[arrow] (seg) -- (feat);
+        \draw[arrow] (feat) -- (vec);
+    \end{tikzpicture}
+    \caption{碳纳米管阵列自动化形貌表征流程示意图。以 SEM 图像为输入，首先通过前景分割获得稳定的 CNT 区域 mask，随后基于骨架与几何分析提取覆盖密度、取向度、直径及弯曲相关特征，并进一步汇总为样品级形貌特征向量，用于后续工艺--形貌关系建模与结果分析。}
+    \label{fig:4_1_morphology_workflow}
+\end{figure}
+
+\subsection{基于 CNTSegNet-SLICE 的前景分割}
+\ensubsection{Foreground Segmentation Based on CNTSegNet-SLICE}
+
+在整条自动表征链路中，稳定的 CNT 区域分割结果是后续骨架提取与几何计算的基础。由于 SEM 图像中普遍存在灰度不均、局部遮挡、细长结构断裂以及背景纹理干扰等问题，若前景 mask 不稳定，将直接影响取向、直径及弯曲相关特征的计算结果。为此，本文采用 CNTSegNet 作为分割主体架构，并在其基础上引入 SLICE 损失增强策略，构建 CNT 分割前端 CNTSegNet-SLICE，用于提升细长结构的连通保持能力与边界稳定性。需要说明的是，本文并不将其作为一套全新的主干网络提出，而是将其作为面向后续形貌表征任务的分割前端，以获得更稳定、更适合几何分析的 CNT 区域 mask。
+
+\subsection{基于计算机视觉的形貌特征提取}
+\ensubsection{Morphology Feature Extraction Based on Computer Vision}
+
+在获得稳定的 CNT 分割结果后，本文进一步通过骨架化与几何分析，将像素级前景区域转换为可用于建模的样品级形貌特征向量。具体而言，针对阵列样品的形貌差异，本文从覆盖密度、取向度、直径以及弯曲相关特征等多个维度开展量化表征，其中密度和取向度用于描述阵列整体排列状态，直径用于反映局部尺度特征，曲率、波曲度和迂曲度等指标则用于表征阵列在统计意义上的弯曲形貌。需要强调的是，本文的弯曲特征提取并不追求复杂网络区域中单根 CNT 真实曲率的精确恢复，而是采用基于有序骨架分支的统计性表征策略，以服务于样品间相对比较、趋势分析和工艺-形貌关联建模。
+
+\subsection{手工测算与自动测算对比}
+\ensubsection{Comparison Between Manual and Automated Measurements}
+
+为验证所提出自动表征方法的有效性，本文选取具有代表性的阵列样品，采用 Fiji 手工测量结果作为对照，对自动提取的关键形貌指标进行一致性分析与效率比较。相较于依赖逐区域人工描绘和经验判断的传统流程，本文方法能够在保持主要形貌趋势一致的前提下，实现从分割到特征汇总的自动化处理，从而显著提升批量样品分析的效率与可重复性。本节将结合代表性 SEM 图像、分割与骨架中间结果，以及自动测量与手工测量的对比结果，说明该方法在样品级形貌表征中的适用性与实际价值。
+
+\section{知识增强的结果分析}
+\ensection{Knowledge-enhanced Result Analysis}
+
+\subsection{形貌结果与工艺条件的对应分析}
+\ensubsection{Correspondence Between Morphology Results and Process Conditions}
+
+\subsection{基于证据链的结果解释}
+\ensubsection{Evidence-chain-based Result Interpretation}
 
 \section{小结}
 \ensection{Summary}
 
-本章给出了面向碳纳米管阵列的特征提取与预测方案。通过算法对图像指标进行量化，并结合机器学习刻画工艺规律，初步分析了 CVD 参数与阵列形貌之间的映射关系，为后续工艺分析和参数优化提供了数据基础。
+本章围绕碳纳米管阵列实验数据获取、自动表征与知识增强分析展开，给出了实验装置与数据集构建过程、面向工艺-形貌关联建模的自动化表征链路，以及结合知识检索结果的形貌分析思路，为后续工艺分析和结果解释提供了基础。
