@@ -109,7 +109,7 @@
         arrow/.style={->, thick}
     ]
         \node[stage] (sem) {SEM 图像\\原始阵列形貌输入};
-        \node[stage, right=of sem] (seg) {前景分割\\CNTSegNet-SLICE\\稳定 mask};
+        \node[stage, right=of sem] (seg) {前景分割\\稳定二值图};
         \node[stage, right=of seg] (feat) {形貌特征提取\\密度、取向度、直径\\曲率/波曲度/迂曲度};
         \node[stage, right=of feat] (vec) {样品级特征向量\\用于工艺--形貌建模\\与知识增强分析};
 
@@ -117,24 +117,284 @@
         \draw[arrow] (seg) -- (feat);
         \draw[arrow] (feat) -- (vec);
     \end{tikzpicture}
-    \caption{碳纳米管阵列自动化形貌表征流程示意图。以 SEM 图像为输入，首先通过前景分割获得稳定的 CNT 区域 mask，随后基于骨架与几何分析提取覆盖密度、取向度、直径及弯曲相关特征，并进一步汇总为样品级形貌特征向量，用于后续工艺--形貌关系建模与结果分析。}
+    \caption{碳纳米管阵列自动化形貌表征流程示意图。以 SEM 图像为输入，首先通过前景分割获得稳定的 CNT 二值前景图，随后基于骨架与几何分析提取覆盖密度、取向度、直径及弯曲相关特征，并进一步汇总为样品级形貌特征向量，用于后续工艺--形貌关系建模与结果分析。}
     \label{fig:4_1_morphology_workflow}
 \end{figure}
 
-\subsection{基于 CNTSegNet-SLICE 的前景分割}
-\ensubsection{Foreground Segmentation Based on CNTSegNet-SLICE}
+\subsection{基于 CNTSegNet-clDice 的前景分割}
+\ensubsection{Foreground Segmentation Based on CNTSegNet-clDice}
 
-在整条自动表征链路中，稳定的 CNT 区域分割结果是后续骨架提取与几何计算的基础。由于 SEM 图像中普遍存在灰度不均、局部遮挡、细长结构断裂以及背景纹理干扰等问题，若前景 mask 不稳定，将直接影响取向、直径及弯曲相关特征的计算结果。为此，本文采用 CNTSegNet 作为分割主体架构，并在其基础上引入 SLICE 损失增强策略，构建 CNT 分割前端 CNTSegNet-SLICE，用于提升细长结构的连通保持能力与边界稳定性。需要说明的是，本文并不将其作为一套全新的主干网络提出，而是将其作为面向后续形貌表征任务的分割前端，以获得更稳定、更适合几何分析的 CNT 区域 mask。
+在自动化形貌表征流程中，前景分割的任务是从复杂 SEM 图像中提取碳纳米管前景区域，为后续骨架提取与几何统计提供稳定输入。与一般语义分割任务相比，本文更关注细长前景的连通保持与形态保真，因为局部断裂、粘连或边界偏移不仅会影响像素级分割结果，还会进一步传递到取向度、表观直径及弯曲特征的计算过程中。尤其在高弯曲、局部交叠明显的区域，单纯依赖像素分类精度往往难以保证后续骨架分析的稳定性，因此分割阶段需要同时兼顾区域识别能力与结构保持能力。
+
+碳纳米管在 SEM 图像中通常呈现细长、密集、交叠和缠结的结构特征，二维投影下相邻个体边界往往难以稳定区分，局部区域还伴随遮挡、边界模糊和较低信噪比等问题。因此，若将前端任务定义为逐根实例分割，不仅标注代价高，而且真值定义本身也存在一定不确定性；类似的纤维网络图像分析也表明，在存在交叉和黏连的区域，单体分离与连续追踪本身往往是独立而困难的问题\cite{Verho2025FiberSeparation,SosaRey2022OpenFiberSeg}。考虑到本文后续关注的是样品级形貌特征计算，而非单根 CNT 的精确实例恢复，因此将分割前端定义为前景分割，即先稳定提取碳纳米管区域，再通过骨架与几何分析完成后续形貌量化。参考 CNTSegNet 的方向引导与弱标签监督思想\cite{Nguyen2023CNTSegNet}，本文采用弱标签策略构建分割监督信号，以降低精细像素级标注成本并提高批量样品处理的可实施性。
+
+在此基础上，本文采用最终实验版本 EXPC 对应的 task-adapted ResNet34-UNet 作为前景分割主干。该网络面向 CNT SEM 图像的单通道输入和细长结构保持需求进行了高分辨率任务适配，能够在保留浅层细节信息的同时完成前景区域预测。结合前文叙事需要，下文仍将不含 clDice 结构约束的方向引导训练版本记为 CNTSegNet 基线，而将加入 clDice 后的最终版本记为 CNTSegNet-clDice。设输入 SEM 图像为 $I\in\mathbb{R}^{H\times W}$，网络输出的前景概率图记为
+\begin{equation}
+    P_{\theta}(I)\in[0,1]^{H\times W}
+\end{equation}
+其中，$\theta$ 表示网络参数。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        node distance=0.32cm,
+        >=Stealth,
+        block/.style={
+            draw=black,
+            rounded corners=2pt,
+            align=center,
+            minimum height=1.45cm,
+            text width=2.1cm,
+            fill=gray!8,
+            font=\footnotesize
+        },
+        wideblock/.style={
+            draw=black,
+            rounded corners=2pt,
+            align=center,
+            minimum height=1.45cm,
+            text width=2.7cm,
+            fill=gray!8,
+            font=\footnotesize
+        },
+        lossblock/.style={
+            draw=black,
+            dashed,
+            rounded corners=2pt,
+            align=center,
+            minimum height=1.05cm,
+            text width=2.3cm,
+            fill=gray!4,
+            font=\footnotesize
+        },
+        arrow/.style={->, thick}
+    ]
+        \node[block] (input) {SEM 灰度图\\768$\times$768 中心 patch};
+        \node[wideblock, right=of input] (backbone) {Task-adapted\\ResNet34-UNet\\单通道/高分辨率适配};
+        \node[block, right=of backbone] (head) {前景概率图\\输出};
+        \node[lossblock, below=0.9cm of backbone] (dice) {Phase 1\\Dice};
+        \node[lossblock, below=0.9cm of head] (cldice) {Phase 2\\Dice + Orientation + clDice};
+
+        \draw[arrow] (input) -- (backbone);
+        \draw[arrow] (backbone) -- (head);
+        \draw[arrow, dashed] (dice) -- (backbone);
+        \draw[arrow, dashed] (cldice) -- (head);
+    \end{tikzpicture}
+    \caption{EXPC 最终采用的前景分割框架示意图。主干网络为 task-adapted ResNet34-UNet，输入为去除底部信息栏后的 $768\times768$ 灰度中心 patch；训练采用两阶段策略，先以 Dice loss 完成基础前景学习，再引入 Orientation 与 clDice 约束以增强细长结构的连通保持能力。}
+    \label{fig:4_2_segmentation_framework}
+\end{figure}
+
+从前期实验结果来看，参考 CNTSegNet 思路构建的方向引导基线在整体取向较一致、弯曲程度较低的样品中能够较稳定地提取碳纳米管前景；但在高弯曲、局部方向变化明显且结构交叠较多的区域，分割难点已不再只是前景与背景的区分，而是如何在快速转向和局部模糊条件下保持细长结构的连通性。方向一致性先验本质上更适用于局部主方向相对稳定的细长目标，而在高弯曲样品中，真实结构的方向变化更快，局部方向估计也更容易受到噪声、遮挡和交叠干扰，因此转折区域更容易出现响应减弱、边界偏移甚至结构断裂。对于本文任务而言，这类误差不仅影响分割结果，还会进一步破坏骨架连通性，干扰后续弯曲特征的稳定提取。因此，在方向引导基线之上进一步引入面向连通保持的拓扑约束，是更贴合高弯曲样品结构特征的改进方向。
+
+为兼顾基础前景定位精度与细长结构保持能力，最终 EXPC 采用两阶段训练策略。第一阶段仅使用 Dice loss 完成基础前景学习；第二阶段在 Dice loss 基础上引入方向一致性约束与 clDice 结构约束，以增强细长 CNT 结构在高弯曲区域中的连通保持能力。相比更强调局部方向一致性的先验，clDice 从骨架连通性和拓扑一致性出发约束预测结果，更关注细长目标是否被连续、完整地恢复出来，因此更适合作为高弯曲样品中的补充监督信号。设弱标签二值前景图为 $\tilde{G}\in\{0,1\}^{H\times W}$，图像定义域为 $\Omega$，则 Dice 损失为
+\begin{equation}
+    \mathcal{L}_{\mathrm{Dice}}=
+    1-\frac{2\sum_{x\in\Omega}P_{\theta}(I)(x)\tilde{G}(x)+\varepsilon}
+    {\sum_{x\in\Omega}P_{\theta}(I)(x)+\sum_{x\in\Omega}\tilde{G}(x)+\varepsilon}
+\end{equation}
+其中，$\varepsilon$ 为防止分母为零的微小常数。训练第一阶段的目标函数写为
+\begin{equation}
+    \mathcal{L}_{\mathrm{stage1}}=\mathcal{L}_{\mathrm{Dice}}
+\end{equation}
+第二阶段在此基础上进一步引入 Orientation loss 与 clDice loss，其目标函数写为
+\begin{equation}
+    \mathcal{L}_{\mathrm{stage2}}=
+    0.6\,\mathcal{L}_{\mathrm{Dice}}+
+    10^{-7}\mathcal{L}_{\mathrm{Ori}}+
+    0.1\,\mathcal{L}_{\mathrm{clDice}}
+\end{equation}
+其中，$\mathcal{L}_{\mathrm{Ori}}$ 表示基于频域方向直方图的方向一致性约束，用于保持预测结果与原始灰度图在整体方向分布上的一致性；$\mathcal{L}_{\mathrm{clDice}}$ 则重点约束高弯曲区域中的细长结构连续性与局部形态完整性。该改进并不重新设计分割主干，而是通过调整训练目标，加强模型对结构保持能力的约束，使其在复杂形貌区域仍能够输出更适合后续骨架分析的二值前景图。
+
+在推理阶段，采用固定阈值 $\tau_m=0.7$ 将前景概率图二值化，得到后续形貌分析所用的二值前景图
+\begin{equation}
+    M(x)=\mathbb{I}\!\left(P_{\theta}(I)(x)\geq\tau_m\right)
+\end{equation}
+其中，$\mathbb{I}(\cdot)$ 为示性函数。当前最终版本在 $100000\times$ 数据上采用 ROI 裁剪后的 $768\times768$ 中心 patch 作为输入，训练与测试样本数按 $50:50$ 划分，优化器为 Adam，学习率为 $5\times10^{-4}$，并以验证集 Dice 选择最佳模型。后文将结合代表性 SEM 样例，对比 CNTSegNet 基线与 CNTSegNet-clDice 在不同形貌条件下的分割结果。对于低弯曲样品，两种方法均能够较好地完成前景提取；而在高弯曲样品中，CNTSegNet-clDice 在前景连通性和边界保持方面表现出更好的稳定性。这也说明，损失增强策略的主要收益并不在于简单样本上的局部像素修正，而在于复杂形貌区域中的结构保持能力提升。由此得到的稳定二值前景图，不仅为后续骨架化提供可靠输入，也使覆盖密度、取向度、表观直径及弯曲相关特征能够建立在统一的区域表示之上。下一节将进一步从前景区域统计、骨架结构分析和分支级几何计算三个层面提取样品级形貌特征。
+
+为便于汇总最终 EXPC 版本的关键实现信息，表~\ref{tab:4_1_segmentation_results} 给出了数据处理、训练策略与推理参数设置；同时，图~\ref{fig:4_3_segmentation_comparison} 给出了低弯曲样品与高弯曲样品的代表性结果对比，以便从区域重叠精度和细长结构保持能力两个角度对 CNTSegNet 基线与 CNTSegNet-clDice 进行综合比较。
+
+\begin{figure}[htbp]
+    \centering
+    \fbox{%
+        \parbox[c][6.0cm][c]{0.92\textwidth}{%
+            \centering
+            图位预留：不同弯曲程度样品的前景分割结果对比图\\[4pt]
+            建议版式为两行四列：原始 SEM、CNTSegNet 基线、CNTSegNet-clDice、局部放大或骨架结果。\\[4pt]
+            第一行放低弯曲样品，第二行放高弯曲样品。
+        }%
+    }
+    \caption{不同弯曲程度样品的前景分割结果对比。对于低弯曲样品，CNTSegNet 基线与 CNTSegNet-clDice 均能够较好地完成前景提取；而在高弯曲样品中，CNTSegNet-clDice 在弯折区域的结构连通性和边界保持方面表现出更好的稳定性。}
+    \label{fig:4_3_segmentation_comparison}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{EXPC 最终前景分割模型的关键配置与训练设置}
+    \label{tab:4_1_segmentation_results}
+    \begin{tabular}{p{4.2cm}p{8.8cm}}
+        \toprule
+        项目 & 设置 \\
+        \midrule
+        backbone & task-adapted ResNet34-UNet \\
+        输入形式 & ROI 裁剪后的 $768\times768$ 灰度中心 patch \\
+        数据划分 & train/test = 50:50 \\
+        监督信号 & WCNTSegNet 生成的 weak masks \\
+        优化器 & Adam \\
+        学习率 & $5\times10^{-4}$ \\
+        Phase 1 & 6 epochs，仅使用 Dice loss \\
+        Phase 2 & 3 epochs，$0.6\,\mathcal{L}_{\mathrm{Dice}}+10^{-7}\mathcal{L}_{\mathrm{Ori}}+0.1\,\mathcal{L}_{\mathrm{clDice}}$ \\
+        模型选择 & 按验证集 Dice 选择最佳 checkpoint \\
+        推理阈值 & 0.7 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \subsection{基于计算机视觉的形貌特征提取}
 \ensubsection{Morphology Feature Extraction Based on Computer Vision}
 
-在获得稳定的 CNT 分割结果后，本文进一步通过骨架化与几何分析，将像素级前景区域转换为可用于建模的样品级形貌特征向量。具体而言，针对阵列样品的形貌差异，本文从覆盖密度、取向度、直径以及弯曲相关特征等多个维度开展量化表征，其中密度和取向度用于描述阵列整体排列状态，直径用于反映局部尺度特征，曲率、波曲度和迂曲度等指标则用于表征阵列在统计意义上的弯曲形貌。需要强调的是，本文的弯曲特征提取并不追求复杂网络区域中单根 CNT 真实曲率的精确恢复，而是采用基于有序骨架分支的统计性表征策略，以服务于样品间相对比较、趋势分析和工艺-形貌关联建模。
+在获得由 CNTSegNet-clDice 生成的稳定 CNT 二值前景图后，本文进一步从前景区域统计、骨架化与图结构分析、分支级几何计算三个层面提取样品级形貌特征向量。针对 CNT 阵列样品的形貌差异，本文从覆盖密度、取向度、表观直径以及弯曲相关特征等多个维度开展量化表征。其中，覆盖密度主要由前景区域直接统计得到，取向度、表观直径及弯曲相关特征则分别基于骨架结构、距离变换与有序分支路径进行计算。
+
+需要强调的是，本文的弯曲特征提取并不试图在复杂交叉网络中精确恢复单根 CNT 的真实曲率，而是采用“骨架化--连接点切断--短枝过滤--分支级统计--样品级加权聚合”的策略，对可稳定追踪的有序骨架分支进行统计性表征，以服务于样品间相对比较、趋势分析及工艺--形貌关系建模。具体流程可概括为以下五个步骤。
+
+为便于说明从二值前景图到样品级特征的中间处理流程，图~\ref{fig:4_4_feature_pipeline} 预留了特征提取过程示意图位置，建议依次展示原始 SEM、二值前景图、骨架图、有效分支提取结果以及弯曲相关特征的可视化叠加结果。
+
+\begin{figure}[htbp]
+    \centering
+    \fbox{%
+        \parbox[c][5.6cm][c]{0.9\textwidth}{%
+            \centering
+            图位预留：形貌特征提取中间过程示意图\\[4pt]
+            建议内容：原始 SEM、二值前景图、骨架图、连接点切断/有效分支、曲率或 waviness 叠加可视化。
+        }%
+    }
+    \caption{形貌特征提取中间过程示意图。从稳定二值前景图出发，依次完成骨架化、连接点切断与有效分支提取，并在此基础上开展取向度、表观直径及弯曲相关特征计算。}
+    \label{fig:4_4_feature_pipeline}
+\end{figure}
+
+\noindent　　\textbf{（1）骨架化与有效分支提取。}\par
+
+本文首先对二值前景进行骨架化，将 CNT 网络转换为单像素宽的中心线表示，以尽可能保留其连通拓扑\cite{VanDerWalt2014ScikitImage}。设二值前景图为 $M$，其骨架表示记为
+\begin{equation}
+    B=\mathrm{Skel}(M)
+\end{equation}
+随后利用骨架图分析方法识别端点、交点和分支路径，并通过连接点邻域切断、分支有序化及短枝过滤得到有效分支集合\cite{NunezIglesias2018Skan}
+\begin{equation}
+    \mathcal{B}^{*}=\mathrm{BranchCut}(B)
+\end{equation}
+其中，$\mathrm{BranchCut}(\cdot)$ 表示本文采用的分支提取流程，包含连接点邻域切断、分支排序以及最小有效分支点数过滤等操作。考虑到交叉和黏连区域中的跨交点延拓本身具有歧义，本文并不尝试直接恢复单根 CNT 的连续路径，而是在排除交点邻域后对可用分支进行局部几何分析\cite{Verho2025FiberSeparation,SosaRey2022OpenFiberSeg}。
+
+\noindent　　\textbf{（2）覆盖密度与取向度计算。}\par
+
+在覆盖密度计算中，记前景像素面积为 $A_{\mathrm{fg}}$，感兴趣区域面积为 $A_{\mathrm{ROI}}$，则覆盖密度定义为
+\begin{equation}
+    \rho=\frac{A_{\mathrm{fg}}}{A_{\mathrm{ROI}}}\times 100\%
+\end{equation}
+在取向度计算中，本文以有效骨架上的局部主方向样本估计 Herman orientation factor。设局部方向与样品主方向之间的夹角为 $\phi$，则整体取向度记为
+\begin{equation}
+    \mathrm{HOF}=\frac{3\langle \cos^2\phi\rangle-1}{2}
+\end{equation}
+实际计算时，代码会同时评估 $0^{\circ}$ 和 $90^{\circ}$ 两个参考方向并取更优结果，以提高阵列主方向识别的稳定性。
+
+\noindent　　\textbf{（3）表观直径估计。}\par
+
+在局部尺度表征中，本文通过距离变换读取骨架点处的半径，并在闭运算与骨架化后对半径样本进行四分位距过滤，以降低边界毛刺和局部异常点的影响。设过滤后的像素半径集合为 $r_{\mathrm{px}}^{\mathrm{filt}}$，图像标定系数为 $p_{x/\mu m}$（单位长度对应的像素数），则样品的表观直径估计为
+\begin{equation}
+    d_{\mathrm{app}}=\frac{2\,\mathrm{median}\!\left(r_{\mathrm{px}}^{\mathrm{filt}}\right)}{p_{x/\mu m}}\times 10^3
+\end{equation}
+其中，$d_{\mathrm{app}}$ 的单位为 nm。当 SEM 倍率低于 $20{,}000\times$ 时，直径和弯曲类结果仅作为辅助观察量，不作为可靠物理量进行解释。
+
+\noindent　　\textbf{（4）弯曲相关特征统计。}\par
+
+对于弯曲特征，本文采用当前实现中的 V3 流程：先对有效分支进行有序化与轻度平滑，再在离散采样点上利用三点法估计局部曲率。设第 $k$ 条有效分支记为 $b_k=\{p_{k,1},p_{k,2},\ldots,p_{k,n_k}\}$，对于其中第 $i$ 个内部采样点，定义
+\[
+    \mathbf{ab}_{k,i}=p_{k,i}-p_{k,i-1},\qquad
+    \mathbf{bc}_{k,i}=p_{k,i+1}-p_{k,i},\qquad
+    \mathbf{ca}_{k,i}=p_{k,i+1}-p_{k,i-1}
+\]
+则局部离散曲率近似为
+\begin{equation}
+    \kappa_{k,i}=
+    \frac{2\left|
+    \mathbf{ab}_{k,i}^{x}\mathbf{bc}_{k,i}^{y}-
+    \mathbf{ab}_{k,i}^{y}\mathbf{bc}_{k,i}^{x}
+    \right|}
+    {\left\|\mathbf{ab}_{k,i}\right\|_2
+    \left\|\mathbf{bc}_{k,i}\right\|_2
+    \left\|\mathbf{ca}_{k,i}\right\|_2+\varepsilon}
+\end{equation}
+其中，$\varepsilon$ 为防止分母为零的微小常数。考虑到数字曲线上的曲率估计对噪声和方向扰动较为敏感\cite{Kerautret2009Curvature,Vieilleville2009Tangent,Frette2009Curvature}，本文在局部曲率计算前先对分支路径进行轻度平滑，并以分支内局部曲率的 $75\%$ 分位数表征该分支的弯曲强度：
+\begin{equation}
+    \kappa_{k}^{\mathrm{br}}=Q_{0.75}\!\left(\left\{\kappa_{k,i}\right\}\right)
+\end{equation}
+设第 $k$ 条分支的路径长度为 $L_k$，则样品级有效平均曲率定义为
+\begin{equation}
+    \kappa_{\mathrm{eff}}=
+    \frac{\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}\,\kappa_{k}^{\mathrm{br}}}
+    {\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}}
+\end{equation}
+除平均曲率外，本文还进一步统计 tortuosity\_v2 和 waviness\_ratio\_v2 作为补充弯曲指标。其中，分支迂曲度采用路径长度与端点弦长之比度量：
+\begin{equation}
+    \tau_k=\frac{L_k}{\left\|p_{k,n_k}-p_{k,1}\right\|_2+\varepsilon},\qquad
+    \tau_{\mathrm{eff}}=
+    \frac{\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}\,\tau_k}
+    {\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}}
+\end{equation}
+
+\noindent　　\textbf{（5）样品级特征向量构建。}\par
+
+最终，将覆盖密度、取向度、表观直径及弯曲相关统计量汇总为样品级形貌特征向量，用于后续工艺参数--形貌关系建模与知识增强分析。该特征表示既保留了阵列整体有序性与覆盖状态信息，也能够在无法进行实例分割的复杂网络条件下，对样品级弯曲形貌进行较稳定的统计性表征。
 
 \subsection{手工测算与自动测算对比}
 \ensubsection{Comparison Between Manual and Automated Measurements}
 
-为验证所提出自动表征方法的有效性，本文选取具有代表性的阵列样品，采用 Fiji 手工测量结果作为对照，对自动提取的关键形貌指标进行一致性分析与效率比较。相较于依赖逐区域人工描绘和经验判断的传统流程，本文方法能够在保持主要形貌趋势一致的前提下，实现从分割到特征汇总的自动化处理，从而显著提升批量样品分析的效率与可重复性。本节将结合代表性 SEM 图像、分割与骨架中间结果，以及自动测量与手工测量的对比结果，说明该方法在样品级形貌表征中的适用性与实际价值。
+为验证所提出自动表征方法的有效性，本文选取具有代表性的阵列样品，采用 Fiji 手工测量结果作为对照，对自动提取的关键形貌指标进行一致性分析与效率比较。相较于依赖逐区域人工描绘和经验判断的传统流程，本文方法能够在保持主要形貌趋势一致的前提下，实现从分割到特征汇总的自动化处理，从而显著提升批量样品分析的效率与可重复性。本节将结合代表性 SEM 图像、分割与骨架中间结果，以及自动测量与手工测量的对比结果，说明该方法在样品级形貌表征中的适用性与实际价值。图~\ref{fig:4_5_manual_auto_visual} 预留了代表性样品的手工测算与自动测算可视化对照位置，表~\ref{tab:4_2_manual_auto_comparison} 用于填写关键指标与耗时结果，图~\ref{fig:4_6_manual_auto_scatter} 则用于展示手工测量与自动测量之间的一致性散点关系。
+
+需要说明的是，对于表观直径等局部尺度特征，仍可采用连续测量值进行手工测算与自动测算的一致性比较；但对于复杂交叉网络中的弯曲形貌，连续曲率真值往往难以稳定标定，人工测量结果也容易受到选段方式和主观判断影响。基于这一问题，本文在保留连续弯曲特征提取的基础上，进一步引入样品级弯曲等级分类验证。具体地，根据样品整体弯曲形貌将其划分为 Straight、Wavy 和 Coiled 三类，并以人工视觉分级结果作为参考标签。与连续回归相比，该类有序分级标签虽然粒度较粗，但更容易形成稳定一致的判定结果，也更符合样品筛查和工艺比较中的实际需求。
+
+因此，在验证策略上，本文对连续型指标和分级型指标分别进行评价：对于表观直径等连续指标，采用数值一致性分析和散点图比较自动测量与 Fiji 手工测量之间的对应关系；对于弯曲形貌，则重点考察自动提取的弯曲相关统计特征与人工等级标签之间的一致性，可结合准确率、Macro-F1、Balanced Accuracy 和 Weighted Kappa 等指标进行综合评价。这样的双层验证方式，一方面保留了自动表征结果的连续量信息，另一方面也避免了在复杂网络条件下对单一连续曲率真值的过度依赖。
+
+\begin{figure}[htbp]
+    \centering
+    \fbox{%
+        \parbox[c][5.8cm][c]{0.9\textwidth}{%
+            \centering
+            图位预留：手工测算与自动测算可视化对照图\\[4pt]
+            建议内容：原始 SEM、Fiji 手工测量示意、自动测量叠加结果。\\[4pt]
+            可选取直径和弯曲指标各 1--2 个代表性样品。
+        }%
+    }
+    \caption{手工测算与自动测算可视化对照图。通过代表性样品的原始 SEM 图像、Fiji 手工测量示意与自动测量叠加结果，可直观比较两种测算方式在关键形貌指标上的一致性，并为 Straight、Wavy 和 Coiled 三类样品的人工分级提供参考。}
+    \label{fig:4_5_manual_auto_visual}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{手工测算与自动测算在关键形貌指标上的结果及效率对比}
+    \label{tab:4_2_manual_auto_comparison}
+    \begin{tabular}{ccccc}
+        \toprule
+        指标 & 手工测量 & 自动测量 & 一致性/分类指标 & 单张图平均耗时 \\
+        \midrule
+        表观直径 & -- & -- & -- & -- \\
+        弯曲等级（Straight/Wavy/Coiled） & -- & -- & -- & -- \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \fbox{%
+        \parbox[c][5.8cm][c]{0.88\textwidth}{%
+            \centering
+            图位预留：手工测量与自动测量一致性散点图\\[4pt]
+            建议版式为两个子图：\\[2pt]
+            （a）表观直径：Fiji 手工测量 vs 自动测量；\\[2pt]
+            （b）弯曲指标：Fiji 手工测量 vs 自动测量。
+        }%
+    }
+    \caption{手工测量与自动测量一致性散点图。通过比较 Fiji 手工测量与自动测量在表观直径等连续指标上的对应关系，可进一步评估本文方法在样品级形貌量化中的一致性与稳定性。对于弯曲形貌，则在表~\ref{tab:4_2_manual_auto_comparison} 中结合等级分类指标进行补充评价。}
+    \label{fig:4_6_manual_auto_scatter}
+\end{figure}
 
 \section{知识增强的结果分析}
 \ensection{Knowledge-enhanced Result Analysis}
