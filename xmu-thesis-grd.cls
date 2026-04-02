@@ -452,6 +452,8 @@
 	position = top,
 	aboveskip = 9pt,
 	belowskip = 9pt,
+	justification = centering,
+	singlelinecheck = false,
 }
 \numberwithin{table}{chapter}
 \captionsetup[figure]{

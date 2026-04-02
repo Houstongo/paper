@@ -1,21 +1,21 @@
-\chapter{CNT阵列实验数据构建与关键形貌表征}
-\enchapter{Experimental Data Construction and Key Morphology Characterization of CNT Arrays}
+\chapter{碳纳米管阵列自动化形貌表征与工艺—形貌关系分析}
+\enchapter{Automated Morphology Characterization and Process-Morphology Analysis of Carbon Nanotube Arrays}
 \label{chap:morphology_method}
 
 \section{引言}
 \ensection{Introduction}
 
-准确表征碳纳米管阵列（CNTA）的关键形貌，是开展后续工艺分析和结果解释的重要前提。然而，复杂的 SEM 图像纹理、阵列内部的遮挡与缠结，以及局部边界模糊等问题，都会给传统人工判读和常规图像处理带来较大困难。为此，本章围绕实验数据获取、图像分割和形貌量化三个环节展开，首先说明样品制备、SEM 成像与数据集构建过程，再讨论基于 CNTSegNet 的阵列分割方法，以及分割结果基础上的关键形貌表征方法。
+准确表征碳纳米管阵列（CNTA）的关键形貌，是开展后续工艺分析和结果解释的重要前提。然而，复杂的 SEM 图像纹理、阵列内部的遮挡与缠结，以及局部边界模糊等问题，都会给传统人工判读和常规图像处理带来较大困难。为此，本章围绕实验数据获取、图像分割和形貌量化三个环节展开，依次说明实验样品与图像数据的获取方式、基于 CNTSegNet-clDice 的前景分割方法、样品级关键形貌特征的自动提取流程，以及知识增强支持下的工艺—形貌关系分析。
 
-本章首先介绍实验装置、样品制备、SEM 表征条件和图像数据集构建过程；随后给出基于 CNTSegNet 的阵列分割方法，并在此基础上讨论曲率、取向度和覆盖密度等关键指标的计算过程；最后结合第三章构建的知识组织与检索结果，对形貌量化结果开展知识增强分析。
+\section{实验样品与数据获取}
+\ensection{Samples and Data Acquisition}
 
-\section{实验装置与数据集构建}
-\ensection{Experimental Setup and Dataset Construction}
+\subsection{实验样品与图像获取}
+\ensubsection{Samples and Imaging}
 
-\subsection{样品制备与表征条件}
-\ensubsection{Sample Preparation and Characterization Conditions}
+本节主要交代本章所用实验样品和 SEM 图像的获取方式，为后续自动化形貌表征提供数据基础。样品制备原理和实验装置已在第 2 章中说明，因此这里不再重复展开，而重点说明本章图像数据的来源、获取方式及其后续使用。
 
-本研究所使用的碳纳米管阵列样品采用化学气相沉积（CVD）方法制备。样品制备与表征过程中涉及的主要试剂与材料如表~\ref{tab:4_1_reagents_materials}所示，主要仪器与设备如表~\ref{tab:4_2_instruments_equipment}所示。
+本研究所使用的碳纳米管阵列样品采用既定实验流程制备。主要试剂与材料见表~\ref{tab:4_1_reagents_materials}，主要仪器与设备见表~\ref{tab:4_2_instruments_equipment}。
 
 \begin{table}[htbp]
     \centering
@@ -36,7 +36,7 @@
     \end{tabular}
 \end{table}
 
-在样品制备阶段，以硅单抛氧化片作为生长基底，甲苯、二茂铁和三聚氰胺分别作为碳源、催化剂前驱体和含氮辅助组分，并以高纯氩气作为保护与载气。实验过程中采用管式炉构建反应环境，利用蠕动注射泵实现液体前驱体的稳定输运，并结合质量流量计对反应气氛进行调控。为保证后续形貌分析的可追溯性，实验中对样品编号、生长温度、载气流量和生长时间等关键工艺参数进行了统一记录与整理。
+样品制备过程中，以硅单抛氧化片作为生长基底，甲苯、二茂铁和三聚氰胺分别作为碳源、催化剂前驱体和含氮辅助组分，并以高纯氩气作为保护与载气。实验中同步记录样品编号及对应工艺参数，以保证后续形貌分析的可追溯性。
 
 \begin{table}[htbp]
     \centering
@@ -71,14 +71,14 @@
     \end{tabular}
 \end{table}
 
-样品制备完成后，采用场发射扫描电子显微镜对 CNT 阵列形貌进行表征，并结合傅里叶变换红外光谱、X射线光电子能谱、原子力显微镜和开尔文探针显微镜等设备对样品表面化学状态与微观结构进行辅助分析。为尽量减少成像条件变化对后续分割与表征结果的影响，同一组样品的图像采集尽量保持一致的倍率和观察条件，并同步记录样品编号、采集位置及成像参数，为后续图像筛选、数据集构建和关键形貌计算提供基础。
+样品制备完成后，采用场发射扫描电子显微镜对 CNT 阵列形貌进行表征，并同步记录样品编号、采集位置及成像参数。为减少成像条件变化对后续分析的影响，同一批样品的图像采集尽量保持一致的观察条件。后续自动化表征主要基于 $50000\times$ 条件下获得的 SEM 图像展开。
 
-\subsection{图像数据筛选与数据集构建}
-\ensubsection{Image Screening and Dataset Construction}
+\subsection{数据筛选与分析输入}
+\ensubsection{Screening and Analysis Inputs}
 
-原始 SEM 图像共获得[原始图像总数]张。考虑到后续分割和形貌计算对图像质量要求较高，首先对原始图像进行人工筛选，剔除失焦、污染较重、边界区域不完整、放大倍数差异过大以及存在明显充电伪影的图像。筛选后保留[保留图像总数]张有效图像，用于后续分割、骨架提取和关键形貌表征分析。对每幅保留图像，均建立图像编号与样品编号、工艺参数记录及成像条件之间的对应关系，以保证后续结果能够回溯到具体实验样品。
+原始 SEM 图像获取后，首先对图像质量进行人工筛选，剔除失焦、污染较重、边界区域不完整以及存在明显充电伪影的图像。筛选后保留结构区域清晰、适合开展样品级形貌分析的图像，并建立图像编号与样品编号、工艺参数记录及成像条件之间的对应关系，以保证后续结果能够回溯到具体实验样品。
 
-在数据集构建过程中，进一步从有效图像中选取[标注图像数量]张用于分割标注，并按照[训练集数量]、[验证集数量]和[测试集数量]的规模划分训练集、验证集和测试集。划分时尽量保证不同样品与不同工艺条件在各子集中分布均衡，以减少数据分布偏差对模型训练和测试结果的影响。除分割任务所需图像外，后续形貌量化所用图像及其对应工艺记录也同步整理为结构化数据表，用于支撑第四章后续的关键形貌计算与结果分析。
+在后续分析流程中，一部分图像用于分割模型训练与测试，另一部分则作为样品级形貌表征和工艺—形貌关系分析的输入。除图像数据外，与样品对应的工艺参数记录也同步整理为结构化数据表，用于支撑本章后续的关键形貌计算及知识增强分析。基于上述数据整理结果，下一节将进一步讨论如何从 SEM 图像中自动提取关键形貌特征，并形成可用于后续关系分析的样品级特征表示。
 
 \section{碳纳米管阵列自动化形貌表征方法}
 \ensection{Automated Morphology Characterization of CNT Arrays}
@@ -128,7 +128,7 @@
 
 碳纳米管在 SEM 图像中通常呈现细长、密集、交叠和缠结的结构特征，二维投影下相邻个体边界往往难以稳定区分，局部区域还伴随遮挡、边界模糊和较低信噪比等问题。因此，若将前端任务定义为逐根实例分割，不仅标注代价高，而且真值定义本身也存在一定不确定性；类似的纤维网络图像分析也表明，在存在交叉和黏连的区域，单体分离与连续追踪本身往往是独立而困难的问题\cite{Verho2025FiberSeparation,SosaRey2022OpenFiberSeg}。因此，本文将分割前端定义为前景分割，即先稳定提取可供后续骨架与几何分析使用的碳纳米管区域。参考 CNTSegNet 的方向引导和弱标签监督思路\cite{Nguyen2023CNTSegNet}，本文采用基于自适应高斯阈值的弱标签构建分割监督信号，以降低精细像素级标注成本并提高批量样品处理的可实施性。具体而言，训练标签并非人工逐像素精标，而是由传统图像处理流程自动生成的二值弱标签。首先从原始 SEM 图像中截取图像主体区域，去除底部信息条；随后结合倍率标定进行自适应预处理，包括 CLAHE 增强和高斯平滑去噪；在此基础上采用自适应高斯阈值分割生成 CNT 前景二值图，并作为弱监督标签。最终，再将原图与对应弱标签同步裁剪为固定尺寸图块，用于分割模型训练。其中，自适应阈值窗口大小按期望管径像素尺度动态设定，形式为 $\mathrm{blockSize}=\max\!\left(11,\mathrm{int}\!\left(4\,d_{\mathrm{tube,expected}}^{(\mathrm{px})}\right)\,|\,1\right)$，并限制最大值为 51。
 
-在此基础上，本文最终采用高分辨率适配的 ResNet34-UNet 作为前景分割主干。该网络针对 CNT 的单通道 SEM 图像和细长结构保持需求进行了任务适配，能够在保留浅层细节信息的同时完成前景区域预测。为便于比较，下文将仅采用方向引导训练的版本记为 CNTSegNet 基线，将进一步引入 clDice 约束的最终版本记为 CNTSegNet-clDice，其整体结构如图~\ref{fig:4_2_segmentation_framework} 所示。设输入 SEM 图像为 $I\in\mathbb{R}^{H\times W}$，网络输出的前景概率图记为
+在此基础上，本文最终采用高分辨率适配的 ResNet34-UNet 作为前景分割主干。该网络针对 CNT 的单通道 SEM 图像和细长结构保持需求进行了任务适配，能够在保留浅层细节信息的同时完成前景区域预测。为便于比较，下文将仅采用方向引导训练的版本记为 CNTSegNet 基线，将进一步引入 clDice 约束的最终版本记为 CNTSegNet-clDice。其整体结构如图~\ref{fig:4_2_segmentation_framework} 所示。设输入 SEM 图像为 $I\in\mathbb{R}^{H\times W}$，网络输出的前景概率图记为
 \begin{equation}
     P_{\theta}(I)\in[0,1]^{H\times W}
 \end{equation}
@@ -136,14 +136,14 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\textwidth]{D:/Apaper/paperformat/figures/fig4-2-from-drawio.pdf}
+\includegraphics[width=0.98\textwidth]{D:/Apaper/paperformat/figures/fig4-2-from-drawio4.pdf}
     \caption{最终采用的前景分割框架示意图}
     \label{fig:4_2_segmentation_framework}
 \end{figure}
 
 从前期实验结果来看，参考 CNTSegNet 思路构建的方向引导基线在整体取向较一致、弯曲程度较低的样品中能够较稳定地提取碳纳米管前景；但在高弯曲、局部方向变化明显且结构交叠较多的区域，分割难点已不再只是前景与背景的区分，而是如何在快速转向和局部模糊条件下保持细长结构的连通性。方向一致性先验本质上更适用于局部主方向相对稳定的细长目标，而在高弯曲样品中，真实结构的方向变化更快，局部方向估计也更容易受到噪声、遮挡和交叠干扰，因此转折区域更容易出现响应减弱、边界偏移甚至结构断裂。对于本文任务而言，这类误差不仅影响分割结果，还会进一步破坏骨架连通性，干扰后续弯曲特征的稳定提取。因此，在方向引导基线之上进一步引入面向连通保持的拓扑约束，是更贴合高弯曲样品结构特征的改进方向。
 
-为兼顾基础前景定位精度与细长结构保持能力，本文采用两阶段训练策略。第一阶段仅使用 Dice 损失完成基础前景学习；第二阶段在 Dice 损失基础上引入方向分布损失和 clDice 连通性约束。前者用于保持整体方向分布的一致性，后者用于增强高弯曲区域中细长结构的连通保持能力。设弱标签二值前景图为 $\tilde{G}\in\{0,1\}^{H\times W}$，图像定义域为 $\Omega$，则 Dice 损失为
+为兼顾基础前景定位精度与细长结构保持能力，本文采用两阶段训练策略。第一阶段仅使用 Dice 损失完成基础前景学习；第二阶段在 Dice 损失基础上引入方向分布损失和 clDice 连通性约束。在弱监督场景下，Dice 主要承担基础前景学习与训练收敛作用；第二阶段进一步引入方向分布损失与 clDice 拓扑约束，目的是增强高弯曲区域中细长结构的连通保持能力。设弱标签二值前景图为 $\tilde{G}\in\{0,1\}^{H\times W}$，图像定义域为 $\Omega$，则 Dice 损失为
 \begin{equation}
     \mathcal{L}_{\mathrm{Dice}}=
     1-\frac{2\sum_{x\in\Omega}P_{\theta}(I)(x)\tilde{G}(x)+\varepsilon}
@@ -176,7 +176,7 @@
 \begin{equation}
     M(x)=\mathbb{I}\!\left(P_{\theta}(I)(x)\geq\tau_m\right)
 \end{equation}
-其中，$\mathbb{I}(\cdot)$ 为示性函数。当前最终版本在 $100000\times$ 数据上采用主体区域裁剪后的 $768\times768$ 灰度中心图块作为输入，训练与测试样本数按 $50:50$ 划分，优化器为 Adam，学习率为 $5\times10^{-4}$，并以测试集 Dice 统计模型结果。图~\ref{fig:4_3_segmentation_comparison} 给出了代表性高弯曲样品的分割结果对比。对于该类样品，分割难点已不再只是前景与背景的区分，而是弯折结构的连续保持与拓扑完整性约束。后续骨架提取对局部断裂、细丝粘连和边界偏移较为敏感，一旦弯折段在分割阶段被破坏，相关误差将进一步传递到分支提取及弯曲特征计算过程中。相较于主要强调局部方向一致性的约束，clDice 从骨架连通性和拓扑一致性出发约束预测结果，因此更有利于保留高弯曲区域中细长 CNT 结构的连续性，从而输出更适合后续骨架分析的二值前景图。由此得到的稳定前景表示，不仅为后续骨架化提供可靠输入，也使覆盖密度、取向度、表观直径及弯曲相关特征能够建立在统一的前景基础之上。下一节将进一步从前景区域统计、骨架结构分析和分支级几何计算三个层面提取样品级形貌特征。
+其中，$\mathbb{I}(\cdot)$ 为示性函数。当前最终版本在 $100000\times$ 数据上采用主体区域裁剪后的 $768\times768$ 灰度中心图块作为输入，训练与测试样本数按 $50:50$ 划分，优化器为 Adam，学习率为 $5\times10^{-4}$，并在该划分上报告测试集 Dice 结果。图~\ref{fig:4_3_segmentation_comparison} 给出了代表性高弯曲样品的分割结果对比。对于该类样品，分割难点已不再只是前景与背景的区分，而是弯折结构的连续保持与拓扑完整性约束。后续骨架提取对局部断裂、细丝粘连和边界偏移较为敏感，一旦弯折段在分割阶段被破坏，相关误差将进一步传递到分支提取及弯曲特征计算过程中。相较于主要强调局部方向一致性的约束，clDice 从骨架连通性和拓扑一致性出发约束预测结果，因此更有利于保留高弯曲区域中细长 CNT 结构的连续性，从而输出更适合后续骨架分析的二值前景图。由此得到的稳定前景表示，不仅为后续骨架化提供可靠输入，也使覆盖密度、取向度、表观直径及弯曲相关特征能够建立在统一的前景基础之上。下一节将进一步从前景区域统计、骨架结构分析和分支级几何计算三个层面提取样品级形貌特征。
 
 为便于汇总最终模型的关键实现信息，表~\ref{tab:4_1_segmentation_results} 给出了数据处理、训练策略与推理参数设置；同时，图~\ref{fig:4_3_segmentation_comparison} 给出了三组代表样本的可视化对比结果，以便从前景提取效果、细长结构连通性和边界保持能力三个角度对 CNTSegNet 基线与 CNTSegNet-clDice 进行综合比较。
 
@@ -191,7 +191,9 @@
     \centering
     \caption{前景分割模型的主要设置}
     \label{tab:4_1_segmentation_results}
-    \begin{tabular}{p{4.2cm}p{8.8cm}}
+    \small
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{3.0cm}X}
         \toprule
         项目 & 设置 \\
         \midrule
@@ -199,11 +201,11 @@
         输入数据 & 主体区域裁剪后的 $768\times768$ 灰度中心图块 \\
         监督信号 & 基于自适应高斯阈值的弱标签 \\
         优化器与学习率 & Adam，$5\times10^{-4}$ \\
-        训练策略 & 两阶段训练：前 6 个 epoch 仅使用 Dice 损失；后 3 个 epoch 使用 Dice、方向分布损失与 clDice 联合损失 \\
-        数据划分与结果统计 & train/test = 50:50，按测试集 Dice 统计结果 \\
+        训练策略 & 两阶段：前 6 个 epoch 使用 Dice，后 3 个 epoch 使用 Dice+Ori+clDice \\
+        数据划分 & train/test = 50:50，报告测试集 Dice \\
         推理阈值 & 0.7 \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \subsection{基于计算机视觉的形貌特征提取}
@@ -217,43 +219,41 @@
 
 \begin{figure}[htbp]
     \centering
-    \begin{subfigure}[b]{0.41\textwidth}
+    \begin{subfigure}[b]{0.31\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/01_original_sem.png}
+        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/01_original_sem_crop.png}
         \caption{原始 SEM 图像}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.41\textwidth}
+    \begin{subfigure}[b]{0.31\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/02_model_prediction_mask.png}
+        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/02_model_prediction_mask_crop.png}
         \caption{预测分割前景图}
     \end{subfigure}
-
-    \vspace{0.2em}
-
-    \begin{subfigure}[b]{0.41\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/03_raw_skeleton_on_prediction.png}
+        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/03_raw_skeleton_on_prediction_crop.png}
         \caption{原始骨架结果}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.41\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/04_removed_vs_kept_on_black.png}
-        \caption{拓扑清理中}
-    \end{subfigure}
 
     \vspace{0.2em}
 
-    \begin{subfigure}[b]{0.41\textwidth}
+    \begin{subfigure}[b]{0.31\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/05_cleaned_skeleton_on_prediction.png}
+        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/04_removed_vs_kept_on_black_crop.png}
+        \caption{拓扑清理中}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/05_cleaned_skeleton_on_prediction_crop.png}
         \caption{清理后骨架结果}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.41\textwidth}
+    \begin{subfigure}[b]{0.31\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/06_prediction_plus_minus_junctions.png}
+        \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4/06_prediction_plus_minus_junctions_crop.png}
         \caption{连接点邻域排除}
     \end{subfigure}
     \caption{形貌特征提取过程中的关键中间结果示意图}
@@ -343,24 +343,28 @@
     {\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}}
 \end{equation}
 样品级平均曲率在统计后再结合倍率标定换算为 $\mu m^{-1}$。这里采用 $\sqrt{L_k}$ 而非等权或 $L_k$ 线性加权，是为了避免短碎分支权重过高，同时减弱超长分支对结果的主导作用。
-除平均曲率外，本文还进一步统计波曲度和迂曲度。波曲度不通过正弦函数显式拟合得到，而是基于有序分支在主轴投影后的等效波高和等效波长进行估计。具体地，对单条分支坐标执行主成分分析，得到主轴方向和法向方向；将分支投影到主轴得到纵向坐标 $s$，投影到法向得到横向偏移 $d(s)$。在对 $d(s)$ 完成线性去趋势和轻度平滑后，检测交替的峰--谷--峰或谷--峰--谷结构。对于单个波段，记其等效波长为 $\lambda$，等效波高为 $h$，则波曲度可写为
+
+本文采用平均曲率、波曲度和迂曲度从不同层面描述阵列弯曲形貌。其中，平均曲率反映局部几何转折强度，波曲度反映分支整体起伏幅度与波长之间的相对关系，迂曲度反映路径长度相对于端点直线距离的绕行程度。三者分别对应局部弯折、整体波状起伏和路径曲折程度，因此能够形成互补表征。
+
+波曲度不是通过正弦函数显式拟合得到，而是根据有序分支在主轴方向上的等效波高和等效波长进行估计。具体地，对单条分支坐标执行主成分分析，得到主轴方向和法向方向；将分支分别投影到主轴和法向，得到纵向坐标 $s$ 与横向偏移 $d(s)$。在对 $d(s)$ 完成线性去趋势和轻度平滑后，检测交替出现的峰谷结构。对于单个波段，记其等效波长为 $\lambda$，等效波高为 $h$，则波曲度可写为
 \begin{equation}
     w=\frac{h}{\lambda}
 \end{equation}
-若采用正弦振幅记号 $a$，则有 $a=h/2$。对单条分支内的多个波段，本文按各波段对应的 $\lambda$ 进行加权平均，得到分支级波曲度；进一步地，在多分支聚合时按分支有效路径长度进行加权，得到样品级波曲度
+若采用正弦振幅记号 $a$，则有 $a=h/2$。对同一分支内的多个波段，按各波段对应的 $\lambda$ 加权平均得到分支级波曲度；对样品中的多条分支，再按分支长度的平方根加权，得到样品级波曲度
 \begin{equation}
     w_k=\frac{\sum_{j}\lambda_{k,j}\,w_{k,j}}{\sum_{j}\lambda_{k,j}},\qquad
     w_{\mathrm{eff}}=
     \frac{\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}\,w_k}
     {\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}}
 \end{equation}
-分支迂曲度采用路径长度与端点弦长之比度量：
+迂曲度则采用路径长度与端点弦长之比进行度量，用于反映整条分支相对于端点直线距离的绕行程度：
 \begin{equation}
     \tau_k=\frac{L_k}{\left\|p_{k,n_k}-p_{k,1}\right\|_2+\varepsilon},\qquad
     \tau_{\mathrm{eff}}=
     \frac{\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}\,\tau_k}
     {\sum_{b_k\in\mathcal{B}^{*}}\sqrt{L_k}}
 \end{equation}
+样品级波曲度和迂曲度的多分支聚合同样按分支长度的平方根加权，以与曲率统计保持一致，并兼顾短分支与长分支之间的权重平衡。
 
 \noindent　　\textbf{（5）样品级特征向量构建。}\par
 
@@ -370,26 +374,28 @@
     \centering
     \caption{样品级形貌特征向量的组成及其含义}
     \label{tab:4_3_feature_vector_summary}
-    \begin{tabular}{p{2.2cm}p{3.0cm}p{2.4cm}p{2.0cm}p{3.4cm}}
+    \small
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{2.0cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}p{2.0cm}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}X}
         \toprule
         特征 & 物理含义 & 计算路径 & 单位 & 后续用途 \\
         \midrule
-        覆盖密度 $\rho$ & 表征阵列前景区域的覆盖程度 & 原始几何路径 & \% & 反映样品覆盖状态与生长均匀性 \\
-        取向度 HOF & 表征阵列主方向的一致程度 & 原始几何路径 & 无量纲 & 反映阵列整体有序性 \\
-        表观直径 $d_{\mathrm{app}}$ & 表征图像尺度下的等效宽度 & 原始几何路径 & nm & 反映局部尺度特征 \\
-        有效平均曲率 $\kappa_{\mathrm{eff}}$ & 表征分支平均弯曲程度 & 拓扑清理路径 & $\mu m^{-1}$ & 描述样品级弯曲强度 \\
-        波曲度 $w_{\mathrm{eff}}$ & 表征分支起伏程度 & 拓扑清理路径 & 无量纲 & 区分平直与波曲形貌 \\
-        迂曲度 $\tau_{\mathrm{eff}}$ & 表征路径相对弦长的弯折程度 & 拓扑清理路径 & 无量纲 & 描述卷曲与缠绕程度 \\
+        覆盖密度 $\rho$ & 表征前景区域覆盖程度 & 原始路径 & \% & 反映覆盖状态与生长均匀性 \\
+        取向度 HOF & 表征阵列主方向一致程度 & 原始路径 & 无量纲 & 反映阵列整体有序性 \\
+        表观直径 $d_{\mathrm{app}}$ & 表征图像尺度下的等效宽度 & 原始路径 & nm & 反映局部尺度特征 \\
+        有效平均曲率 $\kappa_{\mathrm{eff}}$ & 表征局部几何转折强度 & 清理路径 & $\mu m^{-1}$ & 描述样品级弯曲强度 \\
+        波曲度 $w_{\mathrm{eff}}$ & 表征整体起伏幅度与波长的相对关系 & 清理路径 & 无量纲 & 区分平直与波曲形貌 \\
+        迂曲度 $\tau_{\mathrm{eff}}$ & 表征路径相对端点直线距离的绕行程度 & 清理路径 & 无量纲 & 描述卷曲与缠绕程度 \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \subsection{自动弯曲表征结果与人工分级一致性验证}
 \ensubsection{Consistency Validation Between Automated Curvature Characterization and Manual Grading}
 
-前文得到的曲率、波曲度和迂曲度都是连续特征，但整张 SEM 图像的弯曲形貌并没有一个容易获得、且足够稳定的连续真值。与其直接比较某个连续数值是否“精确”，更实际的问题是：这些自动提取的弯曲特征，能否对应人工能够稳定辨认的弯曲等级。基于这一考虑，本节不再把重点放在连续回归误差上，而是采用人工分级的一致性验证来判断自动表征结果是否具有实际区分度。
+本节主要对自动提取结果的可靠性进行分层验证。对于人工成本较高、主观性较强的弯曲特征，采用人工分级一致性验证；对于表观直径，采用有限人工测量对照验证其趋势一致性；覆盖密度和取向度则依据其定义直接计算，并结合分割可视化、中间结果及代表样本进行合理性检查。由于曲率、波曲度和迂曲度都是连续特征，而整张 SEM 图像的弯曲形貌并不容易获得稳定的连续真值，因此本节更关注这些自动提取的弯曲特征能否对应人工能够稳定辨认的弯曲等级。
 
-一致性验证所用数据集共包含 150 张样品 SEM 图像，其中平直型、波曲型和卷曲型样本分别为 40、80 和 30 张。图~\ref{fig:4_5_manual_grading_examples} 给出了三类样本的代表性形貌示意。实验中，对曲率、波曲度和迂曲度三个单指标分别进行阈值分级验证：首先按照类别分层的方式将数据按 5:5 划分为训练集和测试集；随后仅在训练集上分别搜索两条分级边界 $t_1$ 和 $t_2$，再在测试集上固定边界完成三分类预测。由于三类样本数量并不均衡，结果同时采用 Accuracy、Macro-F1、Balanced Accuracy 和 Weighted Kappa 进行评价。
+一致性验证所用数据集共包含 150 张样品 SEM 图像，其中平直型、波曲型和卷曲型样本分别为 40、80 和 30 张。图~\ref{fig:4_5_manual_grading_examples} 给出了三类样本的代表性形貌。实验中，对曲率、波曲度和迂曲度三个单指标分别进行阈值分级验证。具体做法是按类别分层将样本以 5:5 划分为训练集和测试集，在训练集上搜索两条分级边界 $t_1$ 和 $t_2$，再在测试集上固定边界完成三分类预测。考虑到三类样本数量并不均衡，结果采用 Accuracy、Macro-F1、Balanced Accuracy 和 Weighted Kappa 进行评价。
 
 \begin{figure}[H]
     \centering
@@ -403,7 +409,8 @@
     \caption{不同弯曲特征与人工分级结果的一致性比较}
     \label{tab:4_2_manual_auto_comparison}
     \small
-    \begin{tabularx}{0.96\textwidth}{>{\centering\arraybackslash}p{1.7cm}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.5cm}*{4}{>{\centering\arraybackslash}X}}
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{1.6cm}>{\centering\arraybackslash}p{1.2cm}>{\centering\arraybackslash}p{1.2cm}*{4}{>{\centering\arraybackslash}X}}
         \toprule
         指标 & $t_1$ & $t_2$ & Accuracy & Macro-F1 & Balanced Accuracy & Weighted Kappa \\
         \midrule
@@ -414,7 +421,7 @@
     \end{tabularx}
 \end{table}
 
-表~\ref{tab:4_2_manual_auto_comparison} 给出了三种单指标在测试集上的一致性结果。整体上看，迂曲度的四项指标均为最高，Accuracy 达到 0.9067，Macro-F1 为 0.8962，Balanced Accuracy 和 Weighted Kappa 分别达到 0.8778 和 0.8934，明显优于曲率和波曲度；波曲度次之；曲率相对较弱。这个结果说明，在整图三分类任务中，迂曲度比平均曲率和波曲度更贴近人工对“整体弯曲程度”的判断。
+表~\ref{tab:4_2_manual_auto_comparison} 给出了三种单指标在测试集上的一致性结果。三者都表现出较好的分级能力，说明本章提取的弯曲特征能够在较大程度上复现人工分级结果。其中，迂曲度的四项指标整体最高，Accuracy 为 0.9067，Macro-F1 为 0.8962，Balanced Accuracy 和 Weighted Kappa 分别为 0.8778 和 0.8934。波曲度的表现也较稳定，曲率指标虽然略低，但仍能反映样品弯曲程度的基本差异。综合这些结果可以看出，三种特征都具有实际判别意义，只是对整图三分类任务而言，迂曲度更适合作为主判据。
 
 \begin{figure}[H]
     \centering
@@ -423,18 +430,124 @@
     \label{fig:4_6_confusion_matrices}
 \end{figure}
 
-图~\ref{fig:4_6_confusion_matrices} 进一步展示了三种单指标的分类混淆情况。曲率的主要误差集中在平直型与波曲型之间，同时卷曲型也有一部分被划入波曲型，这说明曲率更容易受到局部弯折、骨架细小扰动以及平滑参数的影响，在样品级分级任务中稳定性不足。波曲度的结果有所改善，但它本质上依赖等效波高与等效波长的估计，更适合具有较明显波状起伏的样品；对于局部缠结、非周期弯折和多方向混杂的网络区域，其表征能力仍会下降，因此相邻等级之间仍存在重叠。相比之下，迂曲度直接刻画路径长度与端点距离之比，对非周期弯曲和整体路径弯折更敏感，也不需要预设波形结构，因此在平直型、波曲型和卷曲型三类样本之间表现出更稳定的排序能力。其主要误差仍集中在相邻等级之间，而没有出现明显跨等级错判，这与人工分级本身具有连续过渡的特点是一致的。
+图~\ref{fig:4_6_confusion_matrices} 进一步展示了三种单指标的分类混淆情况。整体来看，三者的误差主要集中在相邻等级之间，而没有出现大规模跨等级错判，这与弯曲形貌从平直到卷曲逐步过渡的特点是一致的。曲率的混淆主要出现在平直型与波曲型之间，同时部分卷曲型样本被划入波曲型，说明该指标对局部弯折、骨架细小扰动以及平滑参数更为敏感，在整图分级任务中更容易受到局部几何波动的影响。波曲度的结果更均衡一些，对具有较明显波状起伏的样本有较好的区分能力，但在局部缠结、非周期弯折和多方向混杂的网络区域中，其等效波高与等效波长的估计仍会引入一定重叠。迂曲度则直接反映路径长度与端点距离之间的偏离程度，对整体路径弯折更敏感，因此在图像级排序上更稳定。除弯曲特征外，表观直径已通过人工测量对照验证其趋势一致性；覆盖密度和取向度主要依赖稳定前景分割与几何定义，其可靠性由前景分割结果、中间过程可视化及代表样本检查共同支撑。
 
-从这一组验证结果看，本章提出的自动图像特征提取流程已经能够从原始 SEM 图像中提取出具有实际判别意义的弯曲表征量。其中，迂曲度最贴近人工对整张图像弯曲程度的整体判断，更适合作为后续弯曲等级划分和工艺--形貌关系建模中的主特征；波曲度可用于补充描述较明显的波状起伏；曲率则更适合作为局部弯折分析的辅助特征。
+从这一组验证结果看，本章提出的自动图像特征提取流程已经能够从原始 SEM 图像中提取出具有实际判别意义的弯曲表征量。曲率、波曲度和迂曲度都可以作为弯曲形貌的量化指标使用。其中，迂曲度更适合作为整图三分类任务中的主特征，波曲度能够补充描述较明显的波状起伏，曲率则在刻画局部弯折变化方面仍具有参考价值。三者结合使用，更有利于从不同层面描述样品弯曲形貌的差异。
 
-\section{知识增强的结果分析}
-\ensection{Knowledge-enhanced Result Analysis}
+进一步比较人工粗筛与自动分级的处理效率和结果一致性，可以更直观地说明该方法在批量样品分析中的适用性。这里以表现最稳定的迂曲度分级结果作为自动方法代表，并与人工粗筛结果进行对比，结果如表~\ref{tab:4_4_efficiency_comparison} 所示。对 150 张样品图像，人工粗筛总耗时为 1960\,s，平均约 13.07\,s/张，准确率为 67.3\%；基于迂曲度的自动分级总耗时为 1548\,s，平均约 10.32\,s/张，准确率为 90.67\%。这说明在当前实现条件下，自动方法不仅能够保持较高的一致性，而且在批量样品处理时也具有一定的效率优势。
 
-\subsection{形貌结果与工艺条件的对应分析}
-\ensubsection{Correspondence Between Morphology Results and Process Conditions}
+\begin{table}[H]
+    \centering
+    \caption{人工粗筛与自动分级的效率及准确率比较}
+    \label{tab:4_4_efficiency_comparison}
+    \small
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{0.9\textwidth}{>{\centering\arraybackslash}p{3.2cm}*{3}{>{\centering\arraybackslash}X}}
+        \toprule
+        方法 & 总耗时（s） & 平均耗时/张（s） & 准确率 \\
+        \midrule
+        人工粗筛 & 1960 & 13.07 & 67.3\% \\
+        自动分级（迂曲度） & 1548 & 10.32 & 90.67\% \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
-\subsection{基于证据链的结果解释}
-\ensubsection{Evidence-chain-based Result Interpretation}
+\section{知识增强支持下的工艺—形貌关系分析}
+\ensection{Knowledge-Aided Process-Morphology Analysis}
+
+\subsection{工艺参数与关键形貌特征的关系分析}
+\ensubsection{Process-Morphology Relationships}
+
+在获得样品级形貌特征后，本节进一步分析工艺参数与关键形貌特征之间的关系，以识别对阵列形貌变化影响较大的核心变量。
+
+基于第三章知识库支持下的工艺分析任务，以及面向科研任务的关系约束检索算法 TCCER 返回的证据链结果，后续分析重点聚焦于 Fe 功率、Fe 厚度和退火时间三项工艺变量，相关证据链与大模型分析样例见 4.4.2。为保证样品之间的可比性，本文选取固定背景条件下的 $50000\times$ 样品子集，考察上述工艺变量与取向度、平均曲率、波曲度及迂曲度之间的关系。
+
+首先采用 Spearman 秩相关系数，对工艺参数与关键形貌特征之间的整体相关结构进行统计分析。设两组变量的秩序列分别为 $R_i$ 和 $S_i$，则其相关系数定义为
+\begin{equation}
+    \rho_s=
+    \frac{\sum_{i=1}^{n}(R_i-\bar{R})(S_i-\bar{S})}
+    {\sqrt{\sum_{i=1}^{n}(R_i-\bar{R})^2}\sqrt{\sum_{i=1}^{n}(S_i-\bar{S})^2}}
+\end{equation}
+其中，$\bar{R}$ 和 $\bar{S}$ 分别表示两组秩序列的均值。图~\ref{fig:4_7_spearman_correlation_heatmap} 给出了核心工艺变量与关键形貌特征之间的相关性热图。总体来看，退火时间与取向度呈较明显负相关，而与波曲度和迂曲度呈正相关，说明随着退火时间增加，阵列整体有序性下降，弯曲相关特征逐渐增强。取向度与波曲度、迂曲度之间也表现出较强负相关，表明阵列有序性与弯曲程度之间存在较稳定的反向关系。值得注意的是，波曲度与迂曲度之间呈现极强正相关，说明二者在当前样品集上对弯曲增强的响应具有高度一致性，更多体现为定义角度上的差异，而不是完全独立的信息来源。相比之下，平均曲率与这两类弯曲特征虽然变化方向一致，但相关程度相对较低，说明其对局部几何扰动更敏感，在样品级统计上稳定性略弱。就工艺变量而言，Fe 厚度对取向度呈弱正相关、对弯曲相关特征呈弱负相关，其影响方向相对明确，但强度低于退火时间；Fe 功率与各特征之间的关系则更接近分区响应，而不是简单的连续单调变化。综合这些关系可以看出，退火时间更像决定整体有序性和弯曲增强方向的主变量，而波曲度和迂曲度则更适合作为后续工艺—形貌分析中的主要弯曲表征量，其中迂曲度可作为主指标，波曲度作为补充描述。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{D:/Apaper/paperformat/figures/fig4-7-spearman-correlation-heatmap.png}
+    \caption{工艺参数与关键形貌特征的相关性热图}
+    \label{fig:4_7_spearman_correlation_heatmap}
+\end{figure}
+
+在相关性分析基础上，进一步按退火时间分组统计各形貌特征的均值及波动范围，以考察单一工艺变量变化下的整体趋势。图~\ref{fig:4_8_anneal_time_trend} 给出了退火时间对关键形貌特征的分组结果。随着退火时间由 0.25 h 增加至 0.75 h，取向度总体下降，而波曲度和迂曲度总体上升，表明退火过程会推动阵列由相对有序状态向更明显的弯曲状态演化。平均曲率也表现出相同方向的变化，但波动更为明显，这与曲率对局部几何扰动和细微噪声更敏感有关。相较之下，波曲度和迂曲度在不同退火时间下呈现出更清楚的变化趋势，因此更适合作为后续工艺—形貌关系分析中的样品级弯曲表征量。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.76\textwidth]{D:/Apaper/paperformat/figures/fig4-8-anneal-grid.png}
+    \caption{退火时间对关键形貌指标的影响趋势}
+    \label{fig:4_8_anneal_time_trend}
+\end{figure}
+
+为了进一步观察多参数联合作用，本文按 Fe 功率和 Fe 厚度的组合条件对样本进行汇总，并以各组合下的特征均值绘制二维响应图。图~\ref{fig:4_9_response_grid} 给出了 Fe 功率与 Fe 厚度组合变化下关键形貌特征的响应分布。可以看到，不同特征的高值区域并不完全重合，说明 Fe 功率和 Fe 厚度对阵列形貌的影响存在明显耦合。对于取向度而言，中等 Fe 功率附近更容易保持较高水平；而对平均曲率、波曲度和迂曲度而言，较高响应更多出现在较长退火时间对应的组合条件下，这与前述退火时间趋势是一致的。由此可见，退火时间更像决定弯曲增强方向的主变量，而 Fe 功率和 Fe 厚度主要调节这种变化在不同工艺区间中的响应幅度。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\textwidth]{D:/Apaper/paperformat/figures/fig4-9-response-grid.png}
+    \caption{Fe 功率与 Fe 厚度对关键形貌指标的响应分布}
+    \label{fig:4_9_response_grid}
+\end{figure}
+
+结合图~\ref{fig:4_8_anneal_time_trend} 和图~\ref{fig:4_9_response_grid} 可以看出，退火时间主要决定了取向下降和弯曲增强的总体方向，而 Fe 功率与 Fe 厚度进一步决定这种变化在不同工艺区间中的强弱差异。前者体现为较清楚的分组趋势，后者体现为不同特征高值区域的位置差异。这说明工艺参数对形貌特征的作用并不是单一因素主导下的简单线性过程，而是主导变量与辅助变量共同作用的结果。
+
+考虑到当前数据规模有限，工艺变量之间又可能存在非线性关系，且本文更关注变量作用分析而非高精度预测，因此进一步引入随机森林回归模型，对各工艺变量在关键形貌特征形成中的相对重要性进行估计，并与前述相关性分析和响应分布结果相互印证。这里的变量重要性由各变量在树模型分裂过程中带来的误差下降贡献累计并归一化得到。图~\ref{fig:4_10_importance_grid} 给出了随机森林模型对工艺变量重要性的评估结果。可以看出，退火时间在四个形貌特征中都占据较高权重，是当前数据中最稳定的主导变量；与退火时间相关的平方项和交互项也多次位于前列，说明形貌变化并非完全线性。相比之下，Fe 功率、Fe 厚度及其与退火时间的交互项更多体现为补充作用，这与前述相关性热图和响应分布图呈现出的关系结构基本一致。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/fig4-10-importance-grid.png}
+    \caption{关键形貌指标的变量重要性结果}
+    \label{fig:4_10_importance_grid}
+\end{figure}
+
+若进一步结合四个特征分别来看，取向度的高权重变量分布相对集中，说明其与工艺参数之间的关系更接近可稳定描述的整体效应；而平均曲率、波曲度和迂曲度的高权重变量分布更为分散，说明弯曲相关形貌既受到主导变量控制，也受到交互项和局部波动影响。这一点与前文图像表征结果是一致的，即整体有序性往往更容易形成清楚趋势，而弯曲形貌虽然具有稳定方向，但在不同样品之间仍保留了更强的局部差异。
+
+在前述关系分析基础上，本文进一步采用随机森林回归模型，对工艺参数与关键形貌特征之间的映射关系进行辅助建模。模型输入包括 Fe 功率、Fe 厚度、退火时间及其派生交互特征。对数值特征采用中位数填补缺失值并进行标准化处理，对分类型特征采用独热编码。考虑到同一工艺组合下存在重复视野样本，模型评估采用按工艺组合分组的 5 折交叉验证，即每次用其中 4 折训练、1 折验证，并轮流完成全部分组的预测，以降低同源样本泄漏带来的偏高风险。这里引入随机森林的目的，是进一步判断工艺参数与形貌特征之间的关系是否具有基本可学习性，而不是追求复杂模型下的最优预测结果。模型性能通过 $R^2$、RMSE 和 MAE 进行综合评价。
+
+为判断上述关系是否具有基本可学习性，本文进一步给出随机森林模型在 5 折分组交叉验证中，对未参与当轮训练样本的预测结果。图~\ref{fig:4_11_oof_grid} 展示了四个关键形貌特征的预测值与真实值分布。可以看到，取向度的预测点分布最接近对角线，说明其与工艺参数之间的关系最容易被学习；平均曲率、波曲度和迂曲度虽然离散程度更大，但整体仍保持了较为明确的正相关趋势。这表明在当前数据规模下，工艺参数与关键形貌之间已经具备可识别的关联结构，但弯曲相关特征仍会受到局部扰动、样品差异和测量噪声的共同影响。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/fig4-11-oof-grid.png}
+    \caption{随机森林模型的形貌预测结果}
+    \label{fig:4_11_oof_grid}
+\end{figure}
+
+从预测结果可以看出，取向度的可学习性最强，说明工艺参数对整体有序性的影响更容易被模型捕捉；平均曲率、波曲度和迂曲度虽然离散程度更高，但仍表现出较为稳定的正相关趋势。其中，取向度的 $R^2$ 为 0.5892，平均曲率、波曲度和迂曲度的 $R^2$ 分别为 0.3994、0.3545 和 0.3623。若从误差来源来看，弯曲相关特征的离散程度更大，主要与两方面因素有关：一是弯曲表征本身更容易受到局部几何扰动、样品内视野差异和图像噪声影响；二是同一工艺条件下不同样品区域的弯曲程度并不完全一致，因此工艺参数与弯曲特征之间更适合用趋势性关系加以描述，而不宜简单理解为一一对应的确定性映射。即便如此，波曲度和迂曲度仍保持了较稳定的正相关趋势，说明它们作为样品级弯曲统计量，已经能够反映工艺变化带来的整体方向性影响。综合前述相关性热图、趋势图、响应分布、变量重要性和模型预测结果可以认为，当前数据规模下工艺参数与关键形貌之间已经呈现出可识别的关联结构，这为后续的知识增强分析提供了实验基础。
+
+\subsection{基于证据链的知识增强分析}
+\ensubsection{Evidence-chain Knowledge Analysis}
+
+仅依赖相关性分析和关系建模，能够说明工艺参数与形貌特征之间存在统计联系，但仍难回答“为什么选择这些变量”“为什么固定这些背景条件”这类实验设计层面的问题。为此，本节进一步引入知识增强结果，将候选参数空间与研究目标组织为工艺分析任务，由检索模块返回文献证据、知识链接和关系链，再由大语言模型对检索结果进行归纳，形成参数收敛建议，并结合少量预实验结果完成背景条件固定与核心变量筛选。
+
+在当前案例中，候选参数空间包括 Al$_2$O$_3$ power、Al$_2$O$_3$ thickness、气氛组合、anneal temp、growth temp、growth time、Fe power、Fe thickness 和 anneal time，研究目标则包括样品导电性、制备稳定性以及后续形貌分析的可比性。检索结果显示，Al$_2$O$_3$ 支撑层与 Fe 催化剂构成了垂直阵列生长中的常见基础组合，支撑层更适合作为稳定背景条件；Fe thickness 与催化剂团聚、阵列均匀生长和取向退化密切相关；anneal time 与导电性、催化剂寿命及形貌演化存在明显联系；Fe power 则与有效催化剂量和后续形貌响应有关。由此，知识增强模块给出的建议并不是直接给出唯一最优参数，而是将支撑层参数、气氛条件和热处理条件优先收敛为背景工艺，将 Fe power、Fe thickness 和 anneal time 保留为后续工艺--形貌关系分析中的核心变量。
+
+表~\ref{tab:4_6_knowledge_narrowing_example} 总结了知识增强在参数空间收敛中的一个代表性案例。可以看到，知识增强的作用主要体现在两个层面：一是利用文献证据和知识链接解释为什么某些参数更适合作为背景条件固定；二是结合当前实验数据，说明为什么 Fe power、Fe thickness 和 anneal time 更值得进入后续关联建模与结果解释。换言之，知识增强模块在本文中并不仅仅承担结果解释的辅助作用，还参与了实验设计阶段的变量筛选与分析范围收敛。
+
+\begin{table}[htbp]
+    \centering
+    \caption{知识增强辅助参数收敛示例}
+    \label{tab:4_6_knowledge_narrowing_example}
+    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}m{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}m{2.8cm}}
+        \toprule
+        参数类别 & 检索证据摘要 & 知识增强建议 & 最终处理方式 \\
+        \midrule
+        Al$_2$O$_3$ 支撑层参数 & 文献普遍支持 Al$_2$O$_3$/Fe 作为稳定基础组合，主要作用是维持催化剂行为和阵列生长条件 & 作为背景条件优先收敛，不在当前阶段继续大范围搜索 & 结合少量预实验后固定 \\
+        气氛与热处理条件 & 对生长动力学和导电性存在一般性影响，但针对当前体系的精确最优组合证据有限 & 优先收敛为可行背景工艺，再用于保证样品可比性 & 作为背景条件固定 \\
+        Fe thickness & 与催化剂团聚、均匀生长及取向退化密切相关 & 保留为核心分析变量 & 进入后续关系建模 \\
+        Fe power & 影响有效催化剂量和形貌响应，且与 Fe thickness 存在联合作用 & 保留为核心分析变量 & 进入后续关系建模 \\
+        anneal time & 与导电性、催化剂寿命及弯曲形貌演化具有明确联系 & 保留为核心分析变量 & 进入后续关系建模 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+结合本节分析可见，知识增强模块与自动形貌表征并不是彼此独立的两个环节。前者通过文献证据、知识链接和关系链为参数空间收敛提供先验支持，后者则将样品图像转化为可用于分析和建模的关键形貌指标。二者共同构成了从工艺问题提出、变量筛选、形貌量化到结果解释的完整分析链路，也为下一章的系统实现与应用展示提供了依据。
 
 \section{小结}
 \ensection{Summary}
