@@ -1,0 +1,36 @@
+{
+  "image_path": "C:\\Users\\clearlove\\Desktop\\text10\\No28 200w 15.0nm 50w 0.5nm 600 300 150 600 750 15min 180min mid 50000-1.png",
+  "model_label": "CNTSegNet-clDice",
+  "checkpoint_path": "D:\\CNTDATA\\CNTA_ML_Project\\experiments\\cnt_paper_repro\\runs\\cnt_paper_repro_100000x_center768_cldice_seed42\\best_model.pth",
+  "config_path": "D:\\CNTDATA\\CNTA_ML_Project\\experiments\\cnt_paper_repro\\runs\\cnt_paper_repro_100000x_center768_cldice_seed42\\config_snapshot.yaml",
+  "magnification": 50000,
+  "patch_count": 12,
+  "junction_pixel_count": 18875,
+  "files": {
+    "01_original_sem": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4\\01_original_sem.png",
+    "02_model_prediction_mask": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4\\02_model_prediction_mask.png",
+    "03_raw_skeleton_on_prediction": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4\\03_raw_skeleton_on_prediction.png",
+    "04_removed_vs_kept_on_black": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4\\04_removed_vs_kept_on_black.png",
+    "05_cleaned_skeleton_on_prediction": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4\\05_cleaned_skeleton_on_prediction.png",
+    "06_prediction_plus_minus_junctions": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4\\06_prediction_plus_minus_junctions.png"
+  },
+  "crop_box_xyxy": [
+    66,
+    46,
+    834,
+    814
+  ],
+  "cropped_files": {
+    "01_original_sem": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4_crop\\01_original_sem.png",
+    "02_model_prediction_mask": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4_crop\\02_model_prediction_mask.png",
+    "03_raw_skeleton_on_prediction": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4_crop\\03_raw_skeleton_on_prediction.png",
+    "04_removed_vs_kept_on_black": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4_crop\\04_removed_vs_kept_on_black.png",
+    "05_cleaned_skeleton_on_prediction": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4_crop\\05_cleaned_skeleton_on_prediction.png",
+    "06_prediction_plus_minus_junctions": "D:\\CNTDATA\\CNTA_ML_Project\\reports\\no28_morphology_feature_steps_v4_crop\\06_prediction_plus_minus_junctions.png"
+  },
+  "crop_size": [
+    768,
+    768
+  ],
+  "cleaned_minus_junction_pixel_count": 157937
+}

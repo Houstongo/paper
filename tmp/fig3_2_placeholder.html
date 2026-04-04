@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Figure 3.2 Placeholder</title>
+  <style>
+    body { margin: 0; background: #f7f9fc; }
+    svg { display: block; margin: 0 auto; background: #f7f9fc; font-family: "Microsoft YaHei", "SimSun", sans-serif; }
+    .title { font-size: 30px; font-weight: 700; fill: #222; }
+    .layer { font-size: 18px; font-weight: 700; fill: #222; }
+    .box-title { font-size: 16px; font-weight: 700; fill: #222; }
+    .small { font-size: 13px; fill: #333; }
+    .panel { fill: #dfe9f5; stroke: #476993; stroke-width: 2.5; }
+    .panel-strong { fill: #d6e3f3; stroke: #476993; stroke-width: 3.5; }
+    .box { fill: #f8fbff; stroke: #476993; stroke-width: 2; }
+    .arrow { stroke: #476993; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+  </style>
+</head>
+<body>
+<svg width="1800" height="1200" viewBox="0 0 1800 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#476993"></path>
+    </marker>
+  </defs>
+
+  <text x="900" y="52" text-anchor="middle" class="title">多源知识规范化与事实单元构建流程</text>
+  <text x="90" y="145" text-anchor="middle" class="layer">多源输入</text>
+
+  <rect x="170" y="105" width="220" height="78" class="box" />
+  <rect x="465" y="105" width="220" height="78" class="box" />
+  <rect x="760" y="105" width="220" height="78" class="box" />
+  <rect x="1055" y="105" width="220" height="78" class="box" />
+  <rect x="1350" y="105" width="220" height="78" class="box" />
+  <text x="280" y="151" text-anchor="middle" class="box-title">学术文献</text>
+  <text x="575" y="151" text-anchor="middle" class="box-title">实验记录</text>
+  <text x="870" y="151" text-anchor="middle" class="box-title">工艺参数表</text>
+  <text x="1165" y="151" text-anchor="middle" class="box-title">结构化数据库</text>
+  <text x="1460" y="151" text-anchor="middle" class="box-title">图像表征结果</text>
+
+  <rect x="160" y="245" width="1460" height="145" class="panel" />
+  <text x="890" y="286" text-anchor="middle" class="layer">多源知识规范化处理</text>
+  <rect x="220" y="305" width="360" height="46" class="box" />
+  <rect x="665" y="305" width="360" height="46" class="box" />
+  <rect x="1110" y="305" width="360" height="46" class="box" />
+  <text x="400" y="334" text-anchor="middle" class="box-title">版式去噪与术语归一化</text>
+  <text x="845" y="334" text-anchor="middle" class="box-title">字段对齐与单位统一</text>
+  <text x="1290" y="334" text-anchor="middle" class="box-title">样品标识与来源绑定</text>
+
+  <rect x="220" y="455" width="1280" height="135" class="panel" />
+  <text x="860" y="495" text-anchor="middle" class="layer">面向科研事实的层次化切分</text>
+  <rect x="285" y="515" width="300" height="46" class="box" />
+  <rect x="675" y="515" width="300" height="46" class="box" />
+  <rect x="1065" y="515" width="300" height="46" class="box" />
+  <text x="435" y="544" text-anchor="middle" class="box-title">高层结构边界优先</text>
+  <text x="825" y="544" text-anchor="middle" class="box-title">次级语义边界递进</text>
+  <text x="1215" y="544" text-anchor="middle" class="box-title">局部上下文重叠保留</text>
+  <rect x="1520" y="485" width="220" height="82" class="box" />
+  <text x="1630" y="514" text-anchor="middle" class="small">尽量保留“条件—现象—解释”</text>
+  <text x="1630" y="535" text-anchor="middle" class="small">局部事实链</text>
+
+  <rect x="320" y="700" width="980" height="240" class="panel-strong" />
+  <text x="810" y="742" text-anchor="middle" class="layer">最小语义事实单元（MSFU）</text>
+  <rect x="380" y="770" width="380" height="72" class="box" />
+  <rect x="860" y="770" width="380" height="72" class="box" />
+  <rect x="380" y="850" width="380" height="72" class="box" />
+  <rect x="860" y="850" width="380" height="72" class="box" />
+  <text x="570" y="813" text-anchor="middle" class="box-title">文本内容</text>
+  <text x="1050" y="813" text-anchor="middle" class="box-title">元数据集合</text>
+  <text x="570" y="893" text-anchor="middle" class="box-title">关系断言</text>
+  <text x="1050" y="893" text-anchor="middle" class="box-title">证据字段</text>
+
+  <rect x="1380" y="735" width="155" height="46" class="box" />
+  <rect x="1380" y="795" width="155" height="46" class="box" />
+  <rect x="1380" y="855" width="155" height="46" class="box" />
+  <rect x="1380" y="915" width="155" height="46" class="box" />
+  <rect x="1575" y="735" width="155" height="46" class="box" />
+  <rect x="1575" y="795" width="155" height="46" class="box" />
+  <rect x="1575" y="855" width="155" height="46" class="box" />
+  <text x="1458" y="764" text-anchor="middle" class="small">来源元数据</text>
+  <text x="1458" y="824" text-anchor="middle" class="small">源实体</text>
+  <text x="1458" y="884" text-anchor="middle" class="small">关系类型</text>
+  <text x="1458" y="944" text-anchor="middle" class="small">证据片段</text>
+  <text x="1652" y="764" text-anchor="middle" class="small">目标实体</text>
+  <text x="1652" y="824" text-anchor="middle" class="small">条件范围</text>
+  <text x="1652" y="884" text-anchor="middle" class="small">作用方向</text>
+  <text x="1550" y="1015" class="small">图像表征结果在本章中视为已量化结构化输入。</text>
+
+  <path d="M900 183 L900 242" class="arrow" />
+  <path d="M900 390 L900 452" class="arrow" />
+  <path d="M900 590 L900 697" class="arrow" />
+</svg>
+</body>
+</html>
