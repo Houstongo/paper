@@ -151,7 +151,7 @@
 	{\bfseries \songti \zihao{-4} \noindent \xmu@label@schoolserialnumber \xmu@value@schoolserialnumber}  \\
 	{\bfseries \songti \zihao{-4} \xmu@label@studentnumber \xmu@value@studentnumber}
     \hrule height 0pt % 填充零高度线
-	\vskip 15pt
+	\vskip 12pt
 
 	\begin{figure}[htb!]
 		\centering
@@ -162,13 +162,13 @@
     % \vspace*{-1pt}
 	\begin{center}
 		{\bfseries \songti \zihao{2} \xmu@value@thesistype}
-		\vskip 35pt
+		\vskip 28pt
 			{\bfseries \heiti \zihao{-2} \xmu@value@title}
-		\vskip 15pt
+		\vskip 10pt
 			{\bfseries \zihao{3} \xmu@value@entitle}
-		\vskip 55pt
-			{\bfseries \kaishu \zihao{-2} \xmu@value@author}
 		\vskip 30pt
+			{\bfseries \kaishu \zihao{-2} \xmu@value@author}
+		\vskip 16pt
 
 			{\kaishu \zihao{-3}
 				\begin{tabular}{r p{1mm} l}
@@ -183,7 +183,7 @@
 					\xmu@label@grantdate  &  & \xmu@value@grantdate
 				\end{tabular}}
 
-		\vskip 100pt
+		\vskip 58pt
 			{\bfseries \songti \zihao{-4} \xmu@value@printdate}
 	\end{center}
 
@@ -200,19 +200,19 @@
 	\pdfbookmark[0]{原创性声明}{originality_statement}
 	\thispagestyle{empty}
 	
-	\setstretch{2.2}
+	\setstretch{1.95}
 	% \ifxmu@pdf
 	% 	\includepdf[pages=-]{pdf_files/originality_statement.pdf}
 	% \else
     \begin{center}
         {\bfseries \heiti \zihao{-2} \xmu@label@originality@title}
     \end{center}
-    \vskip 10pt
+    \vskip 6pt
         {\songti\zihao{4} \par \xmu@label@originality@content}
-    \vskip 20pt
+    \vskip 16pt
     \hspace{8cm}{\zihao{4}\xmu@label@originality@authorsign\par}
     \hspace{8cm}{\zihao{4}\xmu@label@originality@supervisorsign\par}
-    \vskip 20pt
+    \vskip 16pt
     \hspace{8.4cm} {\zihao{4}\xmu@label@originality@signdate}
 	% \fi
 	
@@ -225,18 +225,18 @@
 	\pdfbookmark[0]{著作权使用声明}{copyright_statement}
 	\thispagestyle{empty}
 	
-	\setstretch{2.2}
+	\setstretch{1.95}
 	% \ifxmu@pdf
 	% 	\includepdf[pages=-]{pdf_files/copyright_statement.pdf}
 	% \else
     \begin{center}
         {\bfseries \heiti \zihao{-2} \xmu@label@copyright@title}
     \end{center}
-    \vskip 10pt
+    \vskip 6pt
         {\songti\zihao{4} \par \xmu@label@copyright@content}
-    \vskip 20pt
+    \vskip 16pt
     \hspace{8cm}{\zihao{4}\xmu@label@copyright@authorsign\par}
-    \vskip 20pt
+    \vskip 16pt
     \hspace{8.4cm} {\zihao{4}\xmu@label@copyright@signdate}
 	% \fi
 
@@ -330,9 +330,9 @@
 			name = {第,章},
 			number = {\arabic{chapter}},
 			format = {\bfseries \sffamily \heiti \centering \zihao{-3}},
-			pagestyle = {plain},
-			beforeskip = 15pt,
-			afterskip = 25pt,
+			pagestyle = {xmu@headings},
+			beforeskip = 8pt,
+			afterskip = 20pt,
 			fixskip = true,
 			aftername = ~~~~,
 		}
@@ -341,8 +341,8 @@
 %% 设置一级章节格式
 \ctexset{section={
 			format={\raggedright \sffamily \bfseries \heiti \zihao{4}},
-			beforeskip = 25pt,
-			afterskip = 20pt,
+			beforeskip = 20pt,
+			afterskip = 14pt,
 			fixskip = true,
 		}
 }
@@ -350,8 +350,8 @@
 %% 设置二级标题格式 
 \ctexset{subsection={
 			format = {\bfseries \sffamily \heiti \raggedright \zihao{-4}},
-			beforeskip = 20pt,
-			afterskip = 20pt,
+			beforeskip = 16pt,
+			afterskip = 12pt,
 			fixskip = true,
 		}
 }
@@ -359,8 +359,8 @@
 %% 设置三节标题格式
 \ctexset{subsubsection={
 			format={\bfseries \sffamily \heiti \raggedright \zihao{-4}},
-			beforeskip = 20pt,
-			afterskip = 20pt,
+			beforeskip = 14pt,
+			afterskip = 10pt,
 			fixskip = true,
 		}
 }
@@ -450,18 +450,26 @@
 }
 \captionsetup[table]{
 	position = top,
-	aboveskip = 9pt,
-	belowskip = 9pt,
+	aboveskip = 7pt,
+	belowskip = 7pt,
 	justification = centering,
 	singlelinecheck = false,
 }
 \numberwithin{table}{chapter}
 \captionsetup[figure]{
 	position = bottom,
-	aboveskip = 5pt,
+	aboveskip = 4pt,
 	belowskip = 0pt,
 }
-\setlength{\textfloatsep}{15pt}
+\setlength{\textfloatsep}{11pt}
+\setlength{\floatsep}{10pt}
+\setlength{\intextsep}{10pt}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.82}
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\dblfloatpagefraction}{0.82}
 \newcommand*{\captionwithsource}[2]{%
 	\caption[{#1}]{#1}%
 	\vspace{6pt}
@@ -664,8 +672,7 @@
 %% 添加英文目录条目的命令
 \newcommand\enchapter[1]{\addtocontents{etoc}
 	{\protect\contentsline{chapter}
-		{\protect\numberline{\sffamily Chapter \thechapter}#1}
-% 		{\sffamily \thepage}{chapter.\thechapter}}
+		{\protect\numberline{\sffamily Chapter \thechapter}\protect\parbox[t]{0.72\textwidth}{#1}}
 		{\thepage}{chapter.\thechapter}}
 }
 \newcommand\ensection[1]{\addtocontents{etoc}

@@ -49,7 +49,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/fig3-3-chunk-comparison.png}
+    \includegraphics[width=\textwidth]{figures/fig3-3-chunk-comparison.png}
     \caption{普通分块方式与层次化切分方式对比示意图}
     \label{fig:3_2_chunk_comparison}
 \end{figure}
@@ -90,7 +90,7 @@
 
 表~\ref{tab:3_1_msfu_example} 给出了从原始片段到 MSFU 的完整映射示例。同一片段可被统一组织为文本主体、关系断言、扩展语义、元数据和证据字段组成的知识条目，而不再停留于自然语言描述层面。
 
-\begin{table}[h!]
+\begin{table}[htbp]
     \centering
     \caption{原始片段到最小语义事实单元的映射示例}
     \label{tab:3_1_msfu_example}
@@ -121,9 +121,11 @@
     \end{tabularx}
 \end{table}
 
-该表示方式保留了原始文本与元数据，能够支持来源追溯与语境恢复，对象关系及约束条件也被显式化，使后续检索能够在实体、关系和条件层面进行筛选，而不再仅依赖文本相似度。关系表达较为完整、条件信息可判定的片段可进一步构造成 MSFU 并进入后续关系检索流程；对源实体、目标实体或关系断言无法明确判定的片段，则仅保留其文本与元数据索引，不纳入关系结构索引。表~\ref{tab:3_1_unit_schema} 给出了 MSFU 的主要字段设计及其作用说明。
+该表示方式保留了原始文本与元数据，能够支持来源追溯与语境恢复，对象关系及约束条件也被显式化，使后续检索能够在实体、关系和条件层面进行筛选，而不再仅依赖文本相似度。关系表达较为完整、条件信息可判定的片段可进一步构造成 MSFU 并进入后续关系检索流程；对源实体、目标实体或关系断言无法明确判定的片段，则仅保留其文本与元数据索引，不纳入关系结构索引。
 
-\begin{table}[h!]
+上述示例主要说明单条知识片段如何被组织为结构化事实单元。为了进一步保证不同来源条目在入库、检索和证据追溯过程中的组织口径一致，还需要从字段层面对 MSFU 的整体结构作统一约束。表~\ref{tab:3_1_unit_schema} 给出了 MSFU 的主要字段设计及其作用说明。
+
+\begin{table}[htbp]
     \centering
     \caption{最小语义事实单元字段设计及其作用说明}
     \label{tab:3_1_unit_schema}
@@ -194,7 +196,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{C:/Users/clearlove/Desktop/usedp/gve.png}
+    \includegraphics[width=\textwidth]{figures/gve.png}
     \caption{MSFU 到关系图的建图流程示意图}
     \label{fig:3_2_graph_flow}
 \end{figure}
@@ -222,7 +224,7 @@ MSFU 到关系图的映射并不要求所有条目都进入图结构。对于源
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\textwidth]{C:/Users/clearlove/Desktop/usedp/tccer (1).png}
+    \includegraphics[width=0.98\textwidth]{figures/tccer (1).png}
     \caption{TCCER 检索流程示意图}
     \label{fig:3_3_tccer_flow}
 \end{figure}
