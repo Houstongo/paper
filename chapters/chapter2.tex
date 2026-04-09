@@ -1,20 +1,68 @@
-\chapter{相关理论与关键技术}
-\enchapter{Theoretical Basis and Key Technologies}
+\chapter{碳纳米管阵列制备工艺与知识增强方法基础}
+\enchapter{Foundations of CNT Array Fabrication and Knowledge Enhancement Methods}
 
-\section{领域知识组织与检索增强}
-\ensection{Domain Knowledge Organization and Retrieval Augmentation}
+\section{碳纳米管阵列制备工艺基础}
+\ensection{Fundamentals of CNT Array Fabrication Process}
 
-本节主要为第三章的方法设计提供理论基础。对于 CNT 阵列研究这类依赖专业知识、实验语境和机理证据的科研任务而言，通用大语言模型虽然具备一定的语义理解与生成能力，但仍难以稳定处理领域术语、实验条件和可追溯证据之间的复杂关系。因此，需要围绕领域知识组织、检索增强和证据组合机制展开讨论，为后续多源知识建模与证据链检索方法提供支撑。
+本节主要为后续样品制备过程分析和工艺变量解释提供背景。对于碳纳米管阵列而言，不同工艺条件并不是抽象的数据输入，而是直接参与催化剂演化、碳物种供给和阵列持续生长的重要过程条件。因此，有必要先从碳纳米管阵列常见制备路线、化学气相沉积生长过程以及关键工艺参数与形貌之间的联系出发，说明后续分析中各类变量的过程意义\cite{Liang2014VACNTReviewCN,Hata2004,Liu2021EcoMat}。
 
-\subsection{大语言模型与知识增强}
-\ensubsection{Large Language Models and Knowledge Enhancement}
+\subsection{碳纳米管阵列常见制备方法}
+\ensubsection{Common Fabrication Methods for CNT Arrays}
 
-预训练语言模型经过大规模语料训练后，已经能够在通用场景下完成语义理解、文本生成和一定程度的推理任务。然而，当任务转向材料科学等专业领域时，模型仍容易受到知识覆盖不足、专业术语理解不稳定、事实约束较弱和结果难以追溯等问题的影响\cite{Choi2024,Jiang2025}。对 CNT 阵列研究而言，相关信息通常分散在学术文献、实验记录、工艺参数表和图像分析结果中，研究目标也不是简单问答，而是围绕工艺条件、形貌变化和生长机理之间的联系开展分析。因此，这一场景对知识增强提出了更明确的要求。一方面，需要将多源知识整理为统一表示；另一方面，还需要保留实验条件、对象关系和来源信息，以支撑后续检索与结果解释\cite{Mostafa2024,Statt2023}。
+碳纳米管阵列的常见制备方法包括热化学气相沉积、水辅助化学气相沉积、等离子体增强化学气相沉积以及部分模板辅助方法等。其中，化学气相沉积因工艺成熟、适用范围较广且更便于调控催化剂和反应气氛，已成为碳纳米管阵列制备中最常用的技术路线\cite{Liang2014VACNTReviewCN,Liu2021EcoMat,Wu2025VACNTReview}。梁尤轩等\cite{Liang2014VACNTReviewCN}在综述中指出，热 CVD 路线在阵列生长动力学、生长终止机理以及结构调控方面已形成较系统的研究基础。在具体实验层面，韩道丽等\cite{Han2007CVDAlignedCN}利用无模板化学气相沉积法在单温炉中获得了高度定向的碳纳米管阵列，何婷等\cite{He2011LongAlignedCN}则通过二茂铁和二甲苯体系制备出毫米级超长定向阵列，说明催化剂层、基底条件、碳源供给和反应环境的协同设计能够显著影响阵列形成效率和持续生长能力。
 
-\subsection{检索增强生成}
-\ensubsection{Retrieval-Augmented Generation}
+\subsection{碳纳米管阵列CVD生长过程}
+\ensubsection{CVD Growth Process of CNT Arrays}
 
-检索增强生成的基本思想，是在生成之前先从外部知识源中检索相关信息，再将检索结果与用户问题一并输入模型，从而提高回答的针对性和可信度\cite{lewis2020rag}。与直接生成相比，这类方法能够降低幻觉，并提供一定程度的证据支撑。但对 CNT 阵列分析任务而言，普通检索增强方法通常仍以文本块为主要检索对象，容易打散实验条件、现象变化和机理解释之间原本连续的描述；返回结果即使与查询相关，也往往只是离散片段，难以直接支撑后续分析\cite{Soudani2024,Mostafa2024}。因此，在这类任务中，仅引入检索并不足够，还需要进一步考虑知识粒度和结果组织方式。
+化学气相沉积制备碳纳米管阵列的基本过程通常包括催化剂活化、碳源裂解、碳物种沉积扩散以及碳纳米管持续生长等阶段\cite{Hata2004,Liu2021EcoMat}。在生长初期，催化剂颗粒的尺寸、分布和活性状态会影响碳纳米管成核行为；在持续生长阶段，碳源裂解效率、碳扩散速率以及催化剂失活速度则进一步决定阵列能否维持连续、稳定的定向生长\cite{Liu2021EcoMat}。韩道丽等\cite{Han2007CVDAlignedCN}的实验结果表明，生长温度、催化剂浓度和基底状态变化会直接反映到阵列定向性和生长速率上。何婷等\cite{He2011LongAlignedCN}结合表征结果指出，连续的碳源和催化剂供给有助于维持超长阵列的快速生长。梁尤轩等\cite{Liang2014VACNTReviewCN}则进一步从综述层面指出，催化剂形貌演化是引发阵列生长终止的重要原因。因此，碳纳米管阵列的生长并不是单根碳纳米管简单并列生成的结果，而是催化剂行为、气相供给和阵列内部相互作用共同演化的过程。
+
+\subsection{关键工艺参数及其形貌影响}
+\ensubsection{Key Process Parameters and Their Effects on Morphology}
+
+在碳纳米管阵列 CVD 生长过程中，温度、催化剂与基底条件、碳源及载气组成、气体流量和生长时间是较为常见的关键工艺参数\cite{Liang2014VACNTReviewCN,Szabo2017,Gao2023}。韩道丽等\cite{Han2007CVDAlignedCN}通过对不同工艺条件的比较指出，在一定温度、催化剂浓度和基底处理条件下更容易获得定向性较好的阵列。杨超等\cite{Yang2016ALDThicknessCN}则利用原子层沉积方法制备氧化铁催化薄膜，发现催化层厚度会直接影响纳米催化颗粒尺寸以及阵列外径、壁数和高度，这说明催化层构建方式本身就是影响阵列结构的重要前提。Szab\'{o} 等围绕铝基底上的垂直排列碳纳米管生长分析了多种合成参数的影响，表明温度、前驱体条件和反应时间变化会同步影响阵列高度、均匀性和垂直排列状态\cite{Szabo2017}。Gao 等进一步结合文献挖掘与高通量实验对阵列生长优化进行了整理，说明参数筛选并不是单变量调节，而更接近多条件耦合下的过程优化问题\cite{Gao2023}。从过程机理上看，温度直接影响碳源裂解效率、催化剂活性和碳扩散速率；催化剂类型、尺寸及其与基底的匹配关系，会影响成核行为和后续阵列生长稳定性；碳源、载气和辅助气体的配比关系到活性碳供给、表面反应环境及副反应抑制效果；气体流量和生长时间则进一步决定反应物输运条件和阵列生长阶段的持续时间\cite{Hata2004,Liu2021EcoMat}。
+
+这些工艺条件会在阵列高度、取向状态、覆盖程度、直径分布以及局部波曲形态等方面留下明显差异\cite{Liu2021EcoMat,Zhang2009Morphology,Bulyarskiy2020}。Liu 等指出，生长速率变化、催化剂失活和阵列内部应力演化会共同影响阵列最终形貌\cite{Liu2021EcoMat}。Zhang 等则通过典型形貌对比展示了碳纳米管阵列由较规整森林状结构逐步转向更明显起伏、弯曲和波曲形态的过程，说明工艺变化不仅影响单一尺寸指标，也会改变阵列整体结构状态\cite{Zhang2009Morphology}。Bulyarskiy 等从反应器条件出发讨论了温度、压力与阵列生长行为之间的关系，也进一步说明过程条件变化会反映到可观测的形貌结果上\cite{Bulyarskiy2020}。因此，后续第四章中出现的工艺变量不仅是建模输入项，也对应着阵列形成过程中的真实调控条件。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        node distance=0.7cm,
+        box/.style={draw, rounded corners=2pt, align=center, font=\small, minimum height=0.95cm},
+        arrow/.style={-Latex, thick}
+    ]
+        \node[box, text width=3.2cm] (param) {温度、气体流量、\\催化剂条件、生长时间};
+        \node[box, right=1.0cm of param, text width=3.1cm] (mech) {裂解与扩散、催化剂活化/失活、\\阵列内部应力演化};
+        \node[box, right=1.0cm of mech, text width=3.2cm] (morph) {高度、取向度、\\曲率、覆盖密度};
+        \draw[arrow] (param) -- (mech);
+        \draw[arrow] (mech) -- (morph);
+    \end{tikzpicture}
+    \caption{工艺参数、过程机理与关键形貌之间的一般关系}
+    \label{fig:ch2_process_morphology_relation}
+\end{figure}
+
+\section{知识增强方法基础}
+\ensection{Fundamentals of Knowledge Enhancement Methods}
+
+本节主要为第三章的多源知识建模与证据链检索方法提供基础。对于碳纳米管阵列科研分析这类依赖专业术语、实验语境和机理证据的任务而言，通用大语言模型虽然具备一定的语义理解与生成能力，但仍难以稳定处理领域术语、条件约束和可追溯证据之间的复杂关系。因此，需要从大语言模型的领域任务适配、图结构知识表示以及检索增强与证据组织三个方面讨论知识增强方法的基本思路。
+
+\subsection{大语言模型与领域任务适配}
+\ensubsection{Large Language Models and Domain Task Adaptation}
+
+预训练语言模型经过大规模语料训练后，已经能够在通用场景下完成语义理解、文本生成和一定程度的推理任务。然而，当任务转向材料科学等专业领域时，模型仍容易受到知识覆盖不足、专业术语理解不稳定、事实约束较弱和结果难以追溯等问题的影响\cite{Choi2024,Jiang2025}。对碳纳米管阵列研究而言，相关信息通常分散在学术文献、实验记录、工艺参数表和图像分析结果中，研究目标也不是简单问答，而是围绕工艺条件、形貌变化和生长机理之间的联系开展分析。因此，大语言模型需要结合领域任务进行适配。
+
+常见的适配方式包括提示词约束、结构化输出要求、少样本示例和外部知识接入等。提示词可以用于明确抽取目标、限定输出格式和控制抽取粒度，从而提高术语识别、关系抽取和结构化表达的稳定性\cite{Choi2024,Polak2024}。但仅依赖提示词仍难以稳定处理复杂条件约束和跨来源证据组织，因此还需要结合结构化知识表示和检索机制，对模型输出进行约束和补充\cite{Mostafa2024,Statt2023}。
+
+\subsection{图结构知识表示}
+\ensubsection{Graph-based Knowledge Representation}
+
+面向材料科研分析的知识来源通常包括学术文献、实验记录、图像分析结果和工艺参数信息等多种形式\cite{Venugopal2024,Statt2023}。为了使这些异构内容能够被统一处理，首先需要完成知识抽取和规范化表示，使不同来源的信息在对象、属性、关系和来源字段上保持一致；随后还需要设计合适的知识单元粒度，使单个条目既能保留局部语义完整性，又不会因长度过长而影响后续检索与组合。对本研究而言，普通固定长度切分并不适合作为最终知识粒度，因为它容易破坏实验条件与后续现象、解释之间的联系。
+
+图结构知识表示能够较好地组织材料对象、工艺条件、形貌结果和机理解释之间的关系。相较于纯文本块或单一向量表示，图结构不仅保留文本内容，还能够显式表示对象关系、条件范围、证据来源和上下位关联，从而为后续检索和证据组织提供更稳定的结构基础\cite{Statt2023,Venugopal2024,Zhang2024TerminologyKG}。因此，面向任务的知识单元设计不应只强调语义相似度，还需要同时保留元数据和结构关系。
+
+\subsection{检索增强与证据组织}
+\ensubsection{Retrieval Augmentation and Evidence Organization}
+
+检索增强生成的基本思想，是在生成之前先从外部知识源中检索相关信息，再将检索结果与用户问题一并输入模型，从而提高回答的针对性和可信度\cite{lewis2020rag}。与直接生成相比，这类方法能够降低幻觉，并提供一定程度的证据支撑。但对碳纳米管阵列分析任务而言，普通检索增强方法通常仍以文本块为主要检索对象，容易打散实验条件、现象变化和机理解释之间原本连续的描述；返回结果即使与查询相关，也往往只是离散片段，难以直接支撑后续分析\cite{Soudani2024,Mostafa2024}。因此，在这类任务中，仅引入检索并不足够，还需要进一步考虑候选召回方式、知识粒度和证据组织方式。
 
 \begin{figure}[htbp]
     \centering
@@ -22,14 +70,6 @@
     \caption{检索增强生成的典型流程（引自文献\cite{lewis2020rag}，经截取）}
     \label{fig:ch2_rag_workflow}
 \end{figure}
-
-\subsection{多源知识表示}
-\ensubsection{Multi-source Knowledge Representation}
-
-面向材料科研分析的知识来源通常包括学术文献、实验记录、图像分析结果和工艺参数信息等多种形式\cite{Venugopal2024,Statt2023}。为了使这些异构内容能够被统一检索，首先需要完成知识抽取和规范化处理，使不同来源的信息在字段层面保持一致；随后还需要对文本进行合理切分，使单个知识条目既能保留局部语义完整性，又不会因长度过长而影响后续处理。对本研究而言，普通固定长度切分并不适合直接作为检索粒度，因为它容易破坏实验条件与后续现象、解释之间的联系。与此同时，仅靠向量表示也不足以覆盖专业术语、条件范围和对象关系等关键信息。因此，面向任务的知识单元设计不应只强调语义向量，而应同时保留文本内容、元数据、对象关系和证据片段，为后续检索与组织提供统一基础\cite{Jiang2025,Mostafa2024}。
-
-\subsection{混合检索与证据组织}
-\ensubsection{Hybrid Retrieval and Evidence Organization}
 
 在材料科研任务中，用户关心的往往不是单一事实，而是工艺条件、形貌变化、机理解释和性能结果之间的关联过程。仅依赖关键词检索容易忽略语义近邻，仅依赖向量检索又可能弱化条件约束和专业术语的精确匹配，因此混合检索逐渐成为更常见的技术路线\cite{lewis2020rag,Mostafa2024}。对科研分析而言，检索结果还需要结合任务需求和对象关系进行整理，使相关条目能够按条件、关系和来源被进一步组织起来，为后续分析提供依据\cite{Statt2023,Venugopal2024}。
 
@@ -63,123 +103,7 @@
 \end{equation}
 其中，$q$ 表示查询，$d$ 表示候选知识条目，$S_{\mathrm{sparse}}$ 和 $S_{\mathrm{dense}}$ 分别对应关键词匹配得分与语义相似度得分，$\alpha$ 用于控制两类信息在候选排序中的相对权重。后续若还需要考虑条件约束、对象关系或任务偏好，则可在此基础上继续引入其他评分项。
 
-\section{CNT阵列CVD工艺与形貌影响因素}
-\ensection{CNT Array CVD Process and Morphology-related Factors}
-
-本节主要为第四章中的工艺参数定义和关系建模提供过程背景。对 CNT 阵列而言，后续分析中出现的温度、时间、催化剂条件和气体组成等变量，并不是孤立的输入项，而是直接参与阵列生长过程并影响最终形貌的重要工艺条件。因此，有必要先从 CVD 生长的基本过程和主要影响因素出发，说明这些参数为何会与高度、取向、覆盖状态和局部弯曲等形貌结果相关联\cite{Hata2004,Liu2021EcoMat,Szabo2017}。
-
-\subsection{CNT阵列CVD生长过程}
-\ensubsection{CVD Growth Process of CNT Arrays}
-
-化学气相沉积是制备 CNT 阵列最常用的方法之一，其基本过程通常包括催化剂活化、碳源裂解、碳物种沉积扩散以及碳纳米管持续生长等阶段\cite{Hata2004,Liu2021EcoMat}。Hata等通过水辅助 CVD 制备了高纯度单壁碳纳米管阵列，说明在合适的催化剂活性和气氛控制下，气相供给条件可以显著改变阵列生长效率与持续性\cite{Hata2004}。Liu等进一步从机理和动力学角度总结了垂直排列碳纳米管阵列的生长过程，指出碳源裂解、催化剂状态保持和阵列内部相互作用会共同影响阵列能否维持连续、稳定的定向生长\cite{Liu2021EcoMat}。因此，对阵列生长而言，需要同时关注单根碳纳米管的生成过程以及阵列尺度上的整体稳定性。
-
-\subsection{主要工艺参数及其作用}
-\ensubsection{Major Process Parameters and Their Roles}
-
-在 CNT 阵列 CVD 生长过程中，温度、催化剂与基底条件、碳源及载气组成、气体流量和生长时间是较为常见的关键工艺参数\cite{Szabo2017,Gao2023}。Szabo等围绕铝基底上的垂直排列碳纳米管生长分析了多种合成参数的影响，表明温度、前驱体条件和反应时间变化会同步影响阵列高度、均匀性和垂直排列状态\cite{Szabo2017}。Gao等则进一步结合文献挖掘与高通量实验，对阵列生长优化进行了整理，说明参数筛选并不是单变量调节，而更接近多条件耦合下的过程优化问题\cite{Gao2023}。从过程机理上看，温度直接影响碳源裂解效率、催化剂活性和碳扩散速率；催化剂类型、尺寸及其与基底的匹配关系，会影响成核行为和后续阵列生长稳定性；碳源、载气和辅助气体的配比则关系到活性碳供给、表面反应环境及副反应抑制效果；气体流量和生长时间进一步决定了反应物输运条件和阵列生长阶段的持续时间\cite{Hata2004,Liu2021EcoMat}。这些参数并不是彼此独立起作用，而往往以耦合方式共同影响阵列结构，因此在后续建模中需要被统一视作过程条件变量。
-
-\subsection{工艺条件对关键形貌的影响}
-\ensubsection{Effects of Process Conditions on Key Morphologies}
-
-不同工艺条件会在阵列高度、取向状态、覆盖程度、直径分布以及局部波曲形态等方面留下明显差异\cite{Liu2021EcoMat,Zhang2009Morphology,Bulyarskiy2020}。Liu等的综述指出，生长速率变化、催化剂失活和阵列内部应力演化会共同影响阵列最终形貌\cite{Liu2021EcoMat}。Zhang等则通过典型形貌对比展示了 CNT 阵列可以由较规整的森林状结构逐步转向更明显的起伏、弯曲和波曲形态，这说明工艺变化不仅影响单一尺寸指标，也会改变阵列整体结构状态\cite{Zhang2009Morphology}。Bulyarskiy等从反应器条件出发讨论了温度、压力与阵列生长行为之间的关系，也进一步说明过程条件变化会反映到可观测的形貌结果上\cite{Bulyarskiy2020}。因此，后续第四章并不是简单把工艺参数作为数据输入，而是要在理解其生长意义的基础上，进一步借助图像表征获得稳定的关键形貌指标。
-
-\begin{figure}[htbp]
-    \centering
-    \begin{tikzpicture}[
-        node distance=0.7cm,
-        box/.style={draw, rounded corners=2pt, align=center, font=\small, minimum height=0.95cm},
-        arrow/.style={-Latex, thick}
-    ]
-        \node[box, text width=3.2cm] (param) {温度、气体流量、\\催化剂条件、生长时间};
-        \node[box, right=1.0cm of param, text width=3.1cm] (mech) {裂解与扩散、催化剂活化/失活、\\阵列内部应力演化};
-        \node[box, right=1.0cm of mech, text width=3.2cm] (morph) {高度、取向度、\\曲率、覆盖密度};
-        \draw[arrow] (param) -- (mech);
-        \draw[arrow] (mech) -- (morph);
-    \end{tikzpicture}
-    \caption{工艺参数、过程机理与关键形貌之间的一般关系}
-    \label{fig:ch2_process_morphology_relation}
-\end{figure}
-
-\section{SEM图像处理与关键形貌表征}
-\ensection{SEM Image Processing and Key Morphology Characterization}
-
-在明确工艺条件及其形貌影响之后，下一步问题是如何从实验表征中获得可比较的关键形貌信息。本节仅对 SEM 图像处理和常用表征指标作简要说明，为第四章的方法实现提供基础。相比透射电子显微镜、拉曼光谱和原子力显微镜等手段，SEM 图像更适合观察阵列尺度上的排列状态、覆盖情况和局部弯曲形态\cite{Jackman2013,Zhang2009Morphology}。
-
-\subsection{SEM图像预处理}
-\ensubsection{SEM Image Preprocessing}
-
-SEM 图像常存在灰度分布不均、局部噪声较强和对比度变化明显等问题，会直接影响后续轮廓识别和特征统计\cite{Jackman2013}。常见预处理步骤包括灰度归一化、去噪、对比度增强和形态学处理，其目的主要是减少噪声与伪影对后续分割和指标计算的干扰\cite{Imtiaz2023,Yadav2024}。
-
-\subsection{CNT阵列图像表征方法}
-\ensubsection{Image Representation Methods for CNT Arrays}
-
-CNT 阵列图像分析不同于常规目标检测或普通纹理分类，其难点在于高密度、遮挡、局部缠结和细长结构不规则等特点并存。常见处理思路包括方向分布统计、骨架提取和区域测量等\cite{Brandley2018,Imtiaz2023,Yadav2024}。这些方法为后续关键形貌量化提供了一般基础，具体实现将在第四章展开。
-
-\subsection{曲率、取向度与覆盖密度表征}
-\ensubsection{Characterization of Curvature, Alignment, and Coverage Density}
-
-从 CNT 阵列研究的需求看，曲率、取向度和覆盖密度是较有代表性的关键形貌指标\cite{Brandley2018,Imtiaz2023,Yadav2024,Jackman2013}。其中，曲率主要反映局部弯曲特征，取向度反映整体有序性，覆盖密度反映阵列表面分布情况。这些指标虽然都来自图像观测，但通常需要结合区域分割、方向统计和骨架分析等手段进行近似表征。
-
-从计算形式上看，覆盖密度通常可表示为阵列区域在感兴趣区域中的面积占比，即
-\begin{equation}
-    \rho=\frac{A_{\mathrm{CNT}}}{A_{\mathrm{ROI}}}
-\end{equation}
-其中，$A_{\mathrm{CNT}}$ 表示图像中阵列区域的有效面积，$A_{\mathrm{ROI}}$ 表示选定区域的总面积。对取向度而言，可将骨架或局部纹理的方向角记为 $\theta_i$，以主方向 $\theta_0$ 为参考，则一种常见的整体有序性度量形式为
-\begin{equation}
-    \eta=\frac{1}{N}\sum_{i=1}^{N}\cos^2(\theta_i-\theta_0)
-\end{equation}
-其中，$N$ 表示参与统计的方向样本数，$\eta$ 越大通常表示整体排列越集中。对于曲率，若以骨架离散点近似局部中心线，设相邻弧长为 $\Delta s_i$，相邻切线方向变化量为 $\Delta \theta_i$，则局部曲率可近似写为
-\begin{equation}
-    \kappa_i=\frac{|\Delta\theta_i|}{\Delta s_i}
-\end{equation}
-进一步地，可将整条骨架上的局部曲率取平均，得到该区域的平均曲率
-\begin{equation}
-    \bar{\kappa}=\frac{1}{N}\sum_{i=1}^{N}\kappa_i
-\end{equation}
-这些定义主要用于说明关键形貌指标的计算基础，具体分割方式、骨架提取流程和实现细节将在第四章展开。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.94\textwidth]{figures/chapter2_morph-000.png}
-    \caption{不同工艺条件下 CNT 阵列形貌差异及典型 SEM 结果（引自文献\cite{Zhang2009Morphology}）}
-    \label{fig:ch2_cnt_morph}
-\end{figure}
-
-\section{机器学习}
-\ensection{Machine Learning}
-
-在工艺条件和关键形貌指标都得到明确之后，下一步问题是如何建立两者之间的关系并进行结果分析。本节主要为第四章后半部分提供理论基础。对材料问题进行机器学习建模，通常需要在有限样本和复杂耦合条件下识别工艺参数与关键形貌之间的关系\cite{Lookman2019,Hajilounezhad2021}。围绕这一目标，下面从监督学习与回归建模、常用模型及其适用性，以及模型评价与结果解释三个方面梳理相关技术。
-
-\subsection{监督学习与回归建模}
-\ensubsection{Supervised Learning and Regression Modeling}
-
-监督学习的基本思想是利用已知输入与目标输出之间的对应关系，学习能够完成预测或拟合的映射函数。在本文任务中，输入主要为 CVD 工艺参数，输出则为关键形貌指标，因此问题本质上属于面向连续变量的回归建模，其一般表达可写为
-\begin{equation}
-    \hat{y}=f(x;\theta)
-\end{equation}
-其中，$x$ 表示输入特征，$\theta$ 表示模型参数，$\hat{y}$ 表示模型对目标变量的预测结果。与一般大样本工程场景相比，材料问题往往具有样本有限、参数耦合复杂、关系非线性和标签存在噪声等特点，因此更需要根据任务和数据特点选择合适的建模方式\cite{Lookman2019,Gao2023}。
-
-\subsection{常用回归模型及其适用性}
-\ensubsection{Common Regression Models and Their Applicability}
-
-围绕工艺参数与形貌指标的关系建模，常见方法包括线性回归、支持向量回归、随机森林、梯度提升树以及多层感知机等。线性方法实现简单、可解释性较强，但难以充分刻画复杂非线性关系；核方法和树模型通常更适合小样本、非线性和多参数耦合场景；神经网络在表达能力上更强，但对数据规模和调参更为敏感\cite{Lookman2019,Hajilounezhad2021,Li2025Matter}。因此，在材料小样本问题中，模型选择通常需要同时考虑任务目标、数据规模和结果解释需求。
-
-\subsection{模型评价与结果解释}
-\ensubsection{Model Evaluation and Result Interpretation}
-
-在回归建模中，常用评价指标包括平均绝对误差（MAE）、均方根误差（RMSE）和决定系数（$R^2$）等，它们分别从平均偏差、误差波动和整体拟合程度等方面反映模型性能，其定义可写为
-\begin{equation}
-    \mathrm{MAE}=\frac{1}{n}\sum_{i=1}^{n}|y_i-\hat{y}_i|
-\end{equation}
-\begin{equation}
-    \mathrm{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
-\end{equation}
-\begin{equation}
-    R^2=1-\frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}{\sum_{i=1}^{n}(y_i-\bar{y})^2}
-\end{equation}
-其中，$y_i$ 表示真实值，$\hat{y}_i$ 表示预测值，$\bar{y}$ 表示真实值均值。对材料问题而言，误差指标只能反映拟合效果，还需要结合特征重要性分析、趋势分析、局部依赖关系以及必要的知识证据对结果进行解释\cite{Lookman2019,Hajilounezhad2021}。数据驱动结果可以提示参数之间可能存在的关联，知识驱动方法则有助于补充其机理背景\cite{Statt2023,Mostafa2024}。
-
 \section{小结}
 \ensection{Summary}
 
-本章围绕本文所需的相关理论与关键技术，从领域知识组织与检索增强、CNT 阵列 CVD 工艺与生长影响因素、SEM 图像表征与关键形貌表征，以及工艺参数关系建模与结果解释四个方面进行了概述。第一部分为第三章的多源知识建模与证据链检索提供基础，第二部分说明了后续分析中主要工艺参数的过程背景，第三部分为第四章的关键形貌提取与表征提供支撑，第四部分则为参数—形貌关系建模与结果解释提供方法背景。通过这些理论准备，后续各章的方法设计能够更自然地衔接起来。
+本章围绕后续章节所需的两类基础展开，即碳纳米管阵列制备工艺基础和知识增强方法基础。前一部分说明了碳纳米管阵列常见制备路线、CVD 生长过程以及关键工艺参数与形貌之间的联系，为后续工艺变量分析提供过程背景；后一部分讨论了大语言模型的领域任务适配、图结构知识表示以及检索增强与证据组织机制，为第三章的多源知识建模与证据链检索方法提供支撑。通过这些准备，后续章节中的知识增强分析和工艺—形貌关系研究能够更自然地衔接起来。

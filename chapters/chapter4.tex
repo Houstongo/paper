@@ -5,7 +5,15 @@
 \section{引言}
 \ensection{Introduction}
 
-第三章为工艺变量筛选和机理解释提供了知识组织与证据链检索基础。在此基础上，本章进一步面向具体样品体系，讨论碳纳米管阵列的自动化形貌表征及工艺—形貌关系分析问题。由于 SEM 图像中普遍存在结构交叠、局部遮挡和边界模糊等情况，单纯依赖人工判读难以满足批量样品比较和定量分析需求，因此本章首先建立样品级关键形貌自动化表征流程，再结合知识增强结果开展工艺参数筛选、统计关系分析及解释，从而形成由形貌表征到关系分析的完整研究链条。
+第三章主要研究了碳纳米管阵列科研分析中的知识组织与检索增强问题，为后续工艺参数分析和结果解释提供了知识基础。在此基础上，要进一步讨论工艺参数变化与阵列形貌演化之间的关系，还需要先获得稳定、可比较的样品级关键形貌表征结果。扫描电子显微镜图像是观察碳纳米管阵列形貌的主要依据，但图像中普遍存在结构交叠、局部遮挡和边界模糊等情况，单纯依赖人工判读难以满足批量样品分析和定量比较的需要。
+
+本章的分析建立在具体实验样品、工艺参数记录和对应图像数据之上。因此，本章首先说明实验样品体系、工艺记录方式和图像数据来源，使后续形貌计算与关系分析都能够建立在统一的样品级数据对象上。
+
+在此基础上，本文围绕样品比较和后续工艺—形貌分析需求，建立样品级自动化表征流程。该流程以扫描电子显微镜图像为输入，通过前景分割、骨架分析和几何计算提取覆盖密度、取向度、表观直径、平均曲率、波曲度和迂曲度等关键特征，形成可用于后续分析的样品级特征表示。
+
+在获得关键形貌表征结果后，本章进一步结合第三章的知识检索结果，开展知识增强支持下的工艺—形貌关系分析。围绕关键工艺变量，本文依次开展参数筛选、统计关系分析、关系建模和结果解释，以讨论工艺参数变化与阵列形貌演化之间的关系，并形成具有知识证据支撑的分析框架。
+
+因此，本章按照“实验样品与数据获取—自动化关键形貌表征—知识增强支持下的工艺—形貌关系分析”的顺序展开。第 4.2 节介绍实验样品体系和图像数据来源，第 4.3 节讨论样品级关键形貌的自动化表征方法，第 4.4 节在前述表征结果基础上开展工艺参数筛选、统计关系分析和知识增强解释。
 
 \section{实验样品与数据获取}
 \ensection{Samples and Data Acquisition}
@@ -414,27 +422,35 @@
     \centering
     \setlength{\tabcolsep}{3pt}
     \renewcommand{\arraystretch}{1.0}
-    \begin{tabular}{@{}p{0.018\textwidth}cccc@{}}
-        \makebox[0pt][r]{\raisebox{-0.15\textwidth}[0pt][0pt]{\textbf{a}}\hspace{0.004\textwidth}} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/a_original.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/b_original.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/c_original.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/d_original.png} \\
-        \makebox[0pt][r]{\raisebox{-0.15\textwidth}[0pt][0pt]{\textbf{b}}\hspace{0.004\textwidth}} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/a_weak.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/b_weak.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/c_weak.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/d_weak.png} \\
-        \makebox[0pt][r]{\raisebox{-0.15\textwidth}[0pt][0pt]{\textbf{c}}\hspace{0.004\textwidth}} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/a_cntsegnet.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/b_cntsegnet.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/c_cntsegnet.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/d_cntsegnet.png} \\
-        \makebox[0pt][r]{\raisebox{-0.15\textwidth}[0pt][0pt]{\textbf{d}}\hspace{0.004\textwidth}} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/a_cntsegnet_cldice.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/b_cntsegnet_cldice.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/c_cntsegnet_cldice.png} &
-        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison/d_cntsegnet_cldice.png} \\
+    \begin{tabular}{@{}cccc@{}}
+        \begin{tikzpicture}[baseline=(img.base)]
+            \node[inner sep=0pt] (img) {\includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/a_original.png}};
+            \node[anchor=north east,font=\bfseries] at ([xshift=-0.006\textwidth,yshift=0pt]img.north west) {a};
+        \end{tikzpicture} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/b_original.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/c_original.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/d_original.png} \\
+        \begin{tikzpicture}[baseline=(img.base)]
+            \node[inner sep=0pt] (img) {\includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/a_weak.png}};
+            \node[anchor=north east,font=\bfseries] at ([xshift=-0.006\textwidth,yshift=0pt]img.north west) {b};
+        \end{tikzpicture} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/b_weak.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/c_weak.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/d_weak.png} \\
+        \begin{tikzpicture}[baseline=(img.base)]
+            \node[inner sep=0pt] (img) {\includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/a_cntsegnet.png}};
+            \node[anchor=north east,font=\bfseries] at ([xshift=-0.006\textwidth,yshift=0pt]img.north west) {c};
+        \end{tikzpicture} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/b_cntsegnet.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/c_cntsegnet.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/d_cntsegnet.png} \\
+        \begin{tikzpicture}[baseline=(img.base)]
+            \node[inner sep=0pt] (img) {\includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/a_cntsegnet_cldice.png}};
+            \node[anchor=north east,font=\bfseries] at ([xshift=-0.006\textwidth,yshift=0pt]img.north west) {d};
+        \end{tikzpicture} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/b_cntsegnet_cldice.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/c_cntsegnet_cldice.png} &
+        \includegraphics[width=0.235\textwidth]{D:/Apaper/paperformat/figures/sources/fig4-4-raw-comparison-center/d_cntsegnet_cldice.png} \\
     \end{tabular}
     \caption{形貌特征提取所依赖的前景输入对比图。a--d 分别对应原图、弱标签、CNTSegNet 结果和 CNTSegNet-clDice 结果，各列从左至右对应四组代表样本。}
     \label{fig:4_4_segmentation_comparison}

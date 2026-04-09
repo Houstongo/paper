@@ -73,7 +73,7 @@
 \def\xmu@label@appendix{附录}
 \def\xmu@label@enappendix{Appendix}
 \def\xmu@label@publications{在学期间完成的相关学术成果}
-\def\xmu@label@enpublications{Relevant Academic Achievements Completed During the Acad-\linebreak emic Period}
+\def\xmu@label@enpublications{Relevant Academic Achievements Completed During the Academic Period}
 \def\xmu@label@reference{参考文献}
 \def\xmu@label@enreference{References}
 \def\xmu@label@acknowledgements{致~~~~谢}
@@ -800,7 +800,7 @@
 	\zihao{-4}
 	\setlength{\baselineskip}{21pt}
 	\chapter*{\xmu@label@publications}
-	\pdfbookmark[0]{在学期间完成的相关学术成果}{publications}
+	\pdfbookmark[0]{\xmu@label@enpublications}{publications}
 % 	\addtocontents{etoc}{\protect\contentsline{chapter}{\sffamily\xmu@label@enpublications}{\sffamily {\thepage}}{chapter.\thechapter}}
         \addcontentsline{toc}{chapter}{\xmu@label@publications}
 	\addcontentsline{etoc}{chapter}{\sffamily\xmu@label@enpublications}
