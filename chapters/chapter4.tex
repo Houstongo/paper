@@ -18,8 +18,8 @@
 \section{实验样品与数据获取}
 \ensection{Samples and Data Acquisition}
 
-\subsection{实验试剂与仪器}
-\ensubsection{Experimental Reagents and Instruments}
+\subsection{实验试剂、仪器与参数记录}
+\ensubsection{Experimental Reagents, Instruments and Parameter Records}
 
 本章实验所用主要仪器和设备见表~\ref{tab:4_1_instruments}。
 
@@ -39,8 +39,6 @@
         双靶磁控溅射仪 & VTC-600-2HD & 沈阳科晶 \\
         真空气氛管式电炉 & SK-GO8123KF & 天津中环电炉 \\
         气体质量流量控制系统 & ZL-04H & 天津中环电炉 \\
-        石英舟 & 65$\times$150$\times$5 mm & 东华石英 \\
-        石英管 & 1000$\times$74$\times$3 mm & 东华石英 \\
         台式场发射显微镜 & Phenom Pharos G2 & 飞纳电镜 \\
         氢气发生器 & KPS-H & 科普生 \\
         \bottomrule
@@ -56,29 +54,110 @@
     \setlength{\tabcolsep}{0pt}
     \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{0.34\textwidth}>{\centering\arraybackslash}m{0.22\textwidth}>{\centering\arraybackslash}m{0.40\textwidth}@{}}
         \toprule
-        名称 & 简称/分子式 & 生产厂家 \\
+        名称 & 分子式/规格 & 生产厂家 \\
         \midrule
         铁靶材 & Fe & 北京晶迈中科材料技术有限公司 \\
         氧化铝靶材 & \ce{Al2O3} & 北京晶迈中科材料技术有限公司 \\
         硅单抛氧化片 & Si & 浙江立晶硅材料有限公司 \\
+        石英舟 & 65 $\times$ 150 $\times$ 5 mm & 东华石英 \\
+        石英管 & 1000 $\times$ 74 $\times$ 3 mm & 东华石英 \\
         高纯氩气 & Ar & 林德气体（厦门）有限公司 \\
         高纯乙烯 & \ce{C2H4} & 中山市天科气体科技有限公司 \\
         \bottomrule
     \end{tabularx}
 \end{table}
 
-为保证后续分析能够回溯到具体样品，本研究对每个样品同步记录其工艺参数，包括 \ce{Al2O3} 功率、\ce{Al2O3} 厚度、Fe 功率、Fe 厚度、Ar 流量、\ce{H2} 流量、\ce{C2H4} 流量、退火起始温度、生长温度、退火时间及生长时间等，并建立样品编号与工艺参数记录之间的一一对应关系。上述记录既为样品制备过程留存基础数据，也为后续图像绑定、形貌计算和工艺—形貌分析提供统一索引。
+本章样品涉及的主要工艺参数及其取值范围见表~\ref{tab:4_3_process_parameter_ranges}。
+
+\begin{table}[htbp]
+    \centering
+    \caption{本章主要工艺参数表}
+    \label{tab:4_3_process_parameter_ranges}
+    \small
+    \renewcommand{\arraystretch}{1.45}
+    \setlength{\tabcolsep}{0pt}
+    \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{0.28\textwidth}>{\centering\arraybackslash}m{0.28\textwidth}>{\centering\arraybackslash}m{0.40\textwidth}@{}}
+        \toprule
+        工艺阶段 & 参数 & 取值范围 \\ 
+        \midrule
+        催化层预制 & 氧化铝功率 & 50--200 W \\
+        催化层预制 & 氧化铝厚度 & 5--30 nm \\
+        催化层预制 & 铁功率 & 2--50 W \\
+        催化层预制 & 铁厚度 & 0.5--2.75 nm \\
+        退火预处理 & 退火温度 & 600 ℃ \\
+        退火预处理 & 退火时间 & 15--45 min \\
+        生长阶段 & 氩气流量 & 200--600 sccm \\
+        生长阶段 & 氢气流量 & 100--300 sccm \\
+        生长阶段 & 乙烯流量 & 50--150 sccm \\
+        生长阶段 & 生长温度 & 750 ℃ \\
+        生长阶段 & 生长时间 & 180 min \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 \subsection{样品制备与图像数据获取流程}
 \ensubsection{Sample Preparation and Image Data Acquisition Workflow}
 
-本章样品均来自同一 \ce{Al2O3}/Fe 催化层预制与管式炉热 CVD 生长体系。样品制备时，先在 Si 基底表面通过磁控溅射形成 \ce{Al2O3}/Fe 双层催化结构，再将预制催化层样品置于管式炉中，依次完成升温、退火预处理和碳源引入，最终获得具有不同取向和弯曲状态的碳纳米管阵列样品。对于本章后续分析而言，这一流程的作用在于在保持基本生长窗口一致的前提下，形成具有可比性的样品差异。
+本章样品均来自基于磁控溅射预制 \ce{Al2O3}/Fe 催化层的管式炉热 CVD 生长体系。样品制备时，先在 Si 基底表面磁控溅射氧化铝支撑层，再沉积不同功率和厚度条件下的 Fe 催化层，形成用于后续阵列生长的预制催化层样品。随后将镀膜后的基底切割为小尺寸样片，置于管式炉中心，在 Ar/\ce{H2} 气氛下完成升温和退火预处理，并在设定生长温度下引入 \ce{C2H4} 作为碳源进行生长，最终获得具有不同取向和弯曲状态的碳纳米管阵列样品。样品完成后，再将阵列侧面竖直固定于样品台上，通过扫描电子显微镜采集侧视图像，用于后续形貌分析。由于后续分析关注样品级形貌比较和工艺—形貌关系，这里重点保留在基本生长窗口相对一致条件下形成的样品差异。
 
-样品制备完成后，采用场发射扫描电子显微镜对阵列形貌进行观察，并同步记录样品编号、采集位置及成像参数。本研究主要采集阵列侧视 SEM 图像，以表征样品的致密程度、取向状态和弯曲形貌。为减少成像条件变化对后续分析结果的干扰，同一批样品的图像采集尽量保持一致。结合后续自动化表征需求，本文主要使用 $50000\times$ 条件下获得的 SEM 图像，以兼顾整体结构信息和局部弯曲细节。
+样品制备完成后，采用场发射扫描电子显微镜采集阵列侧视图像，并同步记录样品编号、采集位置以及倍率、像素尺寸、探测模式、加速电压和工作距离等成像元数据。本研究主要采用二次电子成像模式（SED），该模式对样品表面起伏和边界细节更敏感，适合用于碳纳米管阵列侧视图像中的前景分割、骨架提取和形貌特征计算。为减少成像条件变化对结果的干扰，同一批样品尽量保持一致的观察条件。结合后续自动化表征需求，本文统一采用放大倍率为 5 万倍（50\,000×）条件下获得的扫描电子显微镜图像作为主要输入。该放大倍率既能够保留阵列整体排列和局部交叠关系，又能较清楚地呈现单根或局部管束边界，因而更适合用于样品级覆盖密度、取向度及弯曲相关特征的统一计算。后续物理量换算则以图像元数据中的像素尺寸为尺度依据。
 
-原始图像获取后，首先进行人工筛选，剔除失焦、污染较重、边界区域不完整以及存在明显充电伪影的图像，保留结构区域清晰、适合开展样品级形貌分析的图像。随后建立图像编号与样品编号、工艺参数记录及成像条件之间的对应关系，以保证后续结果能够回溯到具体实验样品。
+原始图像获取后，首先进行人工筛选，剔除失焦、污染较重、边界区域不完整以及存在明显充电伪影的图像，保留结构区域清晰、适合开展样品级形貌分析的图像。与此同时，对每个样品同步记录工艺参数，并建立图像编号、样品编号、工艺参数记录及成像条件之间的对应关系，保证后续结果能够回溯到具体实验样品。
 
-在后续分析流程中，一部分图像用于分割模型训练与测试，另一部分作为样品级形貌表征与工艺—形貌关系分析的输入。与图像对应的工艺参数记录也同步整理为结构化数据表。通过样品编号和元数据约束，实验记录、工艺参数和图像结果被统一整理为可直接进入后续分析流程的样品级数据对象。基于上述数据整理结果，下一节将进一步讨论如何从 SEM 图像中自动提取取向度、平均曲率、波曲度及迂曲度等关键形貌特征。
+为进一步说明本章数据如何进入后续分析流程，这里补充样品级数据构建与集成过程。如图~\ref{fig:4_1_data_pipeline} 所示，本章数据由实验样品、工艺参数记录和对应扫描电子显微镜图像共同构成。经过图像筛选、样品绑定和实验数据库整理后，这些信息被组织为可直接用于后续形貌表征与工艺—形貌关系分析的样品级数据对象。
+
+\begin{figure}[tbp]
+    \centering
+    \makebox[\textwidth][c]{%
+    \resizebox{0.92\textwidth}{!}{%
+    \begin{tikzpicture}[
+        >=Stealth,
+        node distance=0.85cm and 1.15cm,
+        data/.style={
+            draw=black!45,
+            rounded corners=4pt,
+            align=center,
+            minimum height=1.25cm,
+            text width=2.35cm,
+            fill=black!3,
+            font=\small
+        },
+        merge/.style={
+            draw=black!45,
+            rounded corners=4pt,
+            align=center,
+            minimum height=1.25cm,
+            text width=2.65cm,
+            fill=black!5,
+            font=\small
+        },
+        line/.style={draw=black!60, -{Stealth[length=3mm,width=2mm]}, line width=0.7pt}
+    ]
+        \node[data] (sample) {实验样品};
+        \node[data, right=1.15cm of sample] (params) {工艺参数记录};
+        \node[data, below=1.55cm of params] (sem) {SEM 图像采集};
+        \node[merge, right=1.25cm of params] (bind) {样品编号与\\图像绑定};
+        \node[data, below=1.55cm of bind] (screen) {图像筛选};
+        \node[data, right=1.25cm of bind] (db) {数据库集成};
+        \node[merge, right=1.25cm of db] (input) {样品级数据对象\\后续分析输入};
+
+        \coordinate (fork) at ($(sample.east)+(0.45,0)$);
+
+        \draw[draw=black!60, line width=0.7pt] (sample.east) -- (fork);
+        \draw[line] (fork) -- (params.west);
+        \draw[line] (fork) |- (sem.west);
+        \draw[line] (params.east) -- (bind.west);
+        \draw[line] (sem.east) -- (screen.west);
+        \draw[line] (screen.north) -- (bind.south);
+        \draw[line] (bind.east) -- (db.west);
+        \draw[line] (db.east) -- (input.west);
+    \end{tikzpicture}}
+    }
+    \caption{本章样品级数据构建与数据库集成流程示意图}
+    \label{fig:4_1_data_pipeline}
+\end{figure}
+
+通过上述集成过程，实验样品、工艺参数和图像结果之间建立了一一对应关系，并统一整理为后续表征与分析所需的样品级数据对象。后续分析中，分割模型训练与评估使用相应图像子集，样品级形貌表征与工艺—形貌关系分析则基于整理后的样品图像开展。下一节将进一步讨论关键形貌特征的自动化提取方法。
 
 \section{碳纳米管阵列自动化形貌表征方法}
 \ensection{Automated Morphology Characterization of CNT Arrays}
@@ -90,7 +169,7 @@
 
 在这一目标下，本文关注的重点不是局部单根结构的完全复原，而是形貌特征作为后续分析输入时的稳定性、可比性与可解释性。覆盖密度、取向度和表观直径主要用于描述样品整体生长状态与结构均匀性，平均曲率、波曲度和迂曲度则用于刻画阵列在样品尺度上的弯曲形貌差异。与局部观察或经验性描述相比，这种样品级统计表征方式更适合服务于后续工艺参数筛选、工艺--形貌关系分析及知识增强解释任务。
 
-基于上述认识，本文建立了由前景分割、骨架分析与几何计算构成的自动化表征流程。该流程首先从 SEM 图像中提取连续、稳定的 CNT 前景区域，再结合骨架与区域几何信息分别计算整体性特征和弯曲相关特征，最终形成面向样品的关键形貌特征向量。这里，前景分割的作用不仅在于完成前景与背景分离，更在于尽可能保持复杂细长结构的连通性和整体形态信息，因为局部结构一旦在分割阶段发生断裂，后续基于骨架的曲率、波曲度和迂曲度计算就会直接受到影响，进而削弱样品级统计结果的稳定性。因此，本节方法设计的重点，是为后续样品级关键形貌表征提供可靠输入基础，整体流程如图~\ref{fig:4_1_morphology_workflow} 所示。
+基于上述认识，本文建立了由前景分割、骨架分析与几何计算构成的自动化表征流程。与 4.2.2 中的数据集成流程图不同，这里的流程图强调扫描电子显微镜图像进入后，各类形貌特征如何被逐步计算和汇总。该流程首先从 SEM 图像中提取连续、稳定的 CNT 前景区域，再结合骨架与区域几何信息分别计算整体性特征和弯曲相关特征，最终形成面向样品的关键形貌特征向量。这里，前景分割的作用不仅在于完成前景与背景分离，更在于尽可能保持复杂细长结构的连通性和整体形态信息，因为局部结构一旦在分割阶段发生断裂，后续基于骨架的曲率、波曲度和迂曲度计算就会直接受到影响，进而削弱样品级统计结果的稳定性。因此，本节方法设计的重点，是为后续样品级关键形貌表征提供可靠输入基础，整体流程如图~\ref{fig:4_1_morphology_workflow} 所示。
 
 \begin{figure}[htbp]
     \centering
@@ -104,7 +183,7 @@
             rounded corners=4pt,
             align=center,
             minimum height=1.82cm,
-            text width=2.75cm,
+            text width=2.95cm,
             fill=black!3,
             font=\small
         },
@@ -113,7 +192,7 @@
             rounded corners=4pt,
             align=center,
             minimum height=1.82cm,
-            text width=2.75cm,
+            text width=2.95cm,
             fill=black!3,
             font=\small
         },
@@ -121,8 +200,8 @@
             draw=black!50,
             rounded corners=4pt,
             align=center,
-            minimum height=1.92cm,
-            text width=3.9cm,
+            minimum height=2.05cm,
+            text width=4.15cm,
             fill=black!5,
             font=\small
         },
@@ -131,15 +210,15 @@
             rounded corners=4pt,
             align=center,
             minimum height=1.82cm,
-            text width=2.95cm,
+            text width=3.15cm,
             fill=black!3,
             font=\small
         },
         arrow/.style={->, line width=0.85pt, draw=black!55}
     ]
-        \node[stageA] (sem) {SEM 图像\\阵列原始形貌};
-        \node[stageB, right=of sem] (seg) {前景分割\\二值前景图};
-        \node[stageC, right=of seg] (feat) {形貌特征提取\\覆盖密度、取向度、表观直径、平均曲率、波曲度、迂曲度};
+        \node[stageA] (sem) {扫描电子显微镜图像\\样品原始形貌};
+        \node[stageB, right=of sem] (seg) {前景分割\\稳定前景区域};
+        \node[stageC, right=of seg] (feat) {形貌特征提取\\覆盖密度、取向度、表观直径\\平均曲率、波曲度、迂曲度};
         \node[stageD, right=of feat] (vec) {样品级特征向量\\工艺--形貌分析输入};
 
         \draw[arrow] (sem) -- (seg);
@@ -331,7 +410,7 @@
 \begin{equation}
     d_{\mathrm{app}}=\frac{2\,\mathrm{median}\!\left(r_{\mathrm{px}}^{\mathrm{filt}}\right)}{p_{x/\mu m}}\times 10^3
 \end{equation}
-其中，$d_{\mathrm{app}}$ 的单位为 nm。当 SEM 倍率低于 $20{,}000\times$ 时，直径和弯曲类结果仅作为辅助观察量，不作为可靠物理量进行解释。
+其中，$d_{\mathrm{app}}$ 的单位为 nm。
 
 \noindent　　\textbf{（4）弯曲相关特征统计}\par
 
@@ -619,6 +698,8 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 
 这里的参数筛选并不是以知识检索替代实验数据分析，而是在已有样品数据和后续分析目标基础上，结合第三章知识库支持下的工艺分析任务以及关系约束检索算法 TCCER 返回的证据链，对候选变量进行归纳。图中所示的大模型归纳结果并非检索系统直接输出，而是在 TCCER 返回的证据链基础上，结合 GPT-5.3 的归纳整理得到，用于辅助参数收敛与后续变量角色解释。具体而言，本文不单纯依据统计显著性保留变量，而是综合考虑三个方面。其一，变量是否与当前样品集中的关键形貌差异存在较稳定的对应关系；其二，围绕该变量能否形成相对完整的工艺—机理—形貌证据链；其三，该变量是否适合作为后续关系建模与结果解释的输入。
 
+原始工艺记录覆盖了催化层预制、退火预处理和生长阶段的主要过程条件，但后续分析并不对这些参数作同等展开，而是在保持背景生长窗口基本一致的前提下，优先围绕 Fe 功率、Fe 厚度和退火时间收敛分析范围。
+
 \definecolor{kgInputBg}{RGB}{244,247,252}
 \definecolor{kgInputTag}{RGB}{98,117,147}
 \definecolor{kgEvidenceBg}{RGB}{248,245,240}
@@ -693,7 +774,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 \subsection{工艺参数与关键形貌特征的统计关系分析}
 \ensubsection{Statistical Analysis of Process Parameters and Key Morphology Features}
 
-在完成分析范围收敛后，本节从数据层面考察三项核心工艺变量与关键形貌特征之间的关系。分析对象为固定背景条件下选取的 $50000\times$ 样品子集，工艺输入包括 Fe 功率、Fe 厚度和退火时间，形貌输出重点关注取向度、平均曲率、波曲度和迂曲度。统计分析依次采用 Spearman 秩相关、单变量分组比较和多变量联合观察，用于识别整体相关结构、主要变化趋势及可能存在的耦合响应。这里的重点是先说明数据中已经能够观察到什么关系，至于这些关系能否在建模层面保持稳定，以及应当如何理解其成因，放到下一小节讨论。
+在完成分析范围收敛后，本节从数据层面考察三项核心工艺变量与关键形貌特征之间的关系。分析对象为固定背景条件下选取的放大倍率为 5 万倍的图像样品子集，工艺输入包括 Fe 功率、Fe 厚度和退火时间，形貌输出重点关注取向度、平均曲率、波曲度和迂曲度。统计分析依次采用 Spearman 秩相关、单变量分组比较和多变量联合观察，用于识别整体相关结构、主要变化趋势及可能存在的耦合响应。这里的重点是先说明数据中已经能够观察到什么关系，至于这些关系能否在建模层面保持稳定，以及应当如何理解其成因，放到下一小节讨论。
 
 首先采用 Spearman 秩相关系数，对工艺参数与关键形貌特征之间的整体相关结构进行统计分析。设两组变量的秩序列分别为 $R_i$ 和 $S_i$，则其相关系数定义为
 \begin{equation}
