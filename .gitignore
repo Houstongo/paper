@@ -18,3 +18,38 @@
 *.vrb
 *.gz
 temp.txt
+
+# Temporary build variants
+demo_tmp.*
+demo-rebuilt.pdf
+verify.*
+dbsync.*
+
+# Temporary screenshots and extracted previews
+demo-*.png
+temp_demo1_*
+chapter42_preview.png
+tmp_intro_fig4-4.png
+_tmp_demo_pdf.txt
+_tmp_4_7.docx
+_tmp_4_7.txt
+
+# Temporary working directories
+drawio-tmp/
+drawio-userdata/
+tmp/
+tmp-chrome-profile/
+tmp-edge-profile/
+tmp-edge-profile2/
+tmpbuild/
+tmp_ppt_extract/
+_tmp_ch5_check/
+_tmp_ch5_pages/
+_tmp_ch5_pages2/
+_tmp_ch5_shrink/
+
+# Recovery and backup files
+chapters/chapter3.tex.bak
+chapters/chapter3_restored.tex
+chapters/chapter3_utf8.tex
+~$*.pdf
