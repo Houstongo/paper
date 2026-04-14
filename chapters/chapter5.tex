@@ -5,11 +5,9 @@
 \section{引言}
 \ensection{Introduction}
 
-前两章已经分别完成了面向碳纳米管阵列研究的知识建模与检索增强、关键形貌自动化表征以及工艺—形貌关系分析。第三章对应全文分析链路中的知识支撑层，主要解决文献、实验记录和分析结果的组织与检索问题。第四章对应核心分析层，主要解决样品 SEM 图像中的关键形貌提取以及工艺参数驱动的关系分析问题。这些工作为样品分析、工艺比较和结果解释奠定了方法基础。
+第三章和第四章已经分别给出了面向碳纳米管阵列研究的知识建模与检索增强方法、关键形貌自动化表征流程以及工艺—形貌关系分析结果。这些方法能够支持单项分析任务，但在实际研究中，知识查询、SEM 图像分析、工艺参数比较和结果解释通常围绕同一样品连续展开，还需要统一的数据组织与调用环境。
 
-在实际研究过程中，知识查询、SEM 图像分析、工艺参数比较和结果解释通常围绕同一样品或同一组工艺条件连续展开。研究人员往往需要同时调取实验记录、图像表征结果、领域知识和预测信息。若前述方法仅以独立算法或离线流程存在，则难以支撑完整的科研分析活动。因此，有必要将相关方法集成为统一平台，形成面向碳纳米管阵列研究的协同分析流程。
-
-本章在前文研究基础上，重点考察第三章和第四章的方法能否在统一样品编号和数据组织框架下形成连贯的分析流程。为此，首先介绍平台架构与运行环境，随后说明知识增强分析、SEM 自动化表征和形貌预测等方法在平台中的集成方式，最后结合样品数据管理、知识检索、图像表征、形貌预测和结果解释等环节，对平台的贯通情况进行验证。
+因此，本章不再展开前述方法的算法细节，而是考察它们接入统一平台后的协同运行情况。重点包括平台架构与运行环境、关键分析环节的接入方式，以及围绕样品编号组织的数据贯通与功能验证。
 
 \section{系统设计与运行环境}
 \ensection{System Design and Runtime Environment}
@@ -17,7 +15,7 @@
 \subsection{系统需求分析}
 \ensubsection{System Requirement Analysis}
 
-面向碳纳米管阵列研究的科研辅助分析平台，其需求主要来自样品分析、工艺比较和结果解释等实际研究活动。平台需要以样品编号为主线，对样品信息、工艺参数、SEM 图像、知识单元和分析结果进行统一管理，使同一样品相关的多源数据能够被连续调用。与此同时，文献、实验记录和历史分析结果需要经过整理、构建与入库后，才能为知识增强分析提供稳定的数据基础。平台还应在同一环境中集成知识增强分析、SEM 自动化表征和形貌预测三类核心任务，减少跨工具切换带来的割裂，并保证各类分析结果能够相互关联。对于知识检索结果、自动化表征指标和预测输出，还需要保留对应的样品、工艺条件和来源证据，以支持结果解释与过程回溯。基于上述需求，平台最终形成了以统一数据基础为支撑，集知识单元构建、知识增强分析、SEM 自动化表征和形貌预测于一体的科研辅助分析系统。
+平台设计直接服务于样品分析、工艺比较和结果解释等研究活动。其核心要求是以样品编号为主线，统一组织样品信息、工艺参数、SEM 图像、知识单元和分析结果，使同一样品相关的多源数据能够连续调用。文献、实验记录和历史分析结果经过整理入库后，为知识增强分析提供稳定基础；知识检索、SEM 自动化表征和形貌预测则在同一环境中联动运行，并保留样品、工艺条件和来源证据之间的对应关系，以便后续解释和回溯。基于这些要求，平台采用统一数据底座，并集成知识单元构建、知识增强分析、SEM 自动化表征和形貌预测等环节。
 
 \subsection{系统总体架构}
 \ensubsection{Overall System Architecture}
@@ -33,12 +31,12 @@
     \label{fig:5_1_platform_architecture}
 \end{figure}
 
-该架构使样品记录、知识检索、SEM 自动化表征和形貌预测能够在同一样品编号下顺序调用，并通过来源信息实现结果关联与过程回溯。
+该架构使样品记录、知识检索、SEM自动化表征和形貌预测能够在同一样品编号下顺序调用，并通过来源信息实现结果关联与过程回溯。
 
 \subsection{平台实现与运行环境}
 \ensubsection{Platform Implementation and Runtime Environment}
 
-平台采用前后端分离架构。前端负责录入和展示，后端通过统一接口调用知识检索、SEM 自动化表征和形貌预测等模块。平台运行环境如表~\ref{tab:5_1_runtime_env}所示。
+平台采用前后端分离架构。前端负责录入和展示，后端通过统一接口调用知识检索、SEM自动化表征和形貌预测等模块。平台运行环境如表~\ref{tab:5_1_runtime_env}所示。
 
 \begin{table}[htbp]
     \centering
@@ -60,7 +58,7 @@
         图像处理 & OpenCV 4.13.0，Pillow 11.3.0 \\
         深度学习 & PyTorch 2.6.0 \\
         机器学习 & scikit-learn 1.8.0 \\
-        大模型接入 & 接入以 GPT 系列为主的模型服务 \\
+        大模型接入 & 接入以GPT系列为主的模型服务 \\
         CPU & AMD Ryzen 9 7945HX \\
         内存 & 16 GB \\
         GPU & NVIDIA GeForce RTX 4060 \\
@@ -75,16 +73,16 @@
 \section{关键分析环节集成}
 \ensection{Integration of Key Analysis Links}
 
-平台中的各功能环节围绕样品编号依次展开。样品记录用于组织实验对象及其工艺信息，知识检索用于补充背景信息，SEM 自动化表征用于生成量化形貌指标，形貌预测与解释用于支持工艺比较和结果判断。将这些环节接入统一平台后，可以考察第三章和第四章方法在实际分析中的衔接情况。
+平台中的各功能环节围绕样品编号依次展开。样品记录用于组织实验对象及其工艺信息，知识检索用于补充背景信息，SEM自动化表征用于生成量化形貌指标，形貌预测与解释用于支持工艺比较和结果判断。将这些环节接入统一平台后，可以考察第三章和第四章方法在实际分析中的衔接情况。
 
 \subsection{知识检索与关系核查}
 \ensubsection{Knowledge Retrieval and Relation Verification}
 
-用户输入关键词后，平台从图数据库返回相关节点、关系及来源证据，并同步展示图谱与统计结果，便于核查某一样品或某类工艺条件对应的知识线索和关系结构。对应界面如图~\ref{fig:5_2_knowledge_dashboard}所示。
+该界面主要用于查看样品或工艺条件对应的知识线索。输入关键词后，平台返回相关节点、关系和来源证据，并同步展示图谱与统计结果，便于核查关系结构及其证据来源。图~\ref{fig:5_2_knowledge_dashboard} 给出了该界面。
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\textwidth,height=0.68\textheight,keepaspectratio]{figures/fig5-5-knowledge-dashboard.png}
+    \includegraphics[width=0.84\textwidth,height=0.62\textheight,keepaspectratio]{figures/fig5-5-knowledge-dashboard.png}
     \caption{知识检索与关系核查界面}
     \label{fig:5_2_knowledge_dashboard}
 \end{figure}
@@ -92,11 +90,11 @@
 \subsection{样品数据组织与管理}
 \ensubsection{Sample Data Organization and Management}
 
-系统围绕样品编号组织样品信息、工艺参数、SEM 图像和分析结果，并完成记录维护、图像绑定、参数解析和结果回写。相关结构化数据统一保存在关系型数据库中，使知识检索、图像表征和形貌预测能够在同一数据基础上连续执行。对应界面如图~\ref{fig:5_3_experimental_database}所示。
+样品信息、工艺参数、SEM图像和分析结果均按样品编号归档。平台在这一界面中完成记录维护、图像绑定、参数解析和结果回写，使知识检索、图像表征和形貌预测共享同一批结构化数据。图~\ref{fig:5_3_experimental_database}给出了该界面。
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\textwidth,height=0.68\textheight,keepaspectratio]{figures/fig5-2-experimental-database.png}
+    \includegraphics[width=0.84\textwidth,height=0.62\textheight,keepaspectratio]{figures/fig5-2-experimental-database.png}
     \caption{样品数据组织与管理界面}
     \label{fig:5_3_experimental_database}
 \end{figure}
@@ -104,43 +102,45 @@
 \subsection{知识增强分析与证据回溯}
 \ensubsection{Knowledge-enhanced Analysis and Evidence Traceback}
 
-研究人员输入问题并选择任务类型后，系统联动图数据库和关系型数据库完成关系扩展、来源追溯与文本生成，返回回答内容、证据及关系链结果，用于样品分析、工艺比较和预测解释。对应界面如图~\ref{fig:5_4_knowledge_analysis_workbench}所示。
+在知识增强分析界面中，研究人员给出问题并选择任务类型后，系统联动图数据库和关系型数据库完成关系扩展、来源追溯与文本生成，返回回答内容、证据和关系链结果。该过程主要服务于样品分析、工艺比较和预测解释，界面见图~\ref{fig:5_4_knowledge_analysis_workbench}。
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\textwidth,height=0.68\textheight,keepaspectratio]{figures/fig5-4-knowledge-analysis-workbench.png}
+    \includegraphics[width=0.84\textwidth,height=0.62\textheight,keepaspectratio]{figures/fig5-4-knowledge-analysis-workbench.png}
     \caption{知识增强分析与证据回溯界面}
     \label{fig:5_4_knowledge_analysis_workbench}
 \end{figure}
 
-\subsection{SEM 图像自动化表征}
+\subsection{SEM图像自动化表征}
 \ensubsection{Automated Characterization of SEM Images}
 
-上传 SEM 图像后，系统依次执行预处理、CNTSegNet-clDice 前景分割、骨架清理和指标提取，输出覆盖密度、取向度、表观直径、平均曲率、波曲度和迂曲度 6 项核心形貌特征，并附加骨架连接点数、连接点密度和骨架总长度等结构统计量。结果可进一步回写并与同一样品编号关联，对应界面如图~\ref{fig:5_5_sem_workbench}所示。
+SEM图像自动化表征界面承接第四章的处理流程。图像上传后，系统依次完成预处理、CNTSegNet-clDice前景分割、骨架清理和指标提取，输出覆盖密度、取向度、表观直径、平均曲率、波曲度和迂曲度6项核心形貌特征，同时保留骨架连接点数、连接点密度和骨架总长度等结构统计量。结果可回写并绑定样品编号，界面见图~\ref{fig:5_5_sem_workbench}。
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\textwidth,height=0.68\textheight,keepaspectratio]{figures/fig5-3-sem-workbench.png}
-    \caption{SEM 图像自动化表征界面}
+    \includegraphics[width=0.84\textwidth,height=0.62\textheight,keepaspectratio]{figures/fig5-3-sem-workbench.png}
+    \caption{SEM图像自动化表征界面}
     \label{fig:5_5_sem_workbench}
 \end{figure}
 
+\clearpage
 \subsection{工艺参数驱动的形貌预测与解释}
 \ensubsection{Process-parameter-driven Morphology Prediction and Interpretation}
 
-输入工艺参数后，该模块完成特征转换、关键指标预测和解释信息补充，并将预测结果回写至关系型数据库，使其能够与样品记录、知识证据和图像表征结果统一管理。对应界面如图~\ref{fig:5_6_morphology_prediction_workbench}所示。
+形貌预测模块接收工艺参数后，完成特征转换、关键指标预测和解释信息补充，并将结果回写至关系型数据库。这样，预测输出可以和样品记录、知识证据及图像表征结果在同一编号下对应。界面见图~\ref{fig:5_6_morphology_prediction_workbench}。
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\textwidth,height=0.68\textheight,keepaspectratio]{figures/fig5-6-morphology-prediction-workbench.png}
+    \includegraphics[width=0.84\textwidth,height=0.62\textheight,keepaspectratio]{figures/fig5-6-morphology-prediction-workbench.png}
     \caption{形貌预测与解释界面}
     \label{fig:5_6_morphology_prediction_workbench}
 \end{figure}
 
+\clearpage
 \section{平台验证}
 \ensection{Platform Validation}
 
-本节主要考察第三章和第四章的方法接入平台后的运行情况，验证同一样品编号下的数据管理、知识检索、SEM 自动化表征、形貌预测和结果解释能否顺序衔接。所有功能测试均在表~\ref{tab:5_1_runtime_env}所示环境下进行，每项功能连续测试 10 次，结果均正常。功能测试结果见表~\ref{tab:5_2_function_test}。
+本节主要考察第三章和第四章的方法接入平台后的运行情况，验证同一样品编号下的数据管理、知识检索、SEM自动化表征、形貌预测和结果解释能否顺序衔接。所有功能测试均在表~\ref{tab:5_1_runtime_env}所示环境下进行，每项功能连续测试10次，结果均正常。功能测试结果见表~\ref{tab:5_2_function_test}。
 
 \begin{table}[htbp]
 \centering
@@ -173,7 +173,7 @@
 通过 \\
 
 图像上传与绑定 &
-上传 SEM 图像并绑定样品 &
+上传SEM图像并绑定样品 &
 完成图像上传与绑定登记 &
 通过 \\
 
@@ -197,8 +197,8 @@
 输出回答、证据和关系链 &
 通过 \\
 
-SEM 自动化表征 &
-上传 SEM 图像并执行自动化表征 &
+SEM自动化表征 &
+上传SEM图像并执行自动化表征 &
 完成图像分割与特征提取 &
 通过 \\
 
@@ -225,7 +225,7 @@ SEM 自动化表征 &
 \end{tabular*}
 \end{table}
 
-这些测试项目覆盖了样品入库、知识查询、图像表征、结果核查和预测解释等环节，说明第三章和第四章的方法已经能够在统一平台中顺序衔接。
+这些测试项目覆盖了样品入库、知识查询、图像表征、结果核查和预测解释等主要环节，表明第三章和第四章的方法已经能够在统一平台中顺序衔接。
 
 除功能可用性测试外，还对代表性计算任务的执行耗时进行了统计，以反映平台的响应效率。增删改查和页面浏览等操作更容易受到人工交互影响，因此这里主要统计知识检索、前景分割、自动化表征和形貌预测等任务。表中耗时结果均为相同输入条件下重复运行10次得到的平均值，统计结果见表~\ref{tab:5_3_runtime_test}。
 
@@ -250,12 +250,12 @@ SEM 自动化表征 &
 本地知识检索与证据组织平均耗时 \\ 
 
 \makecell[c]{CNTSegNet-clDice\\前景分割推理} &
-单张 1920×1200 像素 SEM 图像 &
+单张1920×1200像素SEM图像 &
 0.31 &
 前景掩膜推理平均耗时 \\ 
 
-SEM 自动化表征 &
-单张 1920×1200 像素 SEM 图像 &
+SEM自动化表征 &
+单张1920×1200像素SEM图像 &
 2.93 &
 从图像输入到指标输出的全流程平均耗时 \\ 
 
@@ -267,11 +267,12 @@ SEM 自动化表征 &
 \end{tabular*}
 \end{table}
 
-进一步拆分自动化表征链路可见，在 1920×1200 像素的实际 SEM 图像上，CNTSegNet-clDice 在 RTX 4060 上的平均推理时间为 0.31 s/张，在 CPU 上的平均推理时间为 2.74 s/张。传统阈值分割小于 0.01 s/张，单纯骨架化为 0.08 s/张，骨架分支清理为 2.78 s/张，因此自动化表征流程的主要耗时来自骨架清理与后续特征计算。
+进一步拆分自动化表征链路可见，在1920×1200像素的实际SEM图像上，CNTSegNet-clDice在RTX 4060上的平均推理时间为0.31s/张，在CPU上的平均推理时间为2.74s/张。传统阈值分割小于0.01s/张，单纯骨架化为0.08s/张，骨架分支清理为2.78s/张，因此自动化表征流程的主要耗时来自骨架清理与后续特征计算。
 
-测试结果表明，平台已经完成样品数据管理、知识检索、SEM 自动化表征、形貌预测和结果解释等环节的集成，并实现了样品数据、分析结果和来源信息的关联管理。重复 10 次的功能测试均通过，本地知识检索、前景分割和形貌预测的平均耗时均低于 1 s，SEM 自动化表征全流程平均耗时为 2.93 s/张。这说明第三章和第四章提出的方法已经能够在统一平台中连续运行，并完成了系统级验证。
+重复10次的功能测试均运行正常。本地知识检索、前景分割和形貌预测的平均耗时均低于1s，SEM自动化表征全流程平均耗时为2.93s/张。结合功能测试结果可见，样品数据管理、知识检索、SEM自动化表征、形貌预测和结果解释已经在统一平台中连通，样品数据、分析结果和来源信息也能按同一编号关联。
 
+\clearpage
 \section{小结}
 \ensection{Summary}
 
-本章完成了科研辅助分析平台的架构设计、运行环境配置、关键分析环节集成和平台验证。基于重复 10 次的功能测试与耗时统计可知，第三章和第四章提出的知识增强、自动化形貌表征和工艺—形貌关系分析方法已经在统一平台中形成以样品编号为主线的分析流程，能够稳定支持样品管理、知识查询、SEM 自动化表征、形貌预测和结果解释等任务。
+本章围绕科研辅助分析平台的架构、运行环境、关键环节接入和平台验证展开。结果表明，第三章和第四章提出的方法已经能够在统一平台中按样品编号贯通运行，并稳定支持样品管理、知识查询、SEM自动化表征、形貌预测和结果解释等任务。

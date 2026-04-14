@@ -800,7 +800,6 @@
 	\zihao{-4}
 	\setlength{\baselineskip}{21pt}
 	\chapter*{\xmu@label@publications}
-	\pdfbookmark[0]{\xmu@label@enpublications}{publications}
 % 	\addtocontents{etoc}{\protect\contentsline{chapter}{\sffamily\xmu@label@enpublications}{\sffamily {\thepage}}{chapter.\thechapter}}
         \addcontentsline{toc}{chapter}{\xmu@label@publications}
 	\addcontentsline{etoc}{chapter}{\sffamily\xmu@label@enpublications}
