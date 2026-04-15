@@ -73,7 +73,7 @@
 \def\xmu@label@appendix{附录}
 \def\xmu@label@enappendix{Appendix}
 \def\xmu@label@publications{在学期间完成的相关学术成果}
-\def\xmu@label@enpublications{Relevant Academic Achievements Completed During the Academic Period}
+\def\xmu@label@enpublications{Academic Achievements During Graduate Study}
 \def\xmu@label@reference{参考文献}
 \def\xmu@label@enreference{References}
 \def\xmu@label@acknowledgements{致~~~~谢}
@@ -139,8 +139,7 @@
 %% 绘制封面
 \newcommand\makecover{
 	\setstretch{1.78889} % 设置行间距
-	\newpage
-	\cleardoublepage
+	\clearpage
 	\thispagestyle{empty}
 	\pdfbookmark[0]{封面}{cover}
 
@@ -672,7 +671,7 @@
 %% 添加英文目录条目的命令
 \newcommand\enchapter[1]{\addtocontents{etoc}
 	{\protect\contentsline{chapter}
-		{\protect\numberline{\sffamily Chapter \thechapter}\protect\parbox[t]{0.72\textwidth}{#1}}
+		{\protect\numberline{\sffamily Chapter \thechapter}#1}
 		{\thepage}{chapter.\thechapter}}
 }
 \newcommand\ensection[1]{\addtocontents{etoc}

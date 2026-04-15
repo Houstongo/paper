@@ -13,7 +13,7 @@
 \subsection{碳纳米管阵列常见制备方法}
 \ensubsection{Common Fabrication Methods of CNT Arrays}
 
-碳纳米管阵列的常见制备方法包括电弧放电、激光烧蚀、模板辅助方法和化学气相沉积。电弧放电和激光烧蚀主要通过高温蒸发或烧蚀碳源获得产物，结晶质量较高，但更适合粉体样品制备，对基底上阵列结构的连续生长和定向控制支持较弱。模板辅助方法可借助模板孔道或表面结构约束局部形态，对尺寸和排列具有一定控制作用，但工艺灵活性和大面积连续制备能力仍受模板条件限制。化学气相沉积能够在固体基底表面原位完成催化剂活化、碳源裂解、成核和连续生长，便于围绕催化层、碳源供给和反应环境开展过程调节，因此已成为碳纳米管阵列研究中最常用的制备方法\cite{Wu2025VACNTReview,Liang2014VACNTReviewCN}。常见制备方法与其适用性的比较如表~\ref{tab:ch2_cnt_fabrication_compare}所示。
+碳纳米管阵列的常见制备方法包括电弧放电、激光烧蚀、模板辅助方法和化学气相沉积。电弧放电和激光烧蚀主要通过高温蒸发或烧蚀碳源获得产物，结晶质量较高，但更适合粉体样品制备，对基底上阵列结构的连续生长和定向控制支持较弱。模板辅助方法可借助模板孔道或表面结构约束局部形态，对尺寸和排列具有一定控制作用，但工艺灵活性和大面积连续制备能力仍受模板条件限制。相关综述指出，化学气相沉积能够在固体基底表面原位完成催化剂活化、碳源裂解、成核和连续生长，便于围绕催化层、碳源供给和反应环境开展过程调节，因此已成为碳纳米管阵列研究中最常用的制备方法\cite{Wu2025VACNTReview,Liang2014VACNTReviewCN}。常见制备方法与其适用性的比较如表~\ref{tab:ch2_cnt_fabrication_compare}所示。
 
 本文后续工作需要在统一基底条件下获得可比较的阵列样品，并据此分析工艺变量与形貌差异之间的关系。相较于其他方法，化学气相沉积更便于在固定基底和催化层体系下调节温度、气氛和供碳条件。在 CVD 的常见实现中，本文采用管式炉 CVD 路线，因为该工艺主要依靠外部加热驱动碳源裂解与阵列生长，工艺因素相对清晰，适合开展样品级比较。
 
@@ -22,7 +22,7 @@
     \caption{碳纳米管阵列常见制备方法及其适用性比较}
     \label{tab:ch2_cnt_fabrication_compare}
     \small
-    \renewcommand{\arraystretch}{1.35}
+    \renewcommand{\arraystretch}{1.22}
     \setlength{\tabcolsep}{0pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{2.5cm}>{\centering\arraybackslash}m{8.3cm}>{\centering\arraybackslash}m{1.4cm}}
         \toprule
@@ -49,7 +49,7 @@
 \end{equation}
 磁场的引入可以提高靶面附近电子密度，增强等离子体稳定性并提高沉积效率。由于 \ce{Al2O3} 缓冲层和 Fe 催化层的电学性质不同，两层薄膜的溅射供电方式也有所区别。射频（RF）磁控溅射采用高频交变电场，靶面极性会周期性变化，更有利于缓解绝缘靶材表面的电荷积累，因此适用于 \ce{Al2O3} 这类绝缘靶材。直流（DC）磁控溅射采用恒定电场，电流回路更稳定，适合 Fe 这类导电金属靶材连续溅射，并有利于提高沉积效率。对 Fe 催化层而言，磁控溅射还能够较稳定地调节薄膜厚度和覆盖均匀性，使初始薄膜条件保持较好一致性\cite{Aleksanyan2023RFMagnetron}。
 
-除供电方式外，磁控溅射过程中的功率、工作气氛和沉积稳定性还会共同影响入射粒子通量、沉积速率以及薄膜表面迁移过程。对于本文关注的 Fe 催化层，溅射功率变化会进一步影响单位时间内沉积到基底表面的金属通量，并通过名义厚度、连续性和表面粗糙度改变初始薄膜状态。工作气氛与沉积稳定性则会影响薄膜致密性和界面状态。这些差异会在后续升温、还原和退火去润湿过程中逐步转化为催化颗粒尺寸、分布和附着稳定性的差异，进而影响阵列成核密度和后续形貌响应\cite{Aleksanyan2023RFMagnetron,Yang2016ALDThicknessCN}。在 Fe--Cu/\ce{Al2O3} 催化体系中，Li 与 Zhang 也指出，颗粒尺寸分布和还原状态会进一步影响垂直阵列的选择性生长\cite{Li2016FeCuCNTForest}。这一过程可概括为 Fe 靶材溅射、连续薄膜沉积和退火颗粒化三个阶段，如图~\ref{fig:ch2_sputter_catalyst_schematic} 所示。
+除供电方式外，磁控溅射过程中的功率、工作气氛和沉积稳定性还会共同影响入射粒子通量、沉积速率以及薄膜表面迁移过程。对于本文关注的 Fe 催化层，溅射功率变化会进一步影响单位时间内沉积到基底表面的金属通量，并通过名义厚度、连续性和表面粗糙度改变初始薄膜状态。工作气氛与沉积稳定性则会影响薄膜致密性和界面状态。已有研究表明，这些差异会在后续升温、还原和退火去润湿过程中逐步转化为催化颗粒尺寸、分布和附着稳定性的差异，并进一步影响阵列成核密度和后续形貌响应\cite{Aleksanyan2023RFMagnetron,Yang2016ALDThicknessCN}。在 Fe--Cu/\ce{Al2O3} 催化体系中，Li 与 Zhang 也指出，颗粒尺寸分布和还原状态会进一步影响垂直阵列的选择性生长\cite{Li2016FeCuCNTForest}。这一过程可概括为 Fe 靶材溅射、连续薄膜沉积和退火颗粒化三个阶段，如图~\ref{fig:ch2_sputter_catalyst_schematic} 所示。
 
 \begin{figure}[htbp]
     \centering
@@ -91,9 +91,9 @@
 \begin{equation}
 J = -D\frac{\partial c}{\partial x}
 \end{equation}
-式中，$J$ 为碳扩散通量，$D$ 为扩散系数，$c$ 为颗粒内碳浓度。随着活性碳在颗粒边缘或背离碳源的一侧持续析出，石墨层逐步卷曲并形成管壁结构。在 CVD 条件下，碳源裂解、活性碳扩散与石墨层析出并非彼此独立，而需要与催化剂去润湿形成活性颗粒的时间窗口相互匹配。若供碳过程启动过早或局部碳通量过高，颗粒表面更易形成无定形碳覆盖，稳定成核会受到抑制。若颗粒在成核前已明显粗化或活性下降，阵列初始密度和连续生长能力也会降低\cite{Liu2021EcoMat,Lee2019CatalystDewetting}。Xiang 等进一步指出，随着阵列增高，扩散限制和催化剂失活会共同参与阵列生长减速过程\cite{Xiang2008GrowthDecelerationVACNT}。随着反应持续进行，碳源裂解效率、活性碳扩散速率以及催化剂失活速度会共同影响阵列的生长速率和持续时间。
+式中，$J$ 为碳扩散通量，$D$ 为扩散系数，$c$ 为颗粒内碳浓度。随着活性碳在颗粒边缘或背离碳源的一侧持续析出，石墨层逐步卷曲并形成管壁结构。在 CVD 条件下，碳源裂解、活性碳扩散与石墨层析出并非彼此独立，而需要与催化剂去润湿形成活性颗粒的时间窗口相互匹配。若供碳过程启动过早或局部碳通量过高，颗粒表面更易形成无定形碳覆盖，稳定成核会受到抑制。已有研究指出，若颗粒在成核前已明显粗化或活性下降，阵列初始密度和连续生长能力也会降低\cite{Liu2021EcoMat,Lee2019CatalystDewetting}。Xiang 等进一步指出，随着阵列增高，扩散限制和催化剂失活会共同参与阵列生长减速过程\cite{Xiang2008GrowthDecelerationVACNT}。随着反应持续进行，碳源裂解效率、活性碳扩散速率以及催化剂失活速度会共同影响阵列的生长速率和持续时间。
 
-按照催化颗粒与基底之间结合状态的不同，碳纳米管生长通常可以分为根部生长和顶端生长两种模式。当催化颗粒与基底结合较强时，颗粒更容易停留在基底表面，碳纳米管自颗粒上方向外延伸，对应根部生长模式。当催化颗粒与基底结合较弱时，生长过程中颗粒可能被抬升至管顶，对应顶端生长模式\cite{Liu2021EcoMat}。对于本文采用的 \ce{Al2O3}/Fe 体系，\ce{Al2O3} 支撑层不仅影响 Fe 颗粒的尺寸和分布，也会改变颗粒在基底表面的润湿与附着稳定性，从而进一步影响根部生长和顶端生长的相对稳定区间\cite{Zhang2017BufferLayer}。对于垂直排列阵列而言，界面作用、颗粒润湿行为以及阵列内部范德华相互作用会共同影响生长模式及其稳定性。Zhang 等还从同步生长和阵列内应力积累角度讨论了直立结构形成过程\cite{Zhang2007SynchronousGrowthVACNT}。随着阵列高度增加，气相反应物从阵列顶部向底部传输的距离不断增大，底部催化颗粒所处局部环境会逐渐转为低碳源通量和高副产物累积状态，反应物浓度梯度、催化剂中毒、颗粒粗化以及无定形碳沉积等因素会逐渐积累，并最终导致生长减速甚至终止\cite{He2011LongAlignedCN,Bulyarskiy2020}。因此，碳纳米管阵列的形成本质上是催化剂演化、气相供给和阵列内部传质共同耦合的过程。上述 CVD 生长过程及根部生长、顶端生长两类常见模式如图~\ref{fig:ch2_cvd_growth_schematic} 所示。
+按照催化颗粒与基底之间结合状态的不同，碳纳米管生长通常可以分为根部生长和顶端生长两种模式\cite{Liu2021EcoMat}。当催化颗粒与基底结合较强时，颗粒更容易停留在基底表面，碳纳米管自颗粒上方向外延伸，对应根部生长模式。当催化颗粒与基底结合较弱时，生长过程中颗粒可能被抬升至管顶，对应顶端生长模式。对于本文采用的 \ce{Al2O3}/Fe 体系，\ce{Al2O3} 支撑层不仅影响 Fe 颗粒的尺寸和分布，也会改变颗粒在基底表面的润湿与附着稳定性，从而进一步影响根部生长和顶端生长的相对稳定区间\cite{Zhang2017BufferLayer}。对于垂直排列阵列而言，界面作用、颗粒润湿行为以及阵列内部范德华相互作用会共同影响生长模式及其稳定性。Zhang 等还从同步生长和阵列内应力积累角度讨论了直立结构形成过程\cite{Zhang2007SynchronousGrowthVACNT}。相关研究表明，随着阵列高度增加，气相反应物从阵列顶部向底部传输的距离不断增大，底部催化颗粒所处局部环境会逐渐转为低碳源通量和高副产物累积状态，反应物浓度梯度、催化剂中毒、颗粒粗化以及无定形碳沉积等因素会逐渐积累，并最终导致生长减速甚至终止\cite{He2011LongAlignedCN,Bulyarskiy2020}。因此，碳纳米管阵列的形成本质上是催化剂演化、气相供给和阵列内部传质共同耦合的过程。上述 CVD 生长过程及根部生长、顶端生长两类常见模式如图~\ref{fig:ch2_cvd_growth_schematic} 所示。
 
 \begin{figure}[htbp]
     \centering
@@ -119,7 +119,6 @@ J = -D\frac{\partial c}{\partial x}
         \draw[fill=gray!50] (3.75,-0.82) circle (0.18);
         \node[font=\small] at (3.75,-2.02) {顶端生长};
 
-        \node[font=\small, align=center] at (8.4,-1.32) {界面作用影响颗粒稳定性\\传质条件影响持续生长能力};
     \end{tikzpicture}
     \caption{CVD 生长阶段与两类常见生长模式示意}
     \label{fig:ch2_cvd_growth_schematic}
@@ -160,7 +159,7 @@ J = -D\frac{\partial c}{\partial x}
 \end{figure}
 
 \section{大语言模型与知识增强基础}
-\ensection{Foundations of Large Language Models and Knowledge Enhancement}
+\ensection{Large Language Models and Knowledge Enhancement}
 
 第三章的方法建立在大语言模型、外部知识和结构化知识库的协同之上。对本文任务而言，大语言模型能够统一处理工艺条件、形貌描述和机理说明等科研文本，但仅依赖模型参数难以稳定满足术语一致、条件约束明确和来源可追溯等要求。因此，本节先简要说明大语言模型的基本能力，再比较专业任务中的常见适配路径，并说明为何需要将外部知识组织为可检索的图结构知识库。
 
@@ -178,7 +177,7 @@ J = -D\frac{\partial c}{\partial x}
 \subsection{领域适配路径与检索增强}
 \ensubsection{Domain Adaptation Paths and Retrieval Enhancement}
 
-面向专业任务，大语言模型的领域适配通常有两条路径，即领域微调和检索增强。领域微调通过在特定领域语料或任务数据上继续训练，使模型吸收相应的知识模式和任务特征，更适合任务边界较稳定、训练样本较充足且知识更新较慢的场景。检索增强则在推理阶段引入外部知识，更适合知识来源分散、更新较快且需要保留来源依据的任务\cite{Soudani2024,lewis2020rag,Mostafa2024}。
+面向专业任务，大语言模型的领域适配通常有两条路径，即领域微调和检索增强。领域微调通过在特定领域语料或任务数据上继续训练，使模型吸收相应的知识模式和任务特征，更适合任务边界较稳定、训练样本较充足且知识更新较慢的场景。检索增强在推理阶段引入外部知识，更适合知识来源分散、更新较快且需要保留来源依据的任务\cite{Soudani2024,lewis2020rag,Mostafa2024}。
 
 两类路径在知识承载、更新维护、条件约束处理和来源保留等方面存在明显差异，其比较如表~\ref{tab:ch2_adaptation_compare} 所示。
 
@@ -187,7 +186,7 @@ J = -D\frac{\partial c}{\partial x}
     \caption{大语言模型常见领域适配路径比较}
     \label{tab:ch2_adaptation_compare}
     \small
-    \renewcommand{\arraystretch}{1.32}
+    \renewcommand{\arraystretch}{1.22}
     \setlength{\tabcolsep}{0pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{2.35cm}>{\centering\arraybackslash}m{5.15cm}>{\centering\arraybackslash}m{5.15cm}}
         \toprule
@@ -218,11 +217,11 @@ J = -D\frac{\partial c}{\partial x}
 \end{equation}
 其中，$\mathcal{V}$ 表示节点集合，$\mathcal{E}$ 表示边集合，节点和边均可附带属性信息。对本文任务而言，节点主要对应样品、工艺参数、形貌指标和机理概念等对象，边用于表示样品与工艺参数之间的对应关系、工艺参数与形貌特征之间的关联关系，以及机理概念与实验现象之间的解释关系。来源信息、参数取值、单位、条件范围、时间信息和证据标识等内容，则更适合作为属性或元数据附着于对应条目之上。
 
-相较于纯文本块或单一向量表示，图结构不仅能够保留局部内容，还能够显式组织对象之间的对应关系、条件范围和来源依据，因此更适合构建面向科研分析的外部知识库\cite{LiuQiao2016KGConstructionCN,Wilkinson2016FAIR,Lebo2013PROVO,Hogan2021KG,WangXin2019KGDataManagementCN}。不过，仅有显式关系组织仍不足以完成后续召回，知识条目还需要具备可计算的语义表示，以支持跨表述变体的相似内容匹配。在实际知识增强过程中，文本块或知识条目通常还会进一步编码为向量表示，其一般形式可写为
+相关工作表明，图结构不仅能够保留局部内容，还能够显式组织对象之间的对应关系、条件范围和来源依据，因此更适合构建面向科研分析的外部知识库\cite{LiuQiao2016KGConstructionCN,Wilkinson2016FAIR,Lebo2013PROVO,Hogan2021KG,WangXin2019KGDataManagementCN}。不过，仅有显式关系组织仍不足以完成后续召回，知识条目还需要具备可计算的语义表示，以支持跨表述变体的相似内容匹配。在实际知识增强过程中，文本块或知识条目通常还会进一步编码为向量表示，其一般形式可写为
 \begin{equation}
     \mathbf{z}=f_{\theta}(x), \quad \mathbf{z}\in \mathbb{R}^{d}
 \end{equation}
-其中，$x$ 表示输入文本块或知识条目，$f_{\theta}$ 表示编码模型，$\mathbf{z}$ 表示对应的稠密向量。两条内容之间的语义相似性常通过向量相似度计算，其常见形式为余弦相似度
+其中，$x$ 表示输入文本块或知识条目，$f_{\theta}$ 表示编码模型，$\mathbf{z}$ 表示对应的 $d$ 维稠密向量。两条内容之间的语义相似性常通过向量相似度计算，其常见形式为余弦相似度
 \begin{equation}
     s(x_i,x_j)=\frac{\mathbf{z}_i^{\top}\mathbf{z}_j}{\|\mathbf{z}_i\|\|\mathbf{z}_j\|}, \quad \mathbf{z}_i=f_{\theta}(x_i), \ \mathbf{z}_j=f_{\theta}(x_j)
 \end{equation}

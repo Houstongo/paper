@@ -1,5 +1,5 @@
 \chapter{碳纳米管阵列自动化形貌表征与工艺—形貌关系分析}
-\enchapter{Automated Morphology Characterization and Process-Morphology Analysis of Carbon Nanotube Arrays}
+\enchapter{Morphology and Process-Morphology Study of CNT Arrays}
 \label{chap:morphology_method}
 
 \section{引言}
@@ -7,9 +7,9 @@
 
 第三章围绕碳纳米管阵列科研分析中的知识组织与关系约束检索，建立了面向工艺分析和结果解释的证据基础。但在具体实验体系中讨论工艺参数变化如何作用于阵列形貌，仅有知识证据还不够，还需要获得稳定、可比较的样品级形貌表征结果。SEM 图像是观察碳纳米管阵列整体形貌的主要依据，但碳纳米管在图像中常呈现细长交叠、局部遮挡、边界模糊和灰度不均等特征，依赖人工判读难以支撑批量样品比较，也难以为后续工艺—形貌关系分析提供统一的量化输入。
 
-因此，本章首先围绕实验样品、工艺记录和 SEM 图像构建统一的样品级数据对象，将样品编号、工艺参数和多张图像对应起来。在此基础上，建立面向碳纳米管阵列的自动化形貌表征流程，以 SEM 图像为输入，通过保持细长结构连通性的前景分割、骨架分析和几何计算，提取覆盖密度、取向度、表观直径、平均曲率、波曲度和迂曲度等关键特征，形成可用于样品比较的形貌表示。
+因此，本章首先围绕实验样品、工艺记录和 SEM 图像构建统一的样品级数据对象，将样品编号、工艺参数和多张图像对应起来，并建立面向碳纳米管阵列的自动化形貌表征流程。该流程以 SEM 图像为输入，通过保持细长结构连通性的前景分割、骨架分析和几何计算，提取覆盖密度、取向度、表观直径、平均曲率、波曲度和迂曲度等关键特征，形成可用于样品比较的形貌表示。
 
-在获得样品级形貌指标后，本章进一步结合第三章的知识检索结果，围绕 Fe 溅射功率、Fe 催化层厚度和退火时间开展工艺—形貌关系分析。分析过程包括变量范围收敛、统计关系检验、关系建模和知识证据解释，目标是在当前 \ce{Al2O3}/Fe 热 CVD 样品体系内识别关键工艺变量与形貌响应之间的对应关系，并给出可追溯的解释依据。本章按实验样品与数据获取、自动化关键形貌表征和知识增强支持下的工艺—形貌关系分析三个部分展开。
+在获得样品级形貌指标后，本章进一步结合第三章的知识检索结果，围绕 Fe 溅射功率、Fe 催化层厚度和退火时间开展工艺—形貌关系分析。分析过程包括工艺变量筛选、背景条件限定、统计关系检验、关系建模和知识证据解释，目标是在当前 \ce{Al2O3}/Fe 热 CVD 样品体系内识别关键工艺变量与形貌响应之间的对应关系，并给出可追溯的解释依据。
 
 \section{实验样品与数据获取}
 \ensection{Samples and Data Acquisition}
@@ -24,9 +24,9 @@
     \caption{主要实验仪器和设备}
     \label{tab:4_1_instruments}
     \small
-    \renewcommand{\arraystretch}{1.45}
+    \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{0pt}
-    \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{0.30\textwidth}>{\centering\arraybackslash}m{0.26\textwidth}>{\centering\arraybackslash}m{0.40\textwidth}@{}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{0.33\textwidth}>{\centering\arraybackslash}m{0.26\textwidth}>{\centering\arraybackslash}m{0.33\textwidth}@{}}
         \toprule
         名称 & 型号 & 生产厂家 \\
         \midrule
@@ -36,7 +36,7 @@
         台式场发射显微镜 & Phenom Pharos G2 & 飞纳电镜 \\
         氢气发生器 & KPS-H & 科普生 \\
         \bottomrule
-    \end{tabularx}
+    \end{tabular*}
 \end{table}
 
 \begin{table}[htbp]
@@ -46,19 +46,19 @@
     \small
     \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{0pt}
-    \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{0.34\textwidth}>{\centering\arraybackslash}m{0.22\textwidth}>{\centering\arraybackslash}m{0.40\textwidth}@{}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{0.33\textwidth}>{\centering\arraybackslash}m{0.26\textwidth}>{\centering\arraybackslash}m{0.33\textwidth}@{}}
         \toprule
         名称 & 分子式/规格 & 生产厂家 \\
         \midrule
-        铁靶材 & Fe & 北京晶迈中科材料技术有限公司 \\
-        氧化铝靶材 & \ce{Al2O3} & 北京晶迈中科材料技术有限公司 \\
-        硅单抛氧化片 & Si & 浙江立晶硅材料有限公司 \\
+        铁靶材 & Fe & 北京晶迈中科材料 \\
+        氧化铝靶材 & \ce{Al2O3} & 北京晶迈中科材料 \\
+        硅单抛氧化片 & Si & 浙江立晶硅材料 \\
         石英舟 & 65 $\times$ 150 $\times$ 5 mm & 东华石英 \\
         石英管 & 1000 $\times$ 74 $\times$ 3 mm & 东华石英 \\
-        高纯氩气 & Ar & 林德气体（厦门）有限公司 \\
-        高纯乙烯 & \ce{C2H4} & 中山市天科气体科技有限公司 \\
+        高纯氩气 & Ar & 林德气体（厦门） \\
+        高纯乙烯 & \ce{C2H4} & 中山天科气体科技 \\
         \bottomrule
-    \end{tabularx}
+    \end{tabular*}
 \end{table}
 
 本章样品涉及的主要工艺参数及其取值见表~\ref{tab:4_3_process_parameter_ranges}。
@@ -70,7 +70,7 @@
     \small
     \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{0pt}
-    \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{0.28\textwidth}>{\centering\arraybackslash}m{0.28\textwidth}>{\centering\arraybackslash}m{0.40\textwidth}@{}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{0.33\textwidth}>{\centering\arraybackslash}m{0.26\textwidth}>{\centering\arraybackslash}m{0.33\textwidth}@{}}
         \toprule
         工艺阶段 & 参数 & 取值 \\ 
         \midrule
@@ -86,11 +86,11 @@
         生长阶段 & 生长温度 & 750 ℃ \\
         生长阶段 & 生长时间 & 180 min \\
         \bottomrule
-    \end{tabularx}
+    \end{tabular*}
 \end{table}
 
-\subsection{样品制备与图像数据获取流程}
-\ensubsection{Sample Preparation and Image Data Acquisition Workflow}
+\subsection{样品制备与图像数据获取}
+\ensubsection{Sample Preparation and Image Data Acquisition}
 
 本章样品均来自基于磁控溅射预制 \ce{Al2O3}/Fe 催化层的管式炉 CVD 生长体系。制备时，先在 Si 基底表面磁控溅射氧化铝支撑层，再在不同 Fe 溅射功率和 Fe 催化层厚度条件下沉积 Fe 催化层。下文中，\ce{Al2O3} 溅射功率和 Fe 溅射功率分别表示对应靶材磁控溅射时的设定功率，\ce{Al2O3} 支撑层厚度和 Fe 催化层厚度分别表示对应薄层的名义沉积厚度，Ar、\ce{H2} 和 \ce{C2H4} 流量均表示质量流量控制系统的设定流量。随后将样片置于管式炉中心，在 Ar/\ce{H2} 气氛下完成升温和退火预处理，并在设定生长温度下引入 \ce{C2H4} 作为碳源进行生长，获得具有不同取向和弯曲状态的碳纳米管阵列样品。生长完成后，将阵列侧面竖直固定于样品台上，通过 SEM 采集侧视图像用于后续形貌分析。为保证样品级比较的可比性，后续分析主要保留在基本生长窗口相对一致条件下形成的样品。
 
@@ -213,12 +213,12 @@
 
 前景分割决定后续骨架与几何统计的输入质量。下文先给出保持细长结构的前景分割方法，再说明样品级形貌特征的提取与构建，并通过实验比较验证整套方法的有效性。
 
-\subsection{基于 CNTSegNet-clDice 的前景分割}
-\ensubsection{Foreground Segmentation Based on CNTSegNet-clDice}
+\subsection{CNTSegNet-clDice 前景分割}
+\ensubsection{CNTSegNet-clDice Foreground Segmentation}
 
 前景分割用于从复杂 SEM 图像中提取碳纳米管区域，并为后续骨架提取和几何统计提供输入。若出现局部断裂、黏连或边界偏移，误差会继续传递到后续统计，降低样品级结果稳定性。
 
-碳纳米管在 SEM 图像中通常呈现细长、密集、交叠和缠结的二维投影，相邻个体边界难以稳定区分，局部区域还伴随遮挡、边界模糊和较低信噪比。在这种条件下，前景分割更适合作为自动化表征的入口任务。实例级分离不仅需要更高标注成本，也难以在交叉和黏连区域给出稳定真值。类似的纤维网络图像分析也表明，单体分离与连续追踪本身就是独立且困难的问题\cite{Verho2025FiberSeparation,SosaRey2022OpenFiberSeg}。因此，本文先通过前景分割提取供后续骨架和几何分析使用的碳纳米管区域。
+碳纳米管在 SEM 图像中通常呈现细长、密集、交叠和缠结的二维投影，相邻个体边界难以稳定区分，局部区域还伴随遮挡、边界模糊和较低信噪比。在这种条件下，前景分割更适合作为自动化表征的入口任务。实例级分离不仅需要更高标注成本，也难以在交叉和黏连区域给出稳定真值。Verho 等和 Sosa-Rey 等对纤维网络图像的分析表明，单体分离与连续追踪本身就是独立且困难的问题\cite{Verho2025FiberSeparation,SosaRey2022OpenFiberSeg}。因此，本文先通过前景分割提取供后续骨架和几何分析使用的碳纳米管区域。
 
 本文的分割方法由弱标签构建、分割主干和训练约束三部分组成。参考已有方向引导弱监督分割思路\cite{Nguyen2023CNTSegNet}，本文采用自适应高斯阈值生成监督信号，以降低精细像素级标注成本。具体流程为先对去除底部信息条后的主体区域进行限制对比度自适应直方图均衡化（CLAHE）增强和高斯平滑\cite{Zuiderveld1994CLAHE}，再采用自适应高斯阈值得到二值弱标签，并与主体区域图像同步裁剪为固定尺寸图块用于模型训练。在当前实验设置下，前景分割网络训练共使用 100 张统一筛选后的 5 万倍 SEM 图像，训练所需弱标签均由该流程自动生成。弱标签生成中的增强、平滑和自适应阈值参数在全部训练图像上保持一致，以保证监督信号构造口径统一。随后，本文在高分辨率适配的 ResNet34-UNet 主干上引入方向分布约束和 clDice 连通性约束，构建 CNTSegNet-clDice 前景分割框架，如图~\ref{fig:4_4_segmentation_framework} 所示。
 
@@ -297,7 +297,7 @@
     \label{tab:4_4_segmentation_results}
     \small
     \setlength{\tabcolsep}{5pt}
-    \renewcommand{\arraystretch}{1.32}
+    \renewcommand{\arraystretch}{1.35}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{3.1cm}>{\centering\arraybackslash}m{10.1cm}}
         \toprule
         项目 & 设置 \\
@@ -446,6 +446,7 @@
     \caption{样品级形貌特征的组成及其含义}
     \label{tab:4_5_feature_vector_summary}
     \small
+    \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{2pt}
     \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{2.0cm}>{\centering\arraybackslash}m{4.8cm}>{\centering\arraybackslash}m{2.0cm}>{\centering\arraybackslash}m{1.5cm}>{\centering\arraybackslash}m{3.7cm}@{}}
         \toprule
@@ -462,7 +463,7 @@
 \end{table}
 
 \subsection{自动化形貌表征结果与一致性验证}
-\ensubsection{Automated Morphology Characterization Results and Consistency Validation}
+\ensubsection{Automated Characterization Results and Consistency Validation}
 
 前两节给出了前景分割方法和形貌特征提取流程。本节统一比较弱标签参考、CNTSegNet 和 CNTSegNet-clDice 三类前景结果，依次分析结构统计差异、弯曲特征与人工分级的一致性以及处理效率。本节中的 Dice 系数和交并比（Intersection over Union, IoU）衡量模型预测结果与弱标签参考结果之间的区域重叠一致性，主要用于比较不同模型在同一弱标签监督口径下的相对表现。
 
@@ -532,8 +533,9 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
     \caption{CNTSegNet-clDice 结果下不同弯曲特征与人工分级结果的一致性比较}
     \label{tab:4_7_manual_auto_comparison}
     \small
+    \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
-    \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{4.2cm}*{4}{>{\centering\arraybackslash}m{2.0cm}}@{}}
+    \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{3.8cm}*{4}{>{\centering\arraybackslash}m{2.1cm}}@{}}
         \toprule
         指标 & Accuracy & Macro-F1 & Balanced Accuracy & Weighted Kappa \\
         \midrule
@@ -553,6 +555,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
     \caption{人工粗筛与自动分级的效率及准确率比较}
     \label{tab:4_8_efficiency_comparison}
     \small
+    \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{3.2cm}*{3}{>{\centering\arraybackslash}m{3.2cm}}@{}}
         \toprule
@@ -567,14 +570,14 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 \section{知识增强支持下的工艺—形貌关系分析}
 \ensection{Knowledge-Enhanced Process-Morphology Analysis}
 
-前一节已经完成样品级形貌指标的提取与一致性验证。本节在当前 \ce{Al2O3}/Fe 热 CVD 样品体系内，围绕取向度、平均曲率、波曲度和迂曲度等关键形貌指标，讨论工艺参数与形貌特征之间的对应关系。考虑到原始工艺记录覆盖催化层预制、退火预处理和生长阶段多个环节，后续分析先完成工艺变量范围收敛，再考察样品级统计关系，并检验这些关系在非线性映射中的稳定性，最后结合第三章返回的知识证据解释变量作用。
+前一节已经完成样品级形貌指标的提取与一致性验证。本节在当前 \ce{Al2O3}/Fe 热 CVD 样品体系内，围绕取向度、平均曲率、波曲度和迂曲度等关键形貌指标，讨论工艺参数与形貌特征之间的对应关系。考虑到原始工艺记录覆盖催化层预制、退火预处理和生长阶段多个环节，后续分析先完成工艺变量筛选并限定背景条件，再考察样品级统计关系，并检验这些关系在非线性映射中的稳定性，最后结合第三章返回的知识证据解释变量作用。
 
-\subsection{工艺变量范围收敛与统计关系分析}
-\ensubsection{Convergence of Process Variable Scope and Statistical Analysis}
+\subsection{工艺变量筛选与统计关系分析}
+\ensubsection{Process Variable Screening and Statistical Analysis}
 
 在当前样品体系中，工艺记录同时包含 \ce{Al2O3} 支撑层参数、Fe 催化层参数、气氛条件、温度和时间等多类条件。其中一部分条件在样品制备中已作为背景生长窗口固定，因此后续分析不再并列展开全部变量，而是优先考察与样品级形貌变化联系更直接的工艺因素。全变量热图用于观察整体相关格局，第三章返回的知识证据用于补充变量保留依据。
 
-在变量收敛后，进一步限定 \ce{Al2O3} 溅射功率为 200 W、\ce{Al2O3} 支撑层厚度为 5.0 nm、Ar/\ce{H2}/\ce{C2H4} 流量为 600/300/150 sccm、退火温度为 600 ℃、生长温度为 750 ℃、生长时间为 180 min，仅考察 Fe 溅射功率、Fe 催化层厚度和退火时间的变化。这样处理的原因在于，该组条件在当前样品中构成了背景条件较一致的主生长窗口，有利于在尽量降低背景工艺波动影响的前提下比较三项变量与样品级形貌响应之间的关系。基于这一约束，本文构建了 204 个样品级分析对象。每个样品对应若干张经过筛选的可用 5 万倍 SEM 图像。为尽量降低 SEM 视野位置差异对形貌统计的影响，图像筛选时优先保留拍摄位置相近且视野范围一致的可用图像。单张图像完成形貌特征提取后，在样品内取算术平均，得到样品级形貌表征值。统一采用 5 万倍图像，是为了保证形貌指标在像素尺度和视野范围上的可比性。后续相关性热图均基于该样品级平均值。变量之间的单调相关结构采用 Spearman 秩相关系数\cite{Spearman1904Association}表征。设两组变量的秩序列分别为 $R_i$ 和 $S_i$，则其相关系数定义为
+在完成工艺变量筛选并限定背景条件后，进一步限定 \ce{Al2O3} 溅射功率为 200 W、\ce{Al2O3} 支撑层厚度为 5.0 nm、Ar/\ce{H2}/\ce{C2H4} 流量为 600/300/150 sccm、退火温度为 600 ℃、生长温度为 750 ℃、生长时间为 180 min，仅考察 Fe 溅射功率、Fe 催化层厚度和退火时间的变化。这样处理的原因在于，该组条件在当前样品中构成了背景条件较一致的主生长窗口，有利于在尽量降低背景工艺波动影响的前提下比较三项变量与样品级形貌响应之间的关系。基于这一约束，本文构建了 204 个样品级分析对象。每个样品对应若干张经过筛选的可用 5 万倍 SEM 图像。为尽量降低 SEM 视野位置差异对形貌统计的影响，图像筛选时优先保留拍摄位置相近且视野范围一致的可用图像。单张图像完成形貌特征提取后，在样品内取算术平均，得到样品级形貌表征值。统一采用 5 万倍图像，是为了保证形貌指标在像素尺度和视野范围上的可比性。后续相关性热图均基于该样品级平均值。变量之间的单调相关结构采用 Spearman 秩相关系数\cite{Spearman1904Association}表征。设两组变量的秩序列分别为 $R_i$ 和 $S_i$，则其相关系数定义为
 \begin{equation}
     \rho_s=
     \frac{\sum_{i=1}^{n}(R_i-\bar{R})(S_i-\bar{S})}
@@ -674,37 +677,38 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
         \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{#2}%
     }\par
 }
+
 \begin{figure}[H]
 \centering
 \footnotesize
 \setlength{\fboxsep}{6pt}
 \begin{minipage}{0.97\linewidth}
 \kgsectionbox{kgInputBg}{kgInputTag}{输入}{
-\kgcompactfields{工艺—形貌分析中的变量范围收敛说明。}{在当前 \ce{Al2O3}/Fe 热 CVD 样品体系中，若在保持背景生长窗口基本一致的前提下开展样品级工艺—形貌关系分析，应如何说明后续讨论围绕退火时间、Fe 溅射功率和 Fe 催化层厚度展开，并将其余工艺条件作为背景控制项。}{$E_q=\{$\ce{Al2O3} 溅射功率，\ce{Al2O3} 支撑层厚度，Fe 溅射功率，Fe 催化层厚度，Ar，\ce{H2}，\ce{C2H4}，退火温度，生长温度，生长时间，退火时间$\}$；$C_q=\{$磁控溅射，\ce{Al2O3}/Fe 催化层，管式炉热 CVD$\}$；$Y_q=\{$取向度，平均曲率，波曲度，迂曲度，样品可比性$\}$。}
+\kgcompactfields{工艺—形貌分析中的工艺变量筛选说明。}{在当前 \ce{Al2O3}/Fe 热 CVD 样品体系中，若在保持背景生长窗口基本一致的前提下开展样品级工艺—形貌关系分析，应如何说明后续讨论围绕退火时间、Fe 溅射功率和 Fe 催化层厚度展开，并将其余工艺条件作为背景控制项。}{$E_q=\{$\ce{Al2O3} 溅射功率，\ce{Al2O3} 支撑层厚度，Fe 溅射功率，Fe 催化层厚度，Ar，\ce{H2}，\ce{C2H4}，退火温度，生长温度，生长时间，退火时间$\}$；$C_q=\{$磁控溅射，\ce{Al2O3}/Fe 催化层，管式炉热 CVD$\}$；$Y_q=\{$取向度，平均曲率，波曲度，迂曲度，样品可比性$\}$。}
 }
 \vspace{0.4em}
 \kgsectionbox{kgEvidenceBg}{kgEvidenceTag}{TCCER 证据链输出}{
     \kgchaincard{证据链 1}{生长温度、碳源供给和总体生长时间决定阵列生长窗口与整体生长行为，并进一步影响样品级形貌形成条件。}{温度、碳源和生长时间通常作为垂直排列碳纳米管阵列生长的基础过程条件\cite{Hata2004,Liu2021EcoMat,Wu2025VACNTReview}。}
     \kgchaincard{证据链 2}{\ce{Al2O3} 支撑层影响 Fe 催化层的界面稳定性、扩散阻挡和颗粒演化，并进一步影响阵列生长状态。}{不同 alumina support 的结构与孔隙性会影响 Fe 催化剂的熟化、次表面扩散和活性，\ce{Al2O3} 支撑层设计也可作为 diffusion barrier 调节 CNT forest 生长行为\cite{Amama2010AluminaSupport,Lee2016SiO2Subsupport,Zhong2012FeAl2O3Design}。}
-    \kgchaincard{证据链 3}{Fe 催化层厚度影响催化剂负载水平及颗粒尺寸、分布和密度基础，并进一步影响阵列微结构与形貌响应。}{Fe 催化层厚度会影响碳纳米管阵列的微结构、密度及相关生长表现\cite{Yang2016ALDThicknessCN,Zhang2017BufferLayer}。}
+    \kgchaincard{证据链 3}{Fe 催化层厚度影响颗粒尺寸、分布和密度基础，并进一步影响阵列微结构与形貌响应。}{Fe 催化层厚度会影响碳纳米管阵列的微结构、密度及相关生长表现\cite{Yang2016ALDThicknessCN,Zhang2017BufferLayer}。}
     \kgchaincard{证据链 4}{退火时间影响还原、脱润湿和颗粒演化窗口，并进一步影响阵列生长一致性以及取向与弯曲变化。}{预退火过程会改变 Fe 催化颗粒形成状态，并进一步影响阵列生长结果\cite{Jung2013PreAnnealingFeCNT,Lee2019CatalystDewetting}。}
     \kgchaincard{证据链 5}{Fe 溅射功率影响前驱 Fe 薄膜的沉积状态、表面形貌和均匀性，并进一步影响颗粒化质量与形貌响应区间。}{溅射功率会影响 Fe 薄膜的结构与表面形貌\cite{Aleksanyan2023RFMagnetron,Zhou2020FeSputterPower}。}
 }
 \end{minipage}
-\caption{变量范围收敛的知识证据链整理图}
+\caption{工艺变量筛选的知识证据链整理图}
 \label{fig:param_convergence}
 \end{figure}
 
-图~\ref{fig:param_convergence} 汇总了第三章任务模板返回的变量范围收敛相关证据链。图中内容经过筛选和归纳，仅保留与本节分析直接相关的核心证据。结合图~\ref{fig:4_9_all_process_heatmap} 可见，生长温度、碳源供给、总体生长时间以及 \ce{Al2O3} 支撑层主要用于界定背景生长窗口并保证样品可比性，在当前样品子集中不作为后续展开重点。退火时间与若干形貌指标的单变量对应关系更突出。Fe 溅射功率和 Fe 催化层厚度的单变量相关性虽弱，但知识证据表明二者分别对应前驱薄膜沉积状态、催化剂负载水平及颗粒尺寸分布基础，仍可能经催化层形成与颗粒演化影响样品级取向与弯曲响应。因此，本节保留退火时间、Fe 溅射功率和 Fe 催化层厚度进入后续分析，再由统计结果和建模结果判断其相对作用。
+图~\ref{fig:param_convergence} 汇总了第三章任务模板返回的工艺变量筛选相关证据链。图中内容经过筛选和归纳，仅保留与本节分析直接相关的核心证据。前述全变量热图表明，生长温度、碳源供给、总体生长时间以及 \ce{Al2O3} 支撑层主要用于界定背景生长窗口并保证样品可比性，在当前样品子集中不作为后续展开重点。退火时间与若干形貌指标的单变量对应关系更突出。Fe 溅射功率和 Fe 催化层厚度的单变量相关性虽弱，但知识证据表明二者分别对应前驱薄膜沉积状态以及颗粒尺寸、分布基础，仍可能经催化层形成与颗粒演化影响样品级取向与弯曲响应。因此，本节保留退火时间、Fe 溅射功率和 Fe 催化层厚度进入后续分析，再由统计结果和建模结果判断其相对作用。
 
 在此基础上，进一步围绕这三项变量考察样品级统计关系。
 
-图~\ref{fig:4_10_spearman_correlation_heatmap} 给出了收敛变量与关键形貌特征之间的相关性热图。
+图~\ref{fig:4_10_spearman_correlation_heatmap} 给出了筛选后变量与关键形貌特征之间的相关性热图。
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.74\textwidth]{D:/Apaper/paperformat/figures/fig4-7-converged-heatmap.png}
-    \caption{收敛变量与关键形貌特征的相关性热图}
+    \caption{筛选后变量与关键形貌特征的相关性热图}
     \label{fig:4_10_spearman_correlation_heatmap}
 \end{figure}
 
@@ -734,7 +738,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 
 图~\ref{fig:4_12_response_grid} 按 Fe 溅射功率分组给出了四项关键形貌指标的样品分布。不同功率组之间的中位数和四分位区间并不完全重合。对于取向度，5 W、30 W 和 70 W 组整体较高，而 2 W 和 40 W 组更低且离散更明显，说明 Fe 溅射功率更像在不同功率窗口下改变样品间差异的幅度。对于平均曲率、波曲度和迂曲度，中高功率组的整体分布普遍高于低功率组，但组间仍明显重叠，说明 Fe 溅射功率可以放大弯曲响应，却不足以脱离退火时间和厚度条件单独给出稳定排序。因此，它在当前数据中主要影响响应区间和离散程度，而不是单独决定形貌演化方向。
 
-综合相关热图、退火时间分组趋势和 Fe 溅射功率分组分布可以看到，三项变量的作用层级并不相同。退火时间与取向下降和弯曲增强的总体方向对应最稳定，Fe 溅射功率主要影响不同功率组的响应区间和离散程度，Fe 催化层厚度则更适合从催化剂负载水平及颗粒尺寸、分布基础差异的角度理解。后续建模将检验这一判断在非线性映射中是否仍然成立。
+综合相关热图、退火时间分组趋势和 Fe 溅射功率分组分布可以看到，三项变量的作用层级并不相同。退火时间与取向下降和弯曲增强的总体方向对应最稳定，Fe 溅射功率主要影响不同功率组的响应区间和离散程度，Fe 催化层厚度则更适合从颗粒尺寸、分布和密度基础差异的角度理解。后续建模将检验这一判断在非线性映射中是否仍然成立。
 
 \subsection{工艺—形貌关系建模与解释}
 \ensubsection{Process-Morphology Modeling and Explanation}
@@ -746,11 +750,11 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
     \caption{随机森林回归模型的主要超参数设置}
     \label{tab:4_9_rf_settings}
     \small
-    \renewcommand{\arraystretch}{1.45}
+    \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{0pt}
     \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{0.30\textwidth}>{\centering\arraybackslash}m{0.66\textwidth}@{}}
         \toprule
-        参数类别 & 参数设置 \\
+        超参数 & 取值 \\
         \midrule
         模型 & 随机森林回归 \\
         决策树数量 & 300 \\
@@ -765,7 +769,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
     \end{tabularx}
 \end{table}
 
-为便于从各形貌特征角度比较预测效果和变量贡献，下面按取向度、平均曲率、波曲度和迂曲度分别给出建模结果。各组图中，(a) 为按测试样本序号排列的实测值与预测值对比，(b) 为交叉验证下的实测值与预测值散点，(c) 为 SHAP 值分布，(d) 为平均绝对 SHAP 值排序。
+为便于从各形貌特征角度比较预测效果和变量贡献，下面按取向度、平均曲率、波曲度和迂曲度分别给出建模结果。
 
 \begin{figure}[H]
     \centering
@@ -799,16 +803,17 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 
 平均曲率的回归效果次于取向度，$R^2$ 为 $0.5453 \pm 0.0689$，RMSE 为 $1.1446 \pm 0.1184$。相较于取向度，图~\ref{fig:4_14_curvature_combo} 中的样本序列对比和散点分布都更为分散。其原因在于，平均曲率强调的是局部转折强度，更容易受到骨架平滑、局部高弯折区占比以及少量异常弯折段的影响。对于样品级均值而言，不同空间分布的局部弯折可能得到相近的平均曲率，这会削弱工艺变量与该指标之间的一一对应关系。SHAP 排序中，退火时间的平均绝对 SHAP 值达到 1.082，明显高于另外两项工艺变量，高退火时间更多对应正向贡献。这说明退火过程仍主导局部弯折增强，但平均曲率更适合作为连续弯折程度的辅助指标，而不宜单独承担样品级形貌判别。
 
-波曲度和迂曲度的回归结果较为接近，$R^2$ 分别为 $0.4799 \pm 0.0467$ 和 $0.4929 \pm 0.0691$，RMSE 分别为 $0.0135 \pm 0.0013$ 和 $0.0059 \pm 0.0003$。从图~\ref{fig:4_15_waviness_combo} 和图~\ref{fig:4_16_tortuosity_combo} 可以看出，两者的预测散点均保持了较清楚的正相关趋势，但离散程度已明显高于取向度。二者都对应样品级弯曲增强，但强调的几何层次并不相同。波曲度更关注起伏幅值与波长的相对关系，需要主方向和波段结构保持较稳定，因此更容易受到局部交叠和波段识别扰动。迂曲度直接比较路径长度与端点距离，更接近整体绕行程度，对局部细节的依赖相对更弱，因此其 $R^2$ 略高，也与 4.3 节人工分级一致性验证中迂曲度表现最好的结果相呼应。对于这两个弯曲指标，退火时间的平均绝对 SHAP 值均居首位，且高退火时间主要对应正向贡献。Fe 溅射功率和 Fe 催化层厚度的贡献均次于退火时间，但 Fe 溅射功率在多数任务中的贡献高于 Fe 催化层厚度，更明显地改变不同工艺区间内响应的强弱和位置。相比之下，Fe 催化层厚度的 SHAP 贡献虽较低，却在四个任务中持续存在，说明其作用并未消失。结合前文知识证据，更适合将这一贡献理解为催化剂负载水平及颗粒尺寸、分布基础差异对后续形貌响应的补充影响。
+波曲度和迂曲度的回归结果较为接近，$R^2$ 分别为 $0.4799 \pm 0.0467$ 和 $0.4929 \pm 0.0691$，RMSE 分别为 $0.0135 \pm 0.0013$ 和 $0.0059 \pm 0.0003$。从图~\ref{fig:4_15_waviness_combo} 和图~\ref{fig:4_16_tortuosity_combo} 可以看出，两者的预测散点均保持了较清楚的正相关趋势，但离散程度已明显高于取向度。二者都对应样品级弯曲增强，但强调的几何层次并不相同。波曲度更关注起伏幅值与波长的相对关系，需要主方向和波段结构保持较稳定，因此更容易受到局部交叠和波段识别扰动。迂曲度直接比较路径长度与端点距离，更接近整体绕行程度，对局部细节的依赖相对更弱，因此其 $R^2$ 略高，也与 4.3 节人工分级一致性验证中迂曲度表现最好的结果相呼应。对于这两个弯曲指标，退火时间的平均绝对 SHAP 值均居首位，且高退火时间主要对应正向贡献。Fe 溅射功率和 Fe 催化层厚度的贡献均次于退火时间，但 Fe 溅射功率在多数任务中的贡献高于 Fe 催化层厚度，更明显地改变不同工艺区间内响应的强弱和位置。相比之下，Fe 催化层厚度的 SHAP 贡献虽较低，却在四个任务中持续存在，说明其作用并未消失。结合前文知识证据，更适合将这一贡献理解为颗粒尺寸、分布和密度基础差异对后续形貌响应的持续约束。
 
-综合四个回归任务可以看到，当前工艺变量对全局有序性和整体绕行程度的影响，比对局部转折强度的影响更稳定。表~\ref{tab:4_10_variable_role_summary} 将上述关键实验结果与第三章工艺分析任务返回的可靠证据链压缩整理为一张对照表。
+综合四个回归任务可以看到，当前工艺变量对全局有序性和整体绕行程度的影响，比对局部转折强度的影响更稳定。
 
 \begin{table}[htbp]
     \centering
     \caption{关键实验结果与对应知识证据链对照}
     \label{tab:4_10_variable_role_summary}
+    \small
     \setlength{\tabcolsep}{5pt}
-    \renewcommand{\arraystretch}{1.30}
+    \renewcommand{\arraystretch}{1.35}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{3.6cm}>{\centering\arraybackslash}m{4.0cm}>{\centering\arraybackslash}m{5.0cm}}
         \toprule
         \textbf{待解释结果} & \textbf{对应结果} & \textbf{证据链解释} \\
@@ -821,9 +826,9 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
         & 单变量相关性较弱，但整体强于厚度项，功率组响应区间存在差异
         & Fe 溅射功率先影响前驱薄膜沉积状态与均匀性，再传递到颗粒化质量差异与响应区间变化。 \\
         \midrule
-        Fe 催化层厚度对应催化剂负载相关的补充影响
+        Fe 催化层厚度对应颗粒形成基础差异
         & 单变量相关性低于功率项，但 SHAP 结果表明其在各任务中持续存在
-        & Fe 催化层厚度先影响催化剂负载水平及颗粒尺寸、分布基础，再传递到阵列微结构与形貌响应差异。 \\
+        & Fe 催化层厚度先影响颗粒尺寸、分布和密度基础，再传递到阵列微结构与形貌响应差异。 \\
         \midrule
         三项变量共同收束到取向与弯曲响应
         & 综合统计与建模结果，三项变量的变化最终主要对应取向度以及波曲度、迂曲度变化
@@ -832,9 +837,9 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
     \end{tabular*}
 \end{table}
 
-表~\ref{tab:4_10_variable_role_summary} 最后一行进一步将前三项变量收束为同一条形貌形成链。结合第三章工艺分析任务返回的可靠证据链可以看到，Fe 溅射功率、Fe 催化层厚度和退火时间虽然位于工艺流程的不同位置，但都首先作用于催化层形成与颗粒演化过程。Fe 溅射功率主要影响前驱 Fe 薄膜的沉积状态、表面形貌和均匀性，从而改变后续颗粒化起点；Fe 催化层厚度对应催化剂负载水平，并进一步影响颗粒尺寸、分布和密度基础；退火时间则直接决定还原、脱润湿和颗粒演化持续的时间窗口\cite{Zhou2020FeSputterPower,Yang2016ALDThicknessCN,Lee2019CatalystDewetting,Li2016FeCuCNTForest}。结合前文统计与建模结果，在当前样品体系中，退火时间沿这一路径表现出更连续、也更稳定的趋势响应。三项变量的共同后果并不只表现为局部颗粒状态差异，而是会进一步传递为阵列不同位置之间的生长速率异质性\cite{Xiang2008GrowthDecelerationVACNT}。
+表~\ref{tab:4_10_variable_role_summary} 压缩整理了上述关键实验结果与第三章工艺分析任务返回的可靠证据链。前三行对应三项变量对实验结果的不同作用方式，最后一行将这些作用收束为同一条形貌形成链。结合前文统计与建模结果，Fe 溅射功率、Fe 催化层厚度和退火时间虽位于工艺流程的不同环节，但都首先作用于催化层形成与颗粒演化过程。已有研究已经分别从 Fe 薄膜表面形貌\cite{Zhou2020FeSputterPower}、催化颗粒尺寸与分布\cite{Yang2016ALDThicknessCN}，以及颗粒演化与后续生长响应\cite{Lee2019CatalystDewetting,Li2016FeCuCNTForest}等方面给出了相应解释。基于这些认识，Fe 溅射功率改变前驱 Fe 薄膜的沉积状态、表面形貌和均匀性，进而影响后续颗粒化起点；Fe 催化层厚度对应颗粒尺寸、分布和密度基础差异；退火时间决定还原、脱润湿和颗粒演化持续的时间窗口。在当前样品体系中，退火时间沿这一路径表现出更连续、也更稳定的趋势对应关系。Xiang 等的研究进一步表明，三项变量的共同后果会首先体现为催化颗粒尺寸分布和活性状态差异，并进一步表现为阵列不同位置之间的生长速率异质性\cite{Xiang2008GrowthDecelerationVACNT}。
 
-当催化颗粒尺寸分布较窄且活性状态相对一致时，不同位置阵列的轴向生长速率更接近，高密度碳纳米管之间持续存在的横向接触与拥挤约束更容易把这种同步性保持为整体直立生长和较高取向度\cite{Futaba2016SweetSpot,Liu2021EcoMat,Zhang2007SynchronousGrowthVACNT}。相反，颗粒尺寸分布变宽或局部活性状态分化时，成核与持续生长能力的差异更容易放大为轴向失配。对于致密阵列，这种失配并不会只表现为简单的高度差，而会在群体接触网络中转化为侧向偏折，并在持续的机械耦合作用下逐步累积。于是，局部快生长与慢生长区域之间的差异不再停留在单根尺度，而会进一步演化为阵列尺度的取向下降以及波曲度、迂曲度升高\cite{Zhang2009Morphology,Liu2021EcoMat}。从这一角度看，三项变量对实验结果的影响虽然起点不同，但都可理解为经由催化颗粒形成状态差异、生长速率异质性和群体力学耦合，最终传递到阵列取向与弯曲响应。图~\ref{fig:4_17_growth_contrast_schematic} 对这一共同作用路径作了示意化总结。
+这一路径的机理含义可结合第三章返回的可靠证据链及相关文献进一步理解。Futaba 等\cite{Futaba2016SweetSpot}、Liu 等\cite{Liu2021EcoMat}以及 Zhang 等\cite{Zhang2007SynchronousGrowthVACNT}的研究表明，当催化颗粒尺寸分布较窄且活性状态相对一致时，阵列不同位置的轴向生长速率更接近，高密度碳纳米管之间持续存在的横向接触与拥挤约束更容易把这种同步性保持为整体直立生长和较高取向度。相反，颗粒尺寸分布变宽或局部活性状态分化时，成核与持续生长能力的差异更容易放大为轴向失配。对于致密阵列，这种失配并不会只表现为简单的高度差，而会在群体接触网络中转化为侧向偏折，并在持续的机械耦合作用下逐步累积。Zhang 等\cite{Zhang2009Morphology}和 Liu 等\cite{Liu2021EcoMat}的研究也表明，不同位置之间的生长速率差异会进一步演化为阵列尺度的取向下降以及波曲度、迂曲度升高。因此，三项变量虽然起点不同，但都可经由催化颗粒形成状态差异、生长速率异质性和群体力学耦合传递到阵列取向与弯曲响应。图~\ref{fig:4_17_growth_contrast_schematic} 对这一共同作用路径作了示意化总结。
 
 \begin{figure}[H]
     \centering
@@ -934,11 +939,11 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
         \draw[arrow] (r2.south) -- (r3.north);
     \end{tikzpicture}}
     }
-    \caption{Fe 溅射功率、Fe 催化层厚度和退火时间经催化层形成、生长速率异质性和群体力学耦合影响阵列取向与弯曲响应的示意}
+    \caption{Fe 溅射功率、Fe 催化层厚度和退火时间经催化层形成与颗粒演化影响阵列取向与弯曲响应的示意}
     \label{fig:4_17_growth_contrast_schematic}
 \end{figure}
 
 \section{小结}
 \ensection{Summary}
 
-本章围绕碳纳米管阵列样品的制备记录、工艺参数和 SEM 图像，建立了统一的样品级分析口径，并据此完成自动化形貌表征。实验结果表明，CNTSegNet-clDice 在区域重叠指标变化不大的情况下更有利于保持细长结构连通性，基于该流程提取的样品级弯曲特征与人工分级结果具有较好一致性，其中迂曲度最适合作为整体弯曲形貌的主判据。在当前 \ce{Al2O3}/Fe 热 CVD 样品体系内，统计分析、随机森林建模和知识证据解释共同表明，Fe 溅射功率、Fe 催化层厚度和退火时间与取向度、平均曲率、波曲度和迂曲度之间存在可建模的体系内对应关系。其中特别是退火时间与取向下降及弯曲增强之间的趋势最为稳定，Fe 溅射功率主要影响不同工艺区间中的响应强弱和位置，Fe 催化层厚度则主要对应催化剂负载水平及颗粒尺度基础差异。结合知识证据，这些关系可进一步收束到催化颗粒形成状态差异、生长速率异质性和群体力学耦合共同作用的形貌形成路径上。
+本章围绕碳纳米管阵列样品的制备记录、工艺参数和 SEM 图像，建立了统一的样品级分析口径，并据此完成自动化形貌表征。实验结果表明，CNTSegNet-clDice 在区域重叠指标变化不大的情况下更有利于保持细长结构连通性，基于该流程提取的样品级弯曲特征与人工分级结果具有较好一致性，其中迂曲度最适合作为整体弯曲形貌的主判据。在当前 \ce{Al2O3}/Fe 热 CVD 样品范围内，统计分析、随机森林建模和知识证据解释共同表明，Fe 溅射功率、Fe 催化层厚度和退火时间与取向度、平均曲率、波曲度和迂曲度之间存在可建模关系。其中特别是退火时间与取向下降及弯曲增强之间的趋势最为稳定，Fe 溅射功率主要影响不同工艺区间中的响应强弱和位置，Fe 催化层厚度则主要对应颗粒尺寸和分布基础差异。结合知识证据，这些关系可进一步收束到催化颗粒形成状态差异、生长速率异质性和群体力学耦合共同作用的形貌形成路径上。

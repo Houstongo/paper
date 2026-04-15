@@ -1,5 +1,5 @@
 \chapter{面向碳纳米管阵列研究的知识组织与关系约束检索方法}
-\enchapter{Knowledge Organization and Constraint-based Retrieval Methods for Carbon Nanotube Array Research}
+\enchapter{Knowledge Retrieval for CNT Arrays}
 \label{chap:knowledge_method}
 
 \section{引言}
@@ -38,15 +38,11 @@
 
 规范化完成后，切分面对的已不再是原始页面，而是按阅读顺序组织的文本主体 $x_k$。碳纳米管阵列研究语料中，同一段落常同时包含工艺条件、实验现象和解释信息。若直接采用固定长度或滑动窗口切分，连续实验描述容易被截断，条件、现象和解释会分散到不同片段，后续抽取便难以稳定恢复三者之间的对应关系。因此，切分过程需要在片段长度可控的前提下，尽量保留同一组实验描述的内部连续性。
 
-设规范化对象 $\tilde{d}_k$ 的文本主体为 $x_k$，其切分结果记为候选片段集合 $\{c_{k,j}\}_{j=1}^{M_k}$。切分按三层处理依次进行。第一层为结构边界初分，依据段落换行、小节标题、列表项、表格块和实验步骤切换等结构信号完成初步切分。第二层为语义边界细化，依据样品编号变化、参数组变化以及局部语义线索继续细化，使同一组条件、现象和解释尽量保留在相邻片段内。第三层为句级细化与长度控制，对仍然过长的片段按完整句继续细化，并在必要时按长度上限截断。
-
-实际执行时，只有前一层处理后仍然过长的片段才进入下一层。切分过程中，同时检查条件锚点、现象锚点和解释锚点在切分前后的保留情况，优先保留能够维持这些锚点局部共现的结果。输出阶段在相邻片段之间保留少量重叠，以减弱硬性边界对上下文的破坏。片段粒度既影响单条实验描述的完整性，也影响后续检索与证据组织的覆盖范围，因此需要在信息完整性和覆盖能力之间取得平衡。
-
-图~\ref{fig:3_2_chunk_comparison} 对上述层次化切分与候选片段生成过程作了概括展示。
+设规范化对象 $\tilde{d}_k$ 的文本主体为 $x_k$，其切分结果记为候选片段集合 $\{c_{k,j}\}_{j=1}^{M_k}$。切分按三层处理依次进行。第一层为结构边界初分，依据段落换行、小节标题、列表项、表格块和实验步骤切换等结构信号完成初步切分。第二层为语义边界细化，依据样品编号变化、参数组变化以及局部语义线索继续细化，使同一组条件、现象和解释尽量保留在相邻片段内。第三层为句级细化与长度控制，对仍然过长的片段按完整句继续细化，并在必要时按长度上限截断。实际执行时，只有前一层处理后仍然过长的片段才进入下一层。切分过程中，同时检查条件锚点、现象锚点和解释锚点在切分前后的保留情况，优先保留能够维持这些锚点局部共现的结果。输出阶段在相邻片段之间保留少量重叠，以减弱硬性边界对上下文的破坏。片段粒度既影响单条实验描述的完整性，也影响后续检索与证据组织的覆盖范围，因此需要在信息完整性和覆盖能力之间取得平衡。图~\ref{fig:3_2_chunk_comparison} 对上述层次化切分与候选片段生成过程作了概括展示。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/3.2.pdf}
+    \includegraphics[width=0.72\textwidth,trim=165 0 235 0,clip]{figures/3.2.pdf}
     \caption{层次化切分与候选片段生成流程}
     \label{fig:3_2_chunk_comparison}
 \end{figure}
@@ -88,6 +84,7 @@ MSFU 的字段结构如下。每个单元在保留原始片段文本的同时，
     \centering
     \caption{原始片段到最小语义事实单元的映射示例}
     \label{tab:3_1_msfu_example}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{3.5cm}>{\centering\arraybackslash}m{10.6cm}}
@@ -129,6 +126,7 @@ MSFU 的字段结构如下。每个单元在保留原始片段文本的同时，
     \centering
     \caption{最小语义事实单元字段设计及其作用说明}
     \label{tab:3_2_unit_schema}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{2.3cm}>{\centering\arraybackslash}m{6.0cm}>{\centering\arraybackslash}m{4.9cm}}
@@ -167,6 +165,7 @@ MSFU 的字段结构如下。每个单元在保留原始片段文本的同时，
     \centering
     \caption{结构关系类型与约束规则说明}
     \label{tab:3_3_relations_rules}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{6.0cm}>{\centering\arraybackslash}m{5.3cm}}
@@ -329,6 +328,7 @@ MSFU 到关系图的映射仅针对关键槽位可可靠判定的条目。对于
     \centering
     \caption{不同任务下的主要结构关系扩展模式}
     \label{tab:3_4_transition_rules}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{7.0cm}>{\centering\arraybackslash}m{4.6cm}}
@@ -395,6 +395,7 @@ $S_{\mathrm{conf}}(p)$ 表示路径证据可信度，取路径中各边可信度
     \centering
     \caption{第三章文献知识库规模统计}
     \label{tab:3_5_corpus_stats}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{5.2cm}>{\centering\arraybackslash}m{7.8cm}}
@@ -430,6 +431,7 @@ $S_{\mathrm{conf}}(p)$ 表示路径证据可信度，取路径中各边可信度
     \centering
     \caption{不同知识条目构建策略的渐进对比表}
     \label{tab:3_6_unit_eval}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{4.2cm}>{\centering\arraybackslash}m{2.3cm}>{\centering\arraybackslash}m{2.3cm}>{\centering\arraybackslash}m{2.3cm}>{\centering\arraybackslash}m{2.3cm}}
@@ -468,6 +470,7 @@ $S_{\mathrm{conf}}(p)$ 表示路径证据可信度，取路径中各边可信度
     \centering
     \caption{固定证据单元预算下的检索结果对比}
     \label{tab:3_7_retrieval_main}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{3.7cm}*{3}{>{\centering\arraybackslash}m{2.75cm}}}
@@ -491,6 +494,7 @@ $S_{\mathrm{conf}}(p)$ 表示路径证据可信度，取路径中各边可信度
     \centering
     \caption{证据链组织与排序消融结果}
     \label{tab:3_8_ablation}
+    \small
     \renewcommand{\arraystretch}{1.25}
     \setlength{\tabcolsep}{5pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{5.2cm}*{3}{>{\centering\arraybackslash}m{2.45cm}}}
