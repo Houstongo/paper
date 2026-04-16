@@ -13,7 +13,7 @@
 \subsection{碳纳米管阵列常见制备方法}
 \ensubsection{Common Fabrication Methods of CNT Arrays}
 
-碳纳米管阵列的常见制备方法包括电弧放电、激光烧蚀、模板辅助方法和化学气相沉积。电弧放电和激光烧蚀主要通过高温蒸发或烧蚀碳源获得产物，结晶质量较高，但更适合粉体样品制备，对基底上阵列结构的连续生长和定向控制支持较弱。模板辅助方法可借助模板孔道或表面结构约束局部形态，对尺寸和排列具有一定控制作用，但工艺灵活性和大面积连续制备能力仍受模板条件限制。相关综述指出，化学气相沉积能够在固体基底表面原位完成催化剂活化、碳源裂解、成核和连续生长，便于围绕催化层、碳源供给和反应环境开展过程调节，因此已成为碳纳米管阵列研究中最常用的制备方法\cite{Wu2025VACNTReview,Liang2014VACNTReviewCN}。常见制备方法与其适用性的比较如表~\ref{tab:ch2_cnt_fabrication_compare}所示。
+碳纳米管阵列的常见制备方法包括电弧放电、激光烧蚀、模板辅助方法和化学气相沉积。电弧放电和激光烧蚀主要通过高温蒸发或烧蚀碳源获得产物，结晶质量较高，但更适合粉体样品制备，对基底上阵列结构的连续生长和定向控制支持较弱。模板辅助方法可借助模板孔道或表面结构约束局部形态，对尺寸和排列具有一定控制作用，但工艺灵活性和大面积连续制备能力仍受模板条件限制。相关综述指出，化学气相沉积能够在固体基底表面原位完成催化剂活化、碳源裂解、成核和连续生长，便于围绕催化层、碳源供给和反应环境开展过程调节，因此已成为碳纳米管阵列研究中最常用的制备方法\cite{Wu2025VACNTReview,Liang2014VACNTReviewCN}。表~\ref{tab:ch2_cnt_fabrication_compare} 对常见制备方法及其适用性作了归纳比较。
 
 本文后续工作需要在统一基底条件下获得可比较的阵列样品，并据此分析工艺变量与形貌差异之间的关系。相较于其他方法，化学气相沉积更便于在固定基底和催化层体系下调节温度、气氛和供碳条件。在 CVD 的常见实现中，本文采用管式炉 CVD 路线，因为该工艺主要依靠外部加热驱动碳源裂解与阵列生长，工艺因素相对清晰，适合开展样品级比较。
 
@@ -22,7 +22,7 @@
     \caption{碳纳米管阵列常见制备方法及其适用性比较}
     \label{tab:ch2_cnt_fabrication_compare}
     \small
-    \renewcommand{\arraystretch}{1.22}
+    \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{0pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{2.5cm}>{\centering\arraybackslash}m{8.3cm}>{\centering\arraybackslash}m{1.4cm}}
         \toprule
@@ -35,6 +35,7 @@
         \bottomrule
     \end{tabular*}
 \end{table}
+\FloatBarrier
 
 \subsection{催化层预制与管式炉 CVD 生长原理}
 \ensubsection{Principles of Catalyst-layer Preparation and Tube-furnace CVD Growth}
@@ -47,6 +48,7 @@
 \begin{equation}
 \ce{Ar + e^- -> Ar+ + 2e^-}
 \end{equation}
+
 磁场的引入可以提高靶面附近电子密度，增强等离子体稳定性并提高沉积效率。由于 \ce{Al2O3} 缓冲层和 Fe 催化层的电学性质不同，两层薄膜的溅射供电方式也有所区别。射频（RF）磁控溅射采用高频交变电场，靶面极性会周期性变化，更有利于缓解绝缘靶材表面的电荷积累，因此适用于 \ce{Al2O3} 这类绝缘靶材。直流（DC）磁控溅射采用恒定电场，电流回路更稳定，适合 Fe 这类导电金属靶材连续溅射，并有利于提高沉积效率。对 Fe 催化层而言，磁控溅射还能够较稳定地调节薄膜厚度和覆盖均匀性，使初始薄膜条件保持较好一致性\cite{Aleksanyan2023RFMagnetron}。
 
 除供电方式外，磁控溅射过程中的功率、工作气氛和沉积稳定性还会共同影响入射粒子通量、沉积速率以及薄膜表面迁移过程。对于本文关注的 Fe 催化层，溅射功率变化会进一步影响单位时间内沉积到基底表面的金属通量，并通过名义厚度、连续性和表面粗糙度改变初始薄膜状态。工作气氛与沉积稳定性则会影响薄膜致密性和界面状态。已有研究表明，这些差异会在后续升温、还原和退火去润湿过程中逐步转化为催化颗粒尺寸、分布和附着稳定性的差异，并进一步影响阵列成核密度和后续形貌响应\cite{Aleksanyan2023RFMagnetron,Yang2016ALDThicknessCN}。在 Fe--Cu/\ce{Al2O3} 催化体系中，Li 与 Zhang 也指出，颗粒尺寸分布和还原状态会进一步影响垂直阵列的选择性生长\cite{Li2016FeCuCNTForest}。这一过程可概括为 Fe 靶材溅射、连续薄膜沉积和退火颗粒化三个阶段，如图~\ref{fig:ch2_sputter_catalyst_schematic} 所示。
@@ -78,15 +80,18 @@
     \caption{Fe 催化层磁控溅射沉积与退火颗粒化示意}
     \label{fig:ch2_sputter_catalyst_schematic}
 \end{figure}
+\FloatBarrier
 
 在催化层沉积完成后，样品进入退火预处理和 CVD 生长阶段。该过程通常包括催化剂活化、碳源裂解、活性碳扩散析出以及碳纳米管持续生长等环节\cite{Liu2021EcoMat}。在生长初期，沉积在基底表面的催化剂薄膜会在热处理和还原气氛作用下重排并形成纳米颗粒，这些颗粒的尺寸、分布和活性状态决定了后续成核条件。在 \ce{H2} 还原气氛下，催化颗粒表面的铁氧化物可被还原为金属 Fe，其过程可概括为
 \begin{equation}
 \ce{Fe_xO_y + yH2 -> xFe + yH2O}
 \end{equation}
+
 随后，\ce{C2H4} 在 Fe 催化颗粒表面发生裂解，为阵列生长提供活性碳，其基本反应可表示为
 \begin{equation}
 \ce{C2H4 -> 2C + 2H2}
 \end{equation}
+
 形成的活性碳在催化颗粒表面吸附，并沿颗粒表面或近表层向低化学势区域迁移，其扩散通量可近似表示为
 \begin{equation}
 J = -D\frac{\partial c}{\partial x}
@@ -123,6 +128,7 @@ J = -D\frac{\partial c}{\partial x}
     \caption{CVD 生长阶段与两类常见生长模式示意}
     \label{fig:ch2_cvd_growth_schematic}
 \end{figure}
+\FloatBarrier
 
 \subsection{关键工艺参数及其形貌影响}
 \ensubsection{Key Process Parameters and Their Effects on Morphology}
@@ -157,6 +163,7 @@ J = -D\frac{\partial c}{\partial x}
     \caption{工艺参数、过程机理与关键形貌之间的关系示意}
     \label{fig:ch2_process_morphology_relation}
 \end{figure}
+\FloatBarrier
 
 \section{大语言模型与知识增强基础}
 \ensection{Large Language Models and Knowledge Enhancement}
@@ -177,16 +184,15 @@ J = -D\frac{\partial c}{\partial x}
 \subsection{领域适配路径与检索增强}
 \ensubsection{Domain Adaptation Paths and Retrieval Enhancement}
 
-面向专业任务，大语言模型的领域适配通常有两条路径，即领域微调和检索增强。领域微调通过在特定领域语料或任务数据上继续训练，使模型吸收相应的知识模式和任务特征，更适合任务边界较稳定、训练样本较充足且知识更新较慢的场景。检索增强在推理阶段引入外部知识，更适合知识来源分散、更新较快且需要保留来源依据的任务\cite{Soudani2024,lewis2020rag,Mostafa2024}。
+面向专业任务，大语言模型的领域适配通常有两条路径，即领域微调和检索增强。领域微调通过在特定领域语料或任务数据上继续训练，使模型吸收相应的知识模式和任务特征，更适合任务边界较稳定、训练样本较充足且知识更新较慢的场景；检索增强在推理阶段引入外部知识，更适合知识来源分散、更新较快且需要保留来源依据的任务。两类路径在知识承载、更新维护、条件约束处理和来源保留等方面存在明显差异，表~\ref{tab:ch2_adaptation_compare} 对相关差异作了归纳比较\cite{Soudani2024,lewis2020rag,Mostafa2024}。
 
-两类路径在知识承载、更新维护、条件约束处理和来源保留等方面存在明显差异，其比较如表~\ref{tab:ch2_adaptation_compare} 所示。
 
 \begin{table}[htbp]
     \centering
     \caption{大语言模型常见领域适配路径比较}
     \label{tab:ch2_adaptation_compare}
     \small
-    \renewcommand{\arraystretch}{1.22}
+    \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{0pt}
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{2.35cm}>{\centering\arraybackslash}m{5.15cm}>{\centering\arraybackslash}m{5.15cm}}
         \toprule
@@ -201,6 +207,7 @@ J = -D\frac{\partial c}{\partial x}
         \bottomrule
     \end{tabular*}
 \end{table}
+\FloatBarrier
 
 对本文关注的碳纳米管阵列工艺与形貌分析而言，相关知识分散于文献、实验记录、工艺参数表和结构化分析结果之中，许多判断还需要同时满足工艺条件、样品对象和来源信息的一致性。若采用领域微调，知识更新通常需要重新训练，回答中的条件依据和来源信息也较难显式保留。检索增强则能够在查询阶段引入外部知识，使模型在统一上下文中结合问题表述、条件约束和来源信息组织回答。基于这一特点，本文采用检索增强路线。
 
@@ -225,6 +232,7 @@ J = -D\frac{\partial c}{\partial x}
 \begin{equation}
     s(x_i,x_j)=\frac{\mathbf{z}_i^{\top}\mathbf{z}_j}{\|\mathbf{z}_i\|\|\mathbf{z}_j\|}, \quad \mathbf{z}_i=f_{\theta}(x_i), \ \mathbf{z}_j=f_{\theta}(x_j)
 \end{equation}
+
 向量化主要解决相似内容召回问题，难以单独承担对象关系和条件约束的显式组织\cite{Reimers2019SentenceBERT}。对本文而言，图结构与向量表示分别承担结构化组织和语义检索支撑功能，共同为后续混合检索和证据链组织提供基础。
 
 \section{混合检索与证据组织基础}
@@ -303,6 +311,7 @@ J = -D\frac{\partial c}{\partial x}
     \caption{证据链组织的一般结构示意}
     \label{fig:ch2_evidence_chain_org}
 \end{figure}
+\FloatBarrier
 
 \section{小结}
 \ensection{Summary}

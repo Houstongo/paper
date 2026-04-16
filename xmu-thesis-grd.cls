@@ -459,10 +459,20 @@
 	position = bottom,
 	aboveskip = 4pt,
 	belowskip = 0pt,
+	justification = centering,
+	singlelinecheck = false,
 }
 \setlength{\textfloatsep}{11pt}
 \setlength{\floatsep}{10pt}
 \setlength{\intextsep}{10pt}
+\AtBeginEnvironment{figure}{%
+	\setlength{\textfloatsep}{18pt}%
+	\setlength{\intextsep}{18pt}%
+}
+\AtBeginEnvironment{figure*}{%
+	\setlength{\textfloatsep}{18pt}%
+	\setlength{\intextsep}{18pt}%
+}
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.8}
 \renewcommand{\textfraction}{0.08}
