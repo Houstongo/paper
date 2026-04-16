@@ -299,9 +299,9 @@
     \caption{前景分割模型的主要设置}
     \label{tab:4_4_segmentation_results}
     \small
-    \setlength{\tabcolsep}{5pt}
+    \setlength{\tabcolsep}{0pt}
     \renewcommand{\arraystretch}{1.35}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{3.1cm}>{\centering\arraybackslash}m{10.1cm}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{0.30\textwidth}>{\centering\arraybackslash}m{0.54\textwidth}@{}}
         \toprule
         项目 & 设置 \\
         \midrule
@@ -581,7 +581,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 \section{知识增强支持下的工艺—形貌关系分析}
 \ensection{Knowledge-Enhanced Process-Morphology Analysis}
 
-前一节已经完成样品级形貌指标的提取与一致性验证，因此本节可在统一的样品级口径下比较工艺参数与形貌特征之间的对应关系。本文围绕当前 \ce{Al2O3}/Fe 热 CVD 样品体系中的取向度、平均曲率、波曲度和迂曲度等关键形貌指标，讨论工艺参数与样品级形貌响应之间的关系。由于原始工艺记录同时包含催化层预制、退火预处理和生长阶段的多项条件，后续分析不再将全部变量并列展开，而是先从全变量层面观察整体相关结构，再结合第三章返回的知识证据，将讨论范围收敛到与样品级形貌变化联系更直接的工艺因素。在统一背景条件和样品纳入口径后，进一步考察这些变量与关键形貌指标之间的统计关系，并在后文检验其非线性映射的稳定性及相对作用，最后结合知识证据理解变量影响的形成路径。
+前一节已经完成样品级形貌指标的提取与一致性验证，因此本节可在统一的样品级口径下比较工艺参数与形貌特征之间的对应关系。本文围绕当前 \ce{Al2O3}/Fe 热 CVD 样品体系中的取向度、平均曲率、波曲度和迂曲度等关键形貌指标，讨论工艺参数与样品级形貌响应之间的关系。由于原始工艺记录同时包含催化层预制、退火预处理和生长阶段的多项条件，后续分析不再将全部变量并列展开，而是先从全变量层面观察整体相关结构，再结合第三章返回的知识证据，将讨论范围收敛到与样品级形貌变化联系更直接的工艺因素。在统一背景条件和样品纳入口径后，进一步考察这些变量与关键形貌指标之间的统计关系，并在后文比较不同模型下关系表征的稳定性及相对作用，最后结合知识证据理解变量影响的形成路径。
 
 \subsection{工艺变量筛选与统计关系分析}
 \ensubsection{Process Variable Screening and Statistical Analysis}
@@ -747,25 +747,70 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 
 图~\ref{fig:4_12_response_grid} 按 Fe 溅射功率分组给出了四项关键形貌指标的样品分布。不同功率组之间的中位数和四分位区间并不完全重合。对于取向度，5 W、30 W 和 70 W 组整体较高，而 2 W 和 40 W 组更低且离散更明显，说明 Fe 溅射功率更像在不同功率窗口下改变样品间差异的幅度。对于平均曲率、波曲度和迂曲度，中高功率组的整体分布普遍高于低功率组，但组间仍明显重叠，说明 Fe 溅射功率可以放大弯曲响应，却不足以脱离退火时间和厚度条件单独给出稳定排序。因此，它在当前数据中主要影响响应区间和离散程度，而不是单独决定形貌演化方向。
 
-综合相关热图、退火时间分组趋势和 Fe 溅射功率分组分布可以看到，三项变量在当前样品集上的表现方式并不相同。退火时间与取向下降和弯曲增强的总体方向对应最稳定，Fe 溅射功率主要影响不同功率组的响应区间和离散程度，Fe 催化层厚度的单变量相关性则整体较弱。后续建模将进一步检验这些判断在非线性映射中是否仍然成立，并考察 Fe 催化层厚度在弱单变量相关下是否仍保持可辨认贡献。
+综合相关热图、退火时间分组趋势和 Fe 溅射功率分组分布可以看到，三项变量在当前样品集上的表现方式并不相同。退火时间与取向下降和弯曲增强的总体方向对应最稳定，Fe 溅射功率主要影响不同功率组的响应区间和离散程度，Fe 催化层厚度的单变量相关性则整体较弱。后续建模将进一步检验这些判断在多变量条件下是否仍然成立，并考察 Fe 催化层厚度在弱单变量相关下是否仍保持可辨认贡献。
 
 \subsection{工艺—形貌关系建模与解释}
 \ensubsection{Process-Morphology Modeling and Explanation}
 
-前述统计观察已经给出了变量作用方向，但单变量相关性还不足以判断这些关系在多变量耦合条件下是否仍能稳定保持，也难以识别单变量相关性较弱的变量是否在非线性组合中持续发挥作用。因此，后续建模的重点并不在于追求最高预测精度，而在于检验 Fe 溅射功率、Fe 催化层厚度和退火时间在当前样品子集中，能否对取向度、平均曲率、波曲度和迂曲度形成稳定、可解释的非线性对应关系。
+前述统计观察已经给出了三项工艺变量与关键形貌指标之间的总体作用方向，但单变量相关性仍不足以判断这些关系在多变量条件下能否稳定保持，也难以识别单变量相关性较弱的变量在组合关系中的实际贡献。因此，本节在统一样品级统计口径下进一步引入监督学习模型，比较线性模型与非线性模型对工艺—形貌关系的表征能力，并分析 Fe 溅射功率、Fe 催化层厚度和退火时间对取向度、平均曲率、波曲度和迂曲度的预测作用。
 
-考虑到热 CVD 碳纳米管阵列中，工艺参数对形貌的影响通常经由催化层形成、颗粒演化和阵列群体耦合间接传递，并伴随明显的非线性交互；同时，本文分析对象已统一为样品级平均特征，样本规模相对有限而输入变量数量较少，本文选用随机森林回归模型\cite{Breiman2001RandomForests}。该模型不依赖预设函数形式，适合在中等样本规模下刻画多变量之间的非线性关系，并可结合 SHAP 结果\cite{Lundberg2017SHAP}比较不同工艺变量对各形貌特征预测的贡献及作用方向。模型评估采用样品级 5 折交叉验证，性能指标为决定系数（$R^2$）和均方根误差（RMSE），前者反映趋势解释能力，后者表征预测偏差尺度。其主要超参数设置见表~\ref{tab:4_9_rf_settings}。
+为提供线性参照，本文首先采用岭回归作为基线模型\cite{Hoerl1970RidgeRegression}。建模对象仍为样品级平均特征，交叉验证采用按工艺组分组的 5 折划分，并与后续随机森林保持一致。岭回归在最小二乘损失基础上引入 $L_2$ 正则项，其目标函数可写为
+\begin{equation}
+    \hat{\boldsymbol{\beta}}
+    =
+    \arg\min_{\boldsymbol{\beta}}
+    \left\{
+    \sum_{i=1}^{n}
+    \left(
+    y_i-\beta_0-\mathbf{x}_i^{\top}\boldsymbol{\beta}
+    \right)^2
+    +
+    \lambda \|\boldsymbol{\beta}\|_2^2
+    \right\}
+\end{equation}
+其中，$\mathbf{x}_i$ 为第 $i$ 个样品的工艺变量向量，$y_i$ 为对应形貌指标，$\lambda$ 为正则化系数。该模型在保持线性形式的同时抑制系数过大，更适合作为当前有限样本条件下的线性参照。
+
+结合前述统计分析可以看出，工艺参数对热 CVD 碳纳米管阵列形貌的影响往往需要经由催化层形成、颗粒演化以及阵列群体耦合逐步传递，因此其与结果指标之间更可能表现为非线性和变量交互关系。在此基础上，本文进一步采用随机森林回归模型\cite{Breiman2001RandomForests}作为主模型，用于刻画当前样品体系中的多变量非线性关系。对输入 $\mathbf{x}$，随机森林的预测可表示为
+\begin{equation}
+    \hat{f}(\mathbf{x})
+    =
+    \frac{1}{T}\sum_{t=1}^{T} f_t(\mathbf{x})
+\end{equation}
+其中，$T$ 为决策树数量，$f_t(\mathbf{x})$ 为第 $t$ 棵回归树的预测结果。该模型通过多棵树对特征空间进行递归划分，并以集成平均方式降低单棵树的不稳定性，因此不依赖预设函数形式，适用于样本规模相对有限、输入变量数量较少的建模场景，并可结合 SHAP 方法\cite{Lundberg2017SHAP}分析不同工艺变量对各形貌特征预测的贡献及作用方向。
+
+为保证比较公平，岭回归与随机森林均采用按工艺组分组的 5 折交叉验证，性能指标为决定系数（$R^2$）和均方根误差（RMSE），前者用于衡量趋势解释能力，后者用于表征预测偏差尺度。
 
 \begin{table}[htbp]
     \centering
-    \caption{随机森林回归模型的主要超参数设置}
+    \caption{线性基线与随机森林模型的 $R^2$ 比较}
+    \label{tab:4_9_baseline_compare}
+    \small
+    \renewcommand{\arraystretch}{1.25}
+    \setlength{\tabcolsep}{0pt}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{0.30\textwidth}>{\centering\arraybackslash}m{0.30\textwidth}>{\centering\arraybackslash}m{0.30\textwidth}@{}}
+        \toprule
+        形貌指标 & 岭回归 & 随机森林 \\
+        \midrule
+        波曲度 & $0.2715 \pm 0.0684$ & $0.4799 \pm 0.0467$ \\
+        迂曲度 & $0.2899 \pm 0.0574$ & $0.4929 \pm 0.0691$ \\
+        取向度 & $0.1785 \pm 0.0409$ & $0.6225 \pm 0.1432$ \\
+        平均曲率 & $0.2217 \pm 0.0587$ & $0.5453 \pm 0.0689$ \\
+        \bottomrule
+    \end{tabular*}
+\end{table}
+
+由表~\ref{tab:4_9_baseline_compare} 可见，岭回归在四项任务上的 $R^2$ 均为正，说明 Fe 溅射功率、Fe 催化层厚度和退火时间与样品级形貌响应之间存在可学习的总体趋势。随机森林在四项任务上的解释力则整体更高，说明当前样品体系中的工艺—形貌关系难以由简单线性叠加充分描述。
+
+\begin{table}[htbp]
+    \centering
+    \caption{随机森林回归模型的主要参数设置}
     \label{tab:4_9_rf_settings}
     \small
-    \renewcommand{\arraystretch}{1.35}
     \setlength{\tabcolsep}{0pt}
-    \begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}m{0.30\textwidth}>{\centering\arraybackslash}m{0.66\textwidth}@{}}
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{0.30\textwidth}>{\centering\arraybackslash}m{0.54\textwidth}@{}}
         \toprule
-        超参数 & 取值 \\
+        参数 & 取值 \\
         \midrule
         决策树数量 & 300 \\
         随机种子 & 42 \\
@@ -776,7 +821,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
         自助采样 & 是 \\
         分裂准则 & 平方误差 \\
         \bottomrule
-    \end{tabularx}
+    \end{tabular*}
 \end{table}
 \FloatBarrier
 
