@@ -9,6 +9,7 @@
 % 默认单面打印 oneside 、硕士论文模板 master
 
 \documentclass[twoside, master]{xmu-thesis-grd}
+\raggedbottom
 
 % 用户自定义宏包
 \usepackage{array}
@@ -18,6 +19,24 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,fit,calc}
 \newcommand{\vcell}[2][3.2\baselineskip]{\parbox[c][#1][c]{\linewidth}{\centering #2}}
+\newcommand{\postfloathead}{\FloatBarrier}
+\makeatletter
+\newcommand{\xmu@setfigurefloatsep}{%
+  \setlength{\textfloatsep}{19pt}%
+  \setlength{\floatsep}{19pt}%
+  \setlength{\intextsep}{19pt}%
+}
+\newcommand{\xmu@settablefloatsep}{%
+  \setlength{\textfloatsep}{15.6pt}%
+  \setlength{\floatsep}{15.6pt}%
+  \setlength{\intextsep}{15.6pt}%
+}
+\renewcommand{\xmu@setfloatsep}{\xmu@setfigurefloatsep}
+\xmu@setfigurefloatsep
+\makeatother
+\AtBeginEnvironment{table}{\csname xmu@settablefloatsep\endcsname}
+\AtBeginEnvironment{table*}{\csname xmu@settablefloatsep\endcsname}
+\captionsetup[figure]{aboveskip=4pt, belowskip=-13.96pt}
 % 正文引用采用上标数字编号格式
 \citestyle{super}
 % 模板选项： 硕士论文 master； 博士论文 doctor; 直接使用学校doc文档转换的pdf页面 pdf

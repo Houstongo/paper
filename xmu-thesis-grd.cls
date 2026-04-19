@@ -66,8 +66,8 @@
 \def\xmu@label@abstract{摘~~~~要}
 \def\xmu@label@compactabstract{摘要}
 \def\xmu@label@enabstract{Abstract}
-\def\xmu@label@abstractincontent{Abstract-Chinese}
-\def\xmu@label@enabstractincontent{Abstract-English}
+\def\xmu@label@abstractincontent{Chinese Abstract}
+\def\xmu@label@enabstractincontent{English Abstract}
 \def\xmu@label@keywords{关键词：}
 \def\xmu@label@enkeywords{Keywords:~}
 \def\xmu@label@appendix{附录}
@@ -307,8 +307,13 @@
 
 %% 设置段落间距
 \setlength{\parskip}{0em}
-\setlength{\abovedisplayskip}{0em}
-\setlength{\belowdisplayskip}{0em}
+\newcommand{\xmu@setdisplayskip}{%
+	\setlength{\abovedisplayskip}{6pt}%
+	\setlength{\belowdisplayskip}{6pt}%
+	\setlength{\abovedisplayshortskip}{6pt}%
+	\setlength{\belowdisplayshortskip}{6pt}%
+}
+\xmu@setdisplayskip
 
 %% 让空白页前后页码连续
 \newcounter{blankpage}
@@ -330,8 +335,8 @@
 			number = {\arabic{chapter}},
 			format = {\bfseries \sffamily \heiti \centering \zihao{-3}},
 			pagestyle = {xmu@headings},
-			beforeskip = 8pt,
-			afterskip = 20pt,
+			beforeskip = 15pt,
+			afterskip = 25pt,
 			fixskip = true,
 			aftername = ~~~~,
 		}
@@ -340,8 +345,8 @@
 %% 设置一级章节格式
 \ctexset{section={
 			format={\raggedright \sffamily \bfseries \heiti \zihao{4}},
-			beforeskip = 20pt,
-			afterskip = 14pt,
+			beforeskip = 25pt,
+			afterskip = 20pt,
 			fixskip = true,
 		}
 }
@@ -349,8 +354,8 @@
 %% 设置二级标题格式 
 \ctexset{subsection={
 			format = {\bfseries \sffamily \heiti \raggedright \zihao{-4}},
-			beforeskip = 16pt,
-			afterskip = 12pt,
+			beforeskip = 20pt,
+			afterskip = 20pt,
 			fixskip = true,
 		}
 }
@@ -358,8 +363,8 @@
 %% 设置三节标题格式
 \ctexset{subsubsection={
 			format={\bfseries \sffamily \heiti \raggedright \zihao{-4}},
-			beforeskip = 14pt,
-			afterskip = 10pt,
+			beforeskip = 20pt,
+			afterskip = 20pt,
 			fixskip = true,
 		}
 }
@@ -387,6 +392,7 @@
 	\@mainmattertrue
 	\pagestyle{xmu@headings}
 	\setstretch{1.5} %设置正文段落行距
+	\xmu@setdisplayskip
 	\setcounter{blankpage}{0}
 	\global\c@page \@ne
 	\renewcommand\thepage{\@arabic{\the\numexpr\value{page}-\value{blankpage}\relax}}
@@ -402,6 +408,9 @@
 \RequirePackage{dcolumn}
 \RequirePackage{multirow}
 \RequirePackage{booktabs}
+\setlength{\heavyrulewidth}{0.08em}
+\setlength{\lightrulewidth}{0.05em}
+\setlength{\cmidrulewidth}{0.05em}
 \newcolumntype{d}[1]{D{.}{.}{#1}}% or D{.}{,}{#1} or D{.}{\cdot}{#1}
 
 %% 算法
@@ -449,7 +458,7 @@
 }
 \captionsetup[table]{
 	position = top,
-	aboveskip = 7pt,
+	aboveskip = 0pt,
 	belowskip = 7pt,
 	justification = centering,
 	singlelinecheck = false,
@@ -462,16 +471,23 @@
 	justification = centering,
 	singlelinecheck = false,
 }
-\setlength{\textfloatsep}{11pt}
-\setlength{\floatsep}{10pt}
-\setlength{\intextsep}{10pt}
+\newcommand{\xmu@setfloatsep}{%
+	\setlength{\textfloatsep}{\baselineskip}%
+	\setlength{\floatsep}{\baselineskip}%
+	\setlength{\intextsep}{\baselineskip}%
+}
+\xmu@setfloatsep
 \AtBeginEnvironment{figure}{%
-	\setlength{\textfloatsep}{18pt}%
-	\setlength{\intextsep}{18pt}%
+	\xmu@setfloatsep
 }
 \AtBeginEnvironment{figure*}{%
-	\setlength{\textfloatsep}{18pt}%
-	\setlength{\intextsep}{18pt}%
+	\xmu@setfloatsep
+}
+\AtBeginEnvironment{table}{%
+	\xmu@setfloatsep
+}
+\AtBeginEnvironment{table*}{%
+	\xmu@setfloatsep
 }
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.8}
@@ -863,6 +879,11 @@
 %% 单位宏包
 \RequirePackage[version=4]{mhchem}
 \RequirePackage[per-mode=symbol]{siunitx}
+\sisetup{
+	mode = text,
+	detect-family = true,
+	detect-weight = true,
+}
 
 %% 附录编号样式
 \newcommand\setappendixnumberformat{
