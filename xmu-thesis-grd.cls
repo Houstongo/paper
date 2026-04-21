@@ -66,8 +66,8 @@
 \def\xmu@label@abstract{摘~~~~要}
 \def\xmu@label@compactabstract{摘要}
 \def\xmu@label@enabstract{Abstract}
-\def\xmu@label@abstractincontent{Chinese Abstract}
-\def\xmu@label@enabstractincontent{English Abstract}
+\def\xmu@label@abstractincontent{Abstract-Chinese}
+\def\xmu@label@enabstractincontent{Abstract-English}
 \def\xmu@label@keywords{关键词：}
 \def\xmu@label@enkeywords{Keywords:~}
 \def\xmu@label@appendix{附录}
@@ -82,6 +82,8 @@
 \def\xmu@label@contents{目~~~~录}
 \def\xmu@label@compactcontents{目录}
 \def\xmu@label@encontents{Contents}
+\def\xmu@label@contentsincontent{Contents-Chinese}
+\def\xmu@label@encontentsincontent{Contents-English}
 \def\xmu@label@acronymlist{主要缩略词表}
 \def\xmu@label@symbollist{主要符号表}
 \def\xmu@label@enacronymlist{List of Acronyms}
@@ -675,15 +677,15 @@
 
 	\ifxmu@compact
 		\markboth{\xmu@label@compactcontents}{\xmu@label@compactcontents} % 页眉
-		\addcontentsline{toc}{chapter}{\xmu@label@compactcontents} %将中文摘要加入到目录中
+		\addcontentsline{toc}{chapter}{\xmu@label@compactcontents} %将中文目录加入到目录中
 	\else
 		\markboth{\xmu@label@contents}{\xmu@label@contents} % 页眉
-		\addcontentsline{toc}{chapter}{\xmu@label@contents} %将中文摘要加入到目录中
+		\addcontentsline{toc}{chapter}{\xmu@label@contents} %将中文目录加入到目录中
 	\fi
 
 % 	\addtocontents{etoc}{\protect\contentsline{chapter}{\sffamily \encontentsname}{\sffamily \thepage}{chapter.\thechapter}} %将Contents加入到英文目录中
 	
-	\addcontentsline{etoc}{chapter}{\sffamily \encontentsname}
+	\addcontentsline{etoc}{chapter}{\sffamily \texorpdfstring{\xmu@label@contentsincontent}{\encontentsname}}
 % 	\addtocontents{etoc}{\protect\contentsline{chapter}{\sffamily \encontentsname}{\thepage}{chapter.\thechapter}} %将Contents加入到英文目录中
 	
 	\makeatletter
@@ -713,11 +715,17 @@
 \newcommand\entableofcontents{
 	\setstretch{1} % 设置行间距
 
+	\cleardoublepage
+	\phantomsection
+	\def\xmu@englishcontentsanchor{contents.english}
 	\chapter*{\sffamily\encontentsname}
+	\hypertarget{\xmu@englishcontentsanchor}{}
 	
 	\pdfbookmark[0]{\encontentsname}{english_contents}
 	
 	\markboth{\encontentsname}{\encontentsname} % 修改页眉文字
+	\addtocontents{toc}{\protect\contentsline{chapter}{\encontentsname}{\thepage}{\xmu@englishcontentsanchor}}
+	\addtocontents{etoc}{\protect\contentsline{chapter}{\sffamily \xmu@label@encontentsincontent}{\thepage}{\xmu@englishcontentsanchor}}
 	
 	\makeatletter
 	\renewcommand{\@pnumwidth}{0em}

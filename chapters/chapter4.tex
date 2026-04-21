@@ -1,5 +1,5 @@
 \chapter{碳纳米管阵列自动化形貌表征与工艺—形貌关系分析}
-\enchapter{Automated Morphology Characterization of Carbon Nanotube Arrays and Process-Morphology Analysis}
+\enchapter{Automated Morphology Characterization and Process-Morphology Relationship\protect\newline Analysis of Carbon Nanotube Arrays}
 \label{chap:morphology_method}
 
 \section{引言}
@@ -99,7 +99,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\textwidth]{D:/Apaper/paperformat/figures/fig4-1-magnification-grid.png}
+    \includegraphics[width=0.98\textwidth]{\submissiongraphic{D:/Apaper/paperformat/figures/fig4-1-magnification-grid.png}{D:/Apaper/paperformat/figures/submission/fig4-1-magnification-grid.png}}
     \caption{不同放大倍率下碳纳米管阵列侧视 SEM 图像示意。(a) 1 万倍，(b) 2 万倍，(c) 5 万倍，(d) 10 万倍。}
     \label{fig:4_1_magnification_examples}
 \end{figure}
@@ -219,7 +219,7 @@
 \subsection{CNTSegNet-clDice 前景分割}
 \ensubsection{CNTSegNet-clDice Foreground Segmentation}
 
-碳纳米管在 SEM 图像中通常呈现细长、密集、交叠和缠结的二维投影，相邻个体边界难以稳定区分，局部区域还伴随遮挡、边界模糊和较低信噪比。若出现局部断裂、黏连或边界偏移，误差会继续传递到后续骨架提取和几何统计，降低样品级结果的稳定性。对于这类结构，实例级分离不仅需要更高的标注成本，也难以在交叉和黏连区域给出稳定真值。Verho 等和 Sosa Rey 等对纤维网络图像的分析表明，单体分离与连续追踪本身就是独立且困难的问题\cite{Verho2025FiberSeparation,SosaRey2022OpenFiberSeg}。因此，本文将前景分割作为自动化形貌表征的入口任务，先从复杂 SEM 图像中稳定提取碳纳米管区域，再在此基础上开展后续骨架和几何分析。
+碳纳米管在 SEM 图像中通常呈现细长、密集、交叠和缠结的二维投影，相邻个体边界难以稳定区分，局部区域还伴随遮挡、边界模糊和较低信噪比。若出现局部断裂、黏连或边界偏移，误差会继续传递到后续骨架提取和几何统计，降低样品级结果的稳定性。对于这类结构，实例级分离不仅需要更高的标注成本，也难以在交叉和黏连区域给出稳定真值。Verho 等和 Sosa-Rey 等对纤维网络图像的分析表明，单体分离与连续追踪本身就是独立且困难的问题\cite{Verho2025FiberSeparation,SosaRey2022OpenFiberSeg}。因此，本文将前景分割作为自动化形貌表征的入口任务，先从复杂 SEM 图像中稳定提取碳纳米管区域，再在此基础上开展后续骨架和几何分析。
 
 本文的分割方法由弱标签构建、分割主干和训练约束三部分组成。参考已有方向引导弱监督分割思路\cite{Nguyen2023CNTSegNet}，本文采用自适应高斯阈值生成监督信号，以降低精细像素级标注成本。具体流程为先对去除底部信息条后的主体区域进行限制对比度自适应直方图均衡化增强\cite{Zuiderveld1994CLAHE}和高斯平滑，再采用自适应高斯阈值得到二值弱标签，并与主体区域图像同步进行等比缩放和补边，构造成统一方形输入用于模型训练。训练所需弱标签均由上述流程自动生成。为保证监督信号构造口径统一，弱标签生成中的增强、平滑和自适应阈值参数在全部图像上保持一致。
 
@@ -227,7 +227,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.98\textwidth]{D:/Apaper/paperformat/figures/fig4-4-segmentation-framework.png}
+    \includegraphics[width=0.98\textwidth]{\submissiongraphic{D:/Apaper/paperformat/figures/fig4-4-segmentation-framework.png}{D:/Apaper/paperformat/figures/submission/fig4-4-segmentation-framework.png}}
     \caption{CNTSegNet-clDice 前景分割框架示意图}
     \label{fig:4_4_segmentation_framework}
 \end{figure}
@@ -277,7 +277,7 @@
     \label{eq:4_cldice_loss}
 \end{equation}
 
-对应地，仅采用方向分布约束训练的版本记为 CNTSegNet，引入 clDice 约束的版本记为 CNTSegNet-clDice。在分阶段训练中，第一阶段目标为 $\mathcal{L}_{\mathrm{stage1}}=\mathcal{L}_{\mathrm{Dice}}$，第二阶段目标为
+对应地，仅采用方向分布约束训练的版本记为 CNTSegNet，引入式~\eqref{eq:4_cldice_loss} 所示 clDice 连通性约束的版本记为 CNTSegNet-clDice。在分阶段训练中，第一阶段目标为 $\mathcal{L}_{\mathrm{stage1}}=\mathcal{L}_{\mathrm{Dice}}$，第二阶段目标为
 \begin{equation}
     \mathcal{L}_{\mathrm{stage2}}=
     \lambda_1\mathcal{L}_{\mathrm{Dice}}+
@@ -343,7 +343,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1.0\textwidth]{D:/Apaper/paperformat/figures/fig4-5-feature-pipeline-grid.png}
+    \includegraphics[width=1.0\textwidth]{\submissiongraphic{D:/Apaper/paperformat/figures/fig4-5-feature-pipeline-grid.png}{D:/Apaper/paperformat/figures/submission/fig4-5-feature-pipeline-grid.png}}
     \caption{弯曲相关特征计算前的关键中间结果。(a) 原始 SEM 图像，(b) 预测前景图，(c) 原始骨架，(d) 拓扑清理中，(e) 清理后骨架，(f) 连接点邻域排除。}
     \label{fig:4_5_feature_pipeline}
 \end{figure}
@@ -473,7 +473,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/fig4-6-segmentation-comparison-grid.png}
+    \includegraphics[width=\textwidth]{\submissiongraphic{D:/Apaper/paperformat/figures/fig4-6-segmentation-comparison-grid.png}{D:/Apaper/paperformat/figures/submission/fig4-6-segmentation-comparison-grid.png}}
     \caption{高弯曲代表样本的前景输入对比图。(a) 原图，(b) 弱标签，(c) CNTSegNet 结果，(d) CNTSegNet-clDice 结果。各列从左至右对应四组代表样本。}
     \label{fig:4_6_segmentation_comparison}
 \end{figure}
@@ -507,7 +507,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{D:/Apaper/paperformat/figures/fig4-6-manual-grading-examples.png}
+    \includegraphics[width=\textwidth]{\submissiongraphic{D:/Apaper/paperformat/figures/fig4-6-manual-grading-examples.png}{D:/Apaper/paperformat/figures/submission/fig4-6-manual-grading-examples.png}}
     \caption{人工分级中三类弯曲形貌的代表样本。(a) 平直型，(b) 波曲型，(c) 卷曲型。}
     \label{fig:4_7_manual_grading_examples}
 \end{figure}
@@ -528,7 +528,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 
 \begin{figure}[!htbp]
     \centering
-\includegraphics[width=1.0\textwidth]{D:/Apaper/paperformat/figures/fig4-8-confusion-matrix-grid.png}
+\includegraphics[width=1.0\textwidth]{\submissiongraphic{D:/Apaper/paperformat/figures/fig4-8-confusion-matrix-grid.png}{D:/Apaper/paperformat/figures/submission/fig4-8-confusion-matrix-grid.png}}
     \caption{不同前景获取方式与弯曲特征组合下的人工分级一致性混淆矩阵。行从上至下依次为曲率、波曲度和迂曲度，列从左至右依次为 CNTSegNet-clDice、CNTSegNet 和弱标签参考。}
     \label{fig:4_8_confusion_matrices}
 \end{figure}
@@ -575,7 +575,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 \postfloathead
 
 \section{知识增强支持的工艺—形貌关系分析}
-\ensection{Knowledge-Enhanced Process-Morphology Relationship Analysis}
+\ensection{Knowledge-Enhanced Process-Morphology Relationship\protect\newline Analysis}
 
 前一节已经得到可用于样品比较的统一形貌表示，为不同样品之间的横向分析提供了统一尺度。然而，由样品级形貌指标进一步追溯工艺作用路径，仍不能仅依赖当前样品中的统计对应。碳纳米管阵列的最终形貌通常不是单一工艺参数直接作用的结果，而是催化层状态、催化颗粒演化、局部供碳条件以及阵列群体生长等连续过程共同作用的结果。不同工艺变量可能作用于不同阶段，相同形貌现象也可能对应不同形成路径。受样本规模和实验条件所限，现有样品中的背景条件难以完全正交展开。若将全部工艺参数直接并列纳入分析，既不利于识别与当前形貌变化联系更直接的关键变量，也容易将样本内相关过度外推为一般性机理结论。
 
@@ -695,7 +695,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 \setlength{\fboxsep}{5pt}
 \begin{minipage}{0.96\linewidth}
 \kgsectionbox{kgInputBg}{kgInputTag}{输入}{
-\kgcompactfields{工艺分析}{在当前 \ce{Al2O3}/Fe 样品体系下，哪些工艺变量适合作为样品级工艺—形貌关系分析的主分析变量，其余条件应如何作为背景控制项处理。}{$E_q=\{$\ce{Al2O3} 溅射功率，\ce{Al2O3} 支撑层厚度，Fe 溅射功率，Fe 催化层厚度，\ce{Ar}，\ce{H2}，\ce{C2H4}，退火温度，生长温度，生长时间，退火时间$\}$；$C_q=\{$磁控溅射，\ce{Al2O3}/Fe 催化层，管式炉热 CVD$\}$；$D_q=\varnothing$；$Y_q=\{\text{取向与弯曲相关形貌响应}\}$。}
+\kgcompactfields{工艺分析}{在当前 \ce{Al2O3}/Fe 样品体系下，哪些工艺变量适合作为样品级工艺—形貌关系分析的主分析变量，其余条件应如何作为背景控制项处理。}{$E_q=\{$\ce{Al2O3} 溅射功率，\ce{Al2O3} 支撑层厚度，Fe 溅射功率，Fe 催化层厚度，\ce{Ar}，\ce{H2}，\ce{C2H4}，退火温度，生长温度，生长时间，退火时间$\}$；$C_q=\{$磁控溅射，\ce{Al2O3}/Fe 催化层，管式炉 CVD$\}$；$D_q=\varnothing$；$Y_q=\{\text{取向与弯曲相关形貌响应}\}$。}
 }
 \vspace{0.2em}
 \kgsectionbox{kgEvidenceBg}{kgEvidenceTag}{TCCER 证据链输出}{
@@ -722,7 +722,7 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 
 \begin{figure}[H]
     \centering
-\includegraphics[width=1.0\textwidth]{D:/Apaper/paperformat/figures/fig4-7-converged-heatmap.png}
+\includegraphics[width=1.0\textwidth]{\submissiongraphic{D:/Apaper/paperformat/figures/fig4-7-converged-heatmap.png}{D:/Apaper/paperformat/figures/submission/fig4-7-converged-heatmap.png}}
     \caption{筛选后变量与关键形貌特征的相关性热图}
     \label{fig:4_10_spearman_correlation_heatmap}
 \end{figure}
@@ -1012,9 +1012,9 @@ CNTSegNet-clDice & 0.897 & 0.813 & 44.84 & 0.867 & 5074.16 & 1713.76 & 286.91 \\
 \section{小结}
 \ensection{Summary}
 
-本章围绕碳纳米管阵列样品的制备记录、工艺参数和 SEM 图像，建立了统一的样品级分析口径，并在此基础上构建了自动化形貌表征与工艺—形貌关系分析流程。方法上，本文首先面向复杂 SEM 图像中的细长交叠结构，构建了 CNTSegNet-clDice 前景分割模型，并进一步完成骨架清理、样品级形貌特征提取和人工分级一致性验证。随后，在统一背景工艺窗口和样品级统计口径下，结合第三章提供的知识检索结果，对关键工艺变量进行筛选、收敛和解释，并通过统计分析与监督学习模型比较，建立工艺参数与关键形貌指标之间的对应关系。
+本章首先面向复杂侧视 SEM 图像中的细长交叠结构，建立了以 CNTSegNet-clDice 为基础的自动化样品级形貌表征方法。该方法将前景分割、骨架清理和几何计算连接起来，把原本较依赖人工观察的阵列形貌判断转化为可批量执行的样品级量化过程，使工艺记录能够与样品形貌结果在统一口径下对应。结果表明，CNTSegNet-clDice 在区域重叠指标变化不大的情况下更好地保持了细长结构连通性，基于该流程提取的样品级弯曲特征与人工分级结果具有较好一致性，其中迂曲度对整体弯曲形貌的区分效果最好。这说明本文提出的样品级表征方法能够为批量样品比较和后续工艺分析提供稳定输入。
 
-实验结果表明，CNTSegNet-clDice 在区域重叠指标变化不大的情况下更好地保持了细长结构连通性，基于该流程提取的样品级弯曲特征与人工分级结果具有较好一致性，其中迂曲度对整体弯曲形貌的区分效果最好。在当前 \ce{Al2O3}/Fe 样品范围内，统计分析、随机森林建模和知识证据表明，Fe 溅射功率、Fe 催化层厚度和退火时间与取向度、平均曲率、波曲度和迂曲度之间存在稳定的工艺—形貌对应关系。其中，退火时间的趋势最为稳定，Fe 溅射功率主要影响不同工艺区间中的响应强弱及其出现区间，Fe 催化层厚度贡献较弱但持续存在。三项变量虽作用环节不同，但其统计响应可在催化层形成、颗粒演化以及后续群体耦合的解释框架下理解。
+在此基础上，本章进一步将第三章返回的知识证据引入工艺—形貌分析，用于支持变量筛选、背景窗口限定和结果解释，避免将全部工艺参数直接并列分析。结合样品级统计、随机森林建模和知识证据，可以在当前 \ce{Al2O3}/Fe 催化层和管式炉 CVD 样品体系下识别出 Fe 溅射功率、Fe 催化层厚度和退火时间与取向度、平均曲率、波曲度和迂曲度之间较稳定的对应关系。其中，退火时间与取向下降和弯曲增强之间的对应最稳定，Fe 溅射功率更多影响响应出现的区间和强弱，Fe 催化层厚度单变量作用较弱，但在多变量建模和知识解释中持续保留。
 
-本章中，样品级统计与监督学习模型用于识别关键工艺变量与形貌指标之间的稳定对应关系，第三章返回的证据链用于支持变量收敛、背景窗口限定和结果解释，二者共同构成了面向当前样品体系的协同分析框架。由此，工艺—形貌分析不再停留于样本内统计关联，而进一步形成了可在催化颗粒形成、颗粒演化和阵列群体耦合框架下理解的归纳性解释。
+因此，本章方法的作用不仅在于得到若干样本内统计关系，更在于将样品级量化、关键变量筛选和工艺作用解释接成连续分析路径。三项变量虽然作用阶段不同，但都可通过催化层形成、颗粒演化以及阵列群体耦合逐步传递到取向与弯曲响应，从而使当前样品体系中的工艺—形貌对应关系既能在统计结果中被识别，也能在材料学证据支持下得到解释。
 

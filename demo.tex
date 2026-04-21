@@ -6,6 +6,33 @@
 %% Based on BIT-thesis at https://github.com/BIT-thesis/LaTeX-template
 %%==============================================================================
 
+% 允许通过外层入口文件切换匿名送审版与实名版。默认使用实名版。
+\newif\ifanonymoussubmission
+\ifdefined\anonymoussubmissionflag
+  \anonymoussubmissiontrue
+\else
+  \anonymoussubmissionfalse
+\fi
+\newif\ifsubmissioncompressed
+\ifdefined\submissioncompressflag
+  \submissioncompressedtrue
+\else
+  \submissioncompressedfalse
+\fi
+\newif\ifplagiarismchecksubmission
+\ifdefined\plagiarismcheckflag
+  \plagiarismchecksubmissiontrue
+\else
+  \plagiarismchecksubmissionfalse
+\fi
+\newcommand{\submissiongraphic}[2]{%
+  \ifsubmissioncompressed
+    #2%
+  \else
+    #1%
+  \fi
+}
+
 % 默认单面打印 oneside 、硕士论文模板 master
 
 \documentclass[twoside, master]{xmu-thesis-grd}
@@ -37,6 +64,9 @@
 \AtBeginEnvironment{table}{\csname xmu@settablefloatsep\endcsname}
 \AtBeginEnvironment{table*}{\csname xmu@settablefloatsep\endcsname}
 \captionsetup[figure]{aboveskip=4pt, belowskip=-13.96pt}
+\makeatletter
+\def\xmu@label@enkeywords{Keywords: }
+\makeatother
 % 正文引用采用上标数字编号格式
 \citestyle{super}
 % 模板选项： 硕士论文 master； 博士论文 doctor; 直接使用学校doc文档转换的pdf页面 pdf
@@ -46,26 +76,41 @@
 %% 封面及其他固定内容的页面
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title[面向碳纳米管阵列的自动化表征与知识增强支持的工艺—形貌关系分析]{面向碳纳米管阵列的自动化表征与\\知识增强支持的工艺—形貌关系分析}
-\entitle{Research on Automated Characterization and Knowledge-Supported Process-Morphology Relationship Analysis for Carbon Nanotube Arrays}
-\author{刘羽}
-\advisor{侯旭 教授}
+\title[碳纳米管阵列的自动化表征与知识增强支持的工艺—形貌关系分析研究]{碳纳米管阵列的自动化表征与\\知识增强支持的工艺—形貌关系分析研究}
+\entitle{Research on Automated Characterization and Knowledge-Enhanced Analysis of Process-Morphology Relationships in Carbon Nanotube Arrays}
+\ifanonymoussubmission
+  \author{***}
+  \advisor{***}
+\else
+  \author{刘羽}
+  \advisor{侯旭 教授}
+\fi
 \major{人工智能}
 \submitdate{2026年4月}
 \defenddate{2026年5月}
 \grantdate{2026年6月}
 \printdate{2026年4月}
 % \studentnumber{}
-\studentnumber{36920231153219}
+\ifanonymoussubmission
+  \studentnumber{***}
+\else
+  \studentnumber{36920231153219}
+\fi
 
 % 封面
 \makecover
 
 % 学位论文原创性声明
+\ifplagiarismchecksubmission
+\else
 \makeoriginalitystatement
+\fi
 
 % 学位论文著作权使用声明
+\ifplagiarismchecksubmission
+\else
 \makecopyrightstatement
+\fi
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,11 +167,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter
 
-% 致谢
-% \input{chapters/acknowledgements}
-
 % 发表文章目录
 \input{chapters/publications}
+
+% 致谢
+\ifanonymoussubmission
+\else
+\input{chapters/acknowledgements}
+\fi
 % \cleardoublepage
 
 % 学位论文答辩委员会名单
